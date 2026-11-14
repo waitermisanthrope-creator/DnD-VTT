@@ -15,4 +15,5 @@ render=sheet[sheet.index('private void DrawSheet()'):]
 assert render.index('CommitGrimoireDetailKeyboard(hero, ref changed)')<render.index('if (changed)'), 'pending native number must commit before the old hero is saved'
 
 assert 'SafePollDiceCatalog()' not in dice[dice.index('private void UpdateDiceTable()'):dice.index('// Manual installed-set selection')], 'catalog changes must commit on Layout'
+assert '← Главное меню' in dice, 'standalone Dice opened from home also needs an exit'
 print('SHEET_NAVIGATION_FRAME_BOUNDARY_PASS')

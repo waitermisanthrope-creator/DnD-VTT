@@ -310,7 +310,7 @@ namespace DndVtt.UnityPrototype
             GUILayout.EndHorizontal();
             GUILayout.BeginHorizontal();
             if(GUILayout.Button("Мастерская",brandPlain,GUILayout.MinHeight(54)))OpenContentManager();
-            if(GUILayout.Button("3D Дайсы",brandPlain,GUILayout.MinHeight(54)))Navigate(FrontScreen.Dice);
+            if(MeasuredMenuButton("3D Дайсы",brandPlain,GUILayout.MinHeight(54)))Navigate(FrontScreen.Dice);
             GUILayout.EndHorizontal();
             LoadCloudSession();
             if(cloudSession!=null&&GUILayout.Button("Глобальный чат",brandBlue,GUILayout.Height(51)))Navigate(FrontScreen.Chat);

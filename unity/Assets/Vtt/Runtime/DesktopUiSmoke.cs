@@ -164,10 +164,29 @@ namespace DndVtt.UnityPrototype
                 }
                 catch(Exception error){Fail(error);yield break;}
             }
+            try
+            {
+                var screenType=typeof(LegacySessionPanel).GetNestedType("FrontScreen",BindingFlags.NonPublic);
+                Call("Navigate",Enum.Parse(screenType,"Home"));Field("brandHomeActionsScroll",Vector2.zero);
+            }
+            catch(Exception error){Fail(error);yield break;}
+            yield return new WaitForSecondsRealtime(.3f);
+            yield return ClickMeasuredButton("3D Дайсы");if(failed)yield break;
+            try {Check(typeof(LegacySessionPanel).GetField("screen",Flags).GetValue(panel).ToString()=="Dice","home Dice entry works");}
+            catch(Exception error){Fail(error);yield break;}
+            yield return ClickMeasuredButton("← Главное меню");if(failed)yield break;
+            try
+            {
+                Check(typeof(LegacySessionPanel).GetField("screen",Flags).GetValue(panel).ToString()=="Home","standalone Dice returns home");
+                Check(panel.ExportCurrent()==original&&quickNavigationErrors==0,"standalone Dice exit preserves profile and GUI");
+                var screenType=typeof(LegacySessionPanel).GetNestedType("FrontScreen",BindingFlags.NonPublic);
+                Call("Navigate",Enum.Parse(screenType,"Sheet"));
+            }
+            catch(Exception error){Fail(error);yield break;}
             Field("frontScroll",Vector2.zero);
             yield return Frame("navigation-returned-hero-portrait");if(failed)yield break;
             trackingQuickNavigation=false;
-            Debug.Log("VTT_QUICK_NAVIGATION_PASS: 5 actual OS-pointer dice/attacks/advancement roundtrips; exit during roll; JSON unchanged; no layout errors");
+            Debug.Log("VTT_QUICK_NAVIGATION_PASS: 5 actual OS-pointer dice/attacks/advancement roundtrips; home Dice/back; exit during roll; JSON unchanged; no layout errors");
         }
         IEnumerator ClickNativeButton(string label)
         {

@@ -198,6 +198,8 @@ namespace DndVtt.UnityPrototype
         }
         private void DrawDiceTable()
         {
+            if (screen == FrontScreen.Dice && MeasuredMenuButton("← Главное меню", GUI.skin.button, GUILayout.MinHeight(UiTheme.TouchHeight)))
+            { Navigate(FrontScreen.Home); return; }
             DrawSheetHeroBack();
             GUILayout.Label("Объёмные дайсы",heading);
             if(Event.current.type==EventType.Layout)
