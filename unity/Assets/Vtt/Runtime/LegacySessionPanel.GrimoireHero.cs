@@ -79,7 +79,6 @@ namespace DndVtt.UnityPrototype
                 heroButton.normal.background = buttonNormal;
                 Texture2D buttonHover = Resources.Load<Texture2D>("UI/Grimoire/buttons/button_secondary_hover_9s");
                 Texture2D buttonPressed = Resources.Load<Texture2D>("UI/Grimoire/buttons/button_secondary_pressed_9s");
-                Texture2D buttonDisabled = Resources.Load<Texture2D>("UI/Grimoire/buttons/button_secondary_disabled_9s");
                 heroButton.hover.background = buttonHover ? buttonHover : buttonNormal;
                 heroButton.active.background = buttonPressed ? buttonPressed : buttonNormal;
                 heroButton.focused.background = buttonNormal;
@@ -87,7 +86,6 @@ namespace DndVtt.UnityPrototype
                 heroButton.onHover.background = heroButton.hover.background;
                 heroButton.onActive.background = heroButton.active.background;
                 heroButton.onFocused.background = buttonNormal;
-                if (buttonDisabled) heroButton.onNormal.background = buttonNormal;
                 grimoireHpButton = heroButton;
             }
             else grimoireHpButton = uiStyles.SecondaryButton;
