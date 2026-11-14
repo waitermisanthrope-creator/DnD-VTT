@@ -1,10 +1,10 @@
 {
   "schema": 1,
-  "version": "1.00.57",
-  "candidateRunId": 43585320337,
+  "version": "1.00.58",
+  "candidateRunId": 43618632590,
   "approved": true,
   "releaseType": "public-prerelease",
   "channel": "unity-experiment",
   "scope": "Android-only",
-  "note": "Прямое поручение владельца2026-11-14 и постоянное разрешение: публиковать следующие проверенные Android-обновления через встроенный updater без отдельного вопроса. Финальный исходникadcf882bc29bf50854ab88ef8033bf1a1edc19ca, candidate43585320337; Android132418450415 SUCCESS, оригинальный сертификат/пакет/версия/ARM64 проверены штатным CI. Windowsbuild132423073746 SUCCESS, nativeQA132424996067 дал6реальныхGPUкадров: все вручную просмотрены; светлый primarytext, подпись предыстории и fixedheader подтверждены; nativecontrast/captionwidth и headerpixelcomparison PASS. ОбщийlegacyWindowsGUI FAIL на старом требованиисветлогоParchment, Windowsнепубликовать. Отчёт/кадры/атлас уже закоммиченыf05b6717, до активацииканала другихpush не будет. ТолькоAndroid57послеповторнойпроверкиподписанногопакетаипубличнойзагрузки, затемактивироватьfeed поверх56/55. Main/ключи/сохранения/кошелёк не менять. PhysicalAndroidтестируетвладелец."
+  "note": "Прямое поручение владельца и постоянное разрешение: выпускать проверенные Android-обновления через встроенный updater без повторного вопроса. Hotfix навигации, финальный source3788aacb05be2598b22c0479f297b83196eb8afd/candidate43618632590. Android132519132252 и Windowsbuild132524781370 SUCCESS. Независимый внешний Win32 native replay43621087084/job132526704038 SUCCESS: пять циклов Dice/back/Attacks/back/Advancement/back, выход во время броска и standaloneHomeDice/back, exact original binary hashes, JSON+bak неизменны, zero runtime/GUI exceptions. Кадры просмотрены; отчёт, native verdict и атлас закоммичены1e400ca0 до активации. EmbeddedWindowsQA132526650317 FAIL из-за промаха координатного помощника; полную WindowsGUI не объявляем PASS, Windows не публикуем. Публиковать только Android58 с исходным ключом/SHA07f2560c74f70a18488c28f6f131f8c100522d256d7fbb6cb7858c731702cf46, повторно проверить пакет и публичную загрузку, затем активировать feed поверх57/56/55. До publisherSUCCESS других push не будет. Main/MMO/ключи/схемы сохранений не менять. PhysicalAndroid тестирует владелец."
 }

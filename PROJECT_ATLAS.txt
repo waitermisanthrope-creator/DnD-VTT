@@ -1,5 +1,5 @@
 АТЛАС РЕПОЗИТОРИЯ DnD-VTT
-Коммит 7f2c0648b974. Файлов: 2397
+Коммит 1e400ca00ff9. Файлов: 2397
 
 ЕДИНЫЙ СТАНДАРТ
 
@@ -1251,7 +1251,7 @@
 1235. PROJECT_ATLAS.md — машиночитаемая карта репозитория для ИИ (генерируется)
 1236. PROJECT_ATLAS.txt — человекочитаемая карта репозитория (генерируется)
 1237. README.md — документация или отчёт: README (145 B)
-1238. release-staging/unity-android-approval.json — данные/конфигурация: unity android approval (1633 B)
+1238. release-staging/unity-android-approval.json — данные/конфигурация: unity android approval (1748 B)
 1239. release-staging/unity-paired-approval.json — данные/конфигурация: unity paired approval (1614 B)
 1240. release-staging/unity-release.json — данные/конфигурация: unity release (3914 B)
 1241. smoke_back_v2_sprite-1.png — текстура/изображение: smoke back v2 sprite 1 (1707378 B)
