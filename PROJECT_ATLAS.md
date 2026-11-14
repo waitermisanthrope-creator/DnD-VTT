@@ -1,6 +1,6 @@
 # DnD-VTT — полный атлас проекта
 
-Снимок кода 69980c77e5fe. Git содержит 2385 файлов.
+Снимок кода 3788aacb05be. Git содержит 2385 файлов.
 Роль неочевидных файлов предварительно определена по пути/имени; перед изменением читай исходник.
 
 ## Стандарт для всех ИИ и разработчиков
@@ -27,7 +27,7 @@
 | №0006 .github/scripts/test_unity_render_review.py | 964 B | вспомогательный файл: test unity render review |
 | №0007 .github/scripts/test-publish-unity-artifacts.py | 3695 B | вспомогательный файл: test publish unity artifacts |
 | №0008 .github/scripts/unity-navigation-diagnostic.ps1 | 3024 B | вспомогательный файл: unity navigation diagnostic |
-| №0009 .github/scripts/unity-navigation-physical.ps1 | 11932 B | вспомогательный файл: unity navigation physical |
+| №0009 .github/scripts/unity-navigation-physical.ps1 | 12192 B | вспомогательный файл: unity navigation physical |
 | №0010 .github/workflows/android-debug.yml | 4175 B | автоматизация GitHub Actions: android debug |
 | №0011 .github/workflows/android-release.yml | 8160 B | автоматизация GitHub Actions: android release |
 | №0012 .github/workflows/autonomous-development.yml | 4534 B | автоматизация GitHub Actions: autonomous development |
@@ -50,7 +50,7 @@
 | №0029 .github/workflows/unity-cloud-promote.yml | 5696 B | автоматизация GitHub Actions: unity cloud promote |
 | №0030 .github/workflows/unity-delivery-publish.yml | 872 B | автоматизация GitHub Actions: unity delivery publish |
 | №0031 .github/workflows/unity-experiment-android.yml | 2708 B | автоматизация GitHub Actions: unity experiment android |
-| №0032 .github/workflows/unity-navigation-diagnostic.yml | 2295 B | автоматизация GitHub Actions: unity navigation diagnostic |
+| №0032 .github/workflows/unity-navigation-diagnostic.yml | 2426 B | автоматизация GitHub Actions: unity navigation diagnostic |
 | №0033 .github/workflows/unity-retained-apk-audit.yml | 1749 B | автоматизация GitHub Actions: unity retained apk audit |
 | №0034 .github/workflows/unpack-project.yml | 2987 B | автоматизация GitHub Actions: unpack project |
 | №0035 .github/workflows/validate-imported-glb.yml | 2317 B | автоматизация GitHub Actions: validate imported glb |
@@ -64,9 +64,9 @@
 | №0043 3D_CHARACTER_CLOTHING_PROGRESS.md | 84856 B | документация или отчёт: 3D CHARACTER CLOTHING PROGRESS |
 | №0044 3D_CHARACTER_RACES_PROGRESS.md | 75599 B | документация или отчёт: 3D CHARACTER RACES PROGRESS |
 | №0045 AGENTS.md | 8151 B | документация или отчёт: AGENTS |
-| №0046 AI_BLOCKERS.md | 138408 B | документация или отчёт: AI BLOCKERS |
-| №0047 AI_NEXT_TASK.md | 176906 B | документация или отчёт: AI NEXT TASK |
-| №0048 AI_PROGRESS.md | 216243 B | документация или отчёт: AI PROGRESS |
+| №0046 AI_BLOCKERS.md | 140832 B | документация или отчёт: AI BLOCKERS |
+| №0047 AI_NEXT_TASK.md | 179330 B | документация или отчёт: AI NEXT TASK |
+| №0048 AI_PROGRESS.md | 218667 B | документация или отчёт: AI PROGRESS |
 | №0049 android/.gitignore | 44 B | Android компонент: .gitignore |
 | №0050 android/app/build.gradle | 4122 B | Android компонент: build |
 | №0051 android/app/src/main/AndroidManifest.xml | 12250 B | Android компонент: AndroidManifest |
@@ -1109,7 +1109,7 @@
 | №1088 docs/ui-redesign/MOBILE_GRIMOIRE_1.00.56.md | 4899 B | документация или отчёт: MOBILE GRIMOIRE 1.00.56 |
 | №1089 docs/ui-redesign/MOBILE_GRIMOIRE_1.00.57_verification.json | 1971 B | документация или отчёт: MOBILE GRIMOIRE 1.00.57 verification |
 | №1090 docs/ui-redesign/MOBILE_GRIMOIRE_1.00.57.md | 2811 B | документация или отчёт: MOBILE GRIMOIRE 1.00.57 |
-| №1091 docs/ui-redesign/NAVIGATION_FIX_1.00.58.md | 3504 B | документация или отчёт: NAVIGATION FIX 1.00.58 |
+| №1091 docs/ui-redesign/NAVIGATION_FIX_1.00.58.md | 4430 B | документация или отчёт: NAVIGATION FIX 1.00.58 |
 | №1092 docs/ui-redesign/THEME_PORT_10053.md | 6739 B | документация или отчёт: THEME PORT 10053 |
 | №1093 docs/UNIFIED_RELEASE.md | 6136 B | документация или отчёт: UNIFIED RELEASE |
 | №1094 docs/UNITY_ADVANCEMENT_1.00.44.md | 10267 B | документация или отчёт: UNITY ADVANCEMENT 1.00.44 |
@@ -2350,7 +2350,7 @@
 | №2329 updates/previous-stable.json | 179808 B | метаданные обновлений: previous stable |
 | №2330 updates/README.md | 233 B | документация или отчёт: README |
 | №2331 updates/stable.json | 179809 B | метаданные обновлений: stable |
-| №2332 updates/unity-changelog.json | 68870 B | метаданные обновлений: unity changelog |
+| №2332 updates/unity-changelog.json | 68469 B | метаданные обновлений: unity changelog |
 | №2333 updates/unity-experiment.json | 1445 B | метаданные обновлений: unity experiment |
 | №2334 vignette_v2_sprite.png | 1213593 B | текстура/изображение: vignette v2 sprite |
 | №2335 VTT_PROJECT_MANIFEST_V70.json | 44370 B | устаревший список V70, не актуален |
@@ -16757,7 +16757,6 @@
 - unity/Assets/LegacyContent/Source/wall_white_plaster.png ; wall_white_plaster.png
 - unity/Assets/LegacyContent/Source/wall_wood_dark.png ; wall_wood_dark.png
 - unity/Assets/LegacyContent/Source/wall_wood_light.png ; wall_wood_light.png
-- unity/Assets/Vtt/Resources/Changelog.json ; updates/unity-changelog.json
 - unity/Assets/Vtt/Resources/UI/Parchment.png ; wallpapers/1.png
 
 ## Обновление индекса

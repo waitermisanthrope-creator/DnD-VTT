@@ -46,7 +46,7 @@ public static class NavPhysical {
 $root=Join-Path $env:RUNNER_TEMP 'navigation-physical'
 New-Item -ItemType Directory -Force $root | Out-Null
 $report=Get-Content (Join-Path $CandidateFolder 'candidate.json') -Raw | ConvertFrom-Json
-if($report.version -ne '1.00.58' -or $report.sourceCommit -ne '826f2a1d32a3e12531b4d8d65abacaf590b05ea6'){throw 'Unrelated physical test candidate'}
+if($report.version -ne '1.00.58' -or $report.sourceCommit -ne '3788aacb05be2598b22c0479f297b83196eb8afd'){throw 'Unrelated physical test candidate'}
 $setup=Join-Path $CandidateFolder $report.artifacts.windows.name
 if((Get-FileHash $setup).Hash.ToLowerInvariant() -ne $report.artifacts.windows.sha256){throw 'Setup hash mismatch'}
 $install=Join-Path $root 'installed'
@@ -105,8 +105,8 @@ try {
   else {Click ([int]($dice.w/2)) 88}
   Start-Sleep -Milliseconds 350;$returned=Shot;Check (Hero $returned) 'Dice back returns hero without restart'
   $a=Find-Action 0;Click ([int]($a.shot.w/2)) $a.box[1];Start-Sleep -Milliseconds 300;$attack=Shot ("attacks-$cycle");Check (!(Hero $attack)) 'Attacks opens';Check ([NavPhysical]::Gold($attack.bytes,$attack.w,$attack.h,$attack.stride,([int]($attack.w/2-1.5)),($attack.h-54)) -gt 4) 'abilities dock is selected'
-  Click ([int]($attack.w/2)) 88;Start-Sleep -Milliseconds 300;$returned=Shot;Check (Hero $returned) 'attack back returns hero'
-  $a=Find-Action 0;Click $a.box[0] $a.box[1];Start-Sleep -Milliseconds 300;Click ([int]($a.shot.w/2)) 85;Start-Sleep -Milliseconds 300;$returned=Shot;Check (Hero $returned) 'advancement remains reachable and returns'
+  Click ([int]($attack.w/2)) 88;Start-Sleep -Milliseconds 300;$returned=Shot;Check (Hero $returned) 'attack back returns hero';if($cycle -eq 0){Shot 'hero-returned'|Out-Null}
+  $a=Find-Action 0;Click $a.box[0] $a.box[1];Start-Sleep -Milliseconds 300;if($cycle -eq 0){Shot 'advancement'|Out-Null};Click ([int]($a.shot.w/2)) 85;Start-Sleep -Milliseconds 300;$returned=Shot;Check (Hero $returned) 'advancement remains reachable and returns'
   Check ((Get-FileHash $profile).Hash -eq $before -and (Get-FileHash ($profile+'.bak')).Hash -eq $before) 'profile and backup bytes unchanged'
   $cycles+=@{cycle=$cycle;diceBack=$true;attacksBack=$true;advancementBack=$true;sameProcess=$game.Id;profileUnchanged=$true}
   Write-Output ('VTT_PHYSICAL_NAV_CYCLE_PASS: '+$cycle)
@@ -117,7 +117,8 @@ try {
  Check ((Get-FileHash $profile).Hash -eq $before -and (Get-FileHash ($profile+'.bak')).Hash -eq $before) 'final archive and backup unchanged'
  $errors=Select-String -Path $log -Pattern 'NullReferenceException|ArgumentException|InvalidOperationException|Exception:|Getting control|Invalid GUILayout|GUI Error|EndLayoutGroup'
  Check (!$errors) 'no GUI/runtime exceptions in actual player log'
- @{status='passed';candidateRun=43612557699;source=$report.sourceCommit;version=$report.version;cycles=$cycles;standaloneBack=$true;productionBinaryUnchanged=$true;profileSha256=$before;physicalAndroid=$false} | ConvertTo-Json -Depth 8 | Set-Content (Join-Path $root 'verdict.json')
+ @{status='passed';candidateRun=43618632590;source=$report.sourceCommit;version=$report.version;cycles=$cycles;standaloneBack=$true;productionBinaryUnchanged=$true;profileSha256=$before;physicalAndroid=$false} | ConvertTo-Json -Depth 8 | Set-Content (Join-Path $root 'verdict.json')
+ Write-Output ('VTT_PHYSICAL_VERDICT:'+ (Get-Content (Join-Path $root 'verdict.json') -Raw -ErrorAction Stop | ConvertFrom-Json | ConvertTo-Json -Depth 8 -Compress))
  Write-Output 'VTT_PHYSICAL_NAVIGATION_PASS: five real pointer roundtrips in unchanged candidate; standalone Home Dice/back; profile+backup unchanged; no GUI/runtime exceptions'
 }
 catch {$failure=$_;Write-Output ('PHYSICAL_NAV_DIAGNOSTIC: '+$_);Get-Content $log -Tail 35 | Write-Output;try{Shot 'failure'|Out-Null}catch{}}
