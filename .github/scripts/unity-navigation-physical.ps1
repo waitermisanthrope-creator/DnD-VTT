@@ -93,6 +93,8 @@ try {
  $wr=[NavPhysical+Rect]::new();$cr=[NavPhysical+Rect]::new();[NavPhysical]::GetWindowRect($script:handle,[ref]$wr)|Out-Null;[NavPhysical]::GetClientRect($script:handle,[ref]$cr)|Out-Null
  [NavPhysical]::MoveWindow($script:handle,20,0,(440+$wr.right-$wr.left-$cr.right),(704+$wr.bottom-$wr.top-$cr.bottom),$true)|Out-Null
  Start-Sleep -Seconds 3
+ for($ready=0;$ready -lt 100;$ready++){$frame=Shot;$lit=0;for($pixel=0;$pixel -lt $frame.bytes.Length;$pixel+=40){if($frame.bytes[$pixel+2] -gt 80){$lit++}};if($lit -gt 150){break};Start-Sleep -Milliseconds 500}
+ Start-Sleep -Seconds 2
  $s=Shot 'splash';Click ($s.w-80) ($s.h-41);Start-Sleep -Milliseconds 400
  $s=Shot 'home-initial';Click ($s.w-70) 55;Start-Sleep -Milliseconds 450
  $s=Shot 'hero-initial';Check (Hero $s) 'Home Sheet button opens hero'
