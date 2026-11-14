@@ -13,7 +13,7 @@ namespace DndVtt.UnityPrototype
             0, 300, 900, 2700, 6500, 14000, 23000, 34000, 48000, 64000,
             85000, 100000, 120000, 140000, 165000, 195000, 225000, 265000, 305000, 355000
         };
-        private GUIStyle grimoireHpButton;
+        private GUIStyle grimoireHpButton, grimoirePrimaryButton;
         private Texture2D grimoirePortraitFrame, grimoireShieldIcon, grimoireHpIcon, grimoireXpIcon, grimoireConditionIcon;
         private static readonly CultureInfo GrimoireCulture = CultureInfo.GetCultureInfo("ru-RU");
 
@@ -90,6 +90,23 @@ namespace DndVtt.UnityPrototype
                 grimoireHpButton = heroButton;
             }
             else grimoireHpButton = uiStyles.SecondaryButton;
+            Texture2D primaryNormal = Resources.Load<Texture2D>("UI/Grimoire/buttons/button_primary_normal_9s");
+            if (primaryNormal)
+            {
+                grimoirePrimaryButton = new GUIStyle(uiStyles.PrimaryButton);
+                grimoirePrimaryButton.border = new RectOffset(16, 16, 16, 16);
+                grimoirePrimaryButton.normal.background = primaryNormal;
+                Texture2D primaryHover = Resources.Load<Texture2D>("UI/Grimoire/buttons/button_primary_hover_9s");
+                Texture2D primaryPressed = Resources.Load<Texture2D>("UI/Grimoire/buttons/button_primary_pressed_9s");
+                grimoirePrimaryButton.hover.background = primaryHover ? primaryHover : primaryNormal;
+                grimoirePrimaryButton.active.background = primaryPressed ? primaryPressed : primaryNormal;
+                grimoirePrimaryButton.focused.background = primaryNormal;
+                grimoirePrimaryButton.onNormal.background = primaryNormal;
+                grimoirePrimaryButton.onHover.background = grimoirePrimaryButton.hover.background;
+                grimoirePrimaryButton.onActive.background = grimoirePrimaryButton.active.background;
+                grimoirePrimaryButton.onFocused.background = primaryNormal;
+            }
+            else grimoirePrimaryButton = uiStyles.PrimaryButton;
             grimoirePortraitFrame = Resources.Load<Texture2D>("UI/Grimoire/frames/frame_hero_mask_9s");
             grimoireShieldIcon = Resources.Load<Texture2D>("UI/Grimoire/icons/icon_shield_96");
             grimoireHpIcon = Resources.Load<Texture2D>("UI/Grimoire/icons/icon_hp_96");
@@ -315,10 +332,17 @@ namespace DndVtt.UnityPrototype
         private void GrimoireQuickActions(JObject hero)
         {
             GrimoireSection("БЫСТРЫЕ ДЕЙСТВИЯ");
-            int action = ClassicButtonRow("К дайсам", "К атакам", "Развитие");
-            if (action == 0) requestedSheetTab = 5;
-            else if (action == 1) requestedSheetTab = 2;
-            else if (action == 2) BeginAdvancement(hero, true);
+            GUILayout.BeginHorizontal();
+            if (MeasuredMenuButton("⚄ Дайсы", grimoireHpButton,
+                GUILayout.ExpandWidth(true), GUILayout.MinHeight(UiTheme.TouchHeight)))
+                requestedSheetTab = 5;
+            if (MeasuredMenuButton("⚔ Атаки", grimoireHpButton,
+                GUILayout.ExpandWidth(true), GUILayout.MinHeight(UiTheme.TouchHeight)))
+                requestedSheetTab = 2;
+            if (MeasuredMenuButton("✦ Развитие", grimoirePrimaryButton,
+                GUILayout.ExpandWidth(true), GUILayout.MinHeight(UiTheme.TouchHeight)))
+                BeginAdvancement(hero, true);
+            GUILayout.EndHorizontal();
         }
     }
 }
