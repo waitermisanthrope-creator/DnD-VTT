@@ -1,0 +1,14 @@
+{
+  "nativeSource": "adcf882bc29bf50854ab88ef8033bf1a1edc19ca",
+  "qaJobId": 132424996067,
+  "comparison": "top40px common header across actual portrait GPU captures",
+  "maxMeanAbsoluteChannelDifference": {
+    "grimoire-details-0-portrait.jpg": 0.0,
+    "grimoire-details-1-portrait.jpg": 0.0,
+    "grimoire-details-2-portrait.jpg": 0.0,
+    "grimoire-details-3-portrait.jpg": 0.0,
+    "grimoire-overflow-portrait.jpg": 0.0,
+    "grimoire-overview-portrait.jpg": 0.0
+  },
+  "result": "PASS"
+}
