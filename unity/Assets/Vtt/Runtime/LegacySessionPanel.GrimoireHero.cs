@@ -387,17 +387,17 @@ namespace DndVtt.UnityPrototype
         {
             GrimoireSection("БЫСТРЫЕ ДЕЙСТВИЯ");
             // Narrow phones use two rows to keep touch targets legible.
-            bool narrow = UiWidth < 470;
+            bool narrow = UiWidth < 360;
             GUILayout.BeginHorizontal();
-            if (MeasuredMenuButton("⚄ Дайсы", grimoireHpButton,
+            if (MeasuredMenuButton("К дайсам", grimoireHpButton,
                 GUILayout.ExpandWidth(true), GUILayout.MinHeight(UiTheme.TouchHeight)))
                 requestedSheetTab = 5;
-            if (MeasuredMenuButton("⚔ Атаки", grimoireHpButton,
+            if (MeasuredMenuButton("К атакам", grimoireHpButton,
                 GUILayout.ExpandWidth(true), GUILayout.MinHeight(UiTheme.TouchHeight)))
                 requestedSheetTab = 2;
             if (narrow) GUILayout.EndHorizontal();
             if (narrow) GUILayout.BeginHorizontal();
-            if (MeasuredMenuButton("✦ Развитие", grimoirePrimaryButton,
+            if (MeasuredMenuButton("Развитие", grimoirePrimaryButton,
                 GUILayout.ExpandWidth(true), GUILayout.MinHeight(UiTheme.TouchHeight)))
                 BeginAdvancement(hero, true);
             GUILayout.EndHorizontal();

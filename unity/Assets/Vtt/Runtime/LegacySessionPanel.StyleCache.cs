@@ -46,6 +46,18 @@ namespace DndVtt.UnityPrototype
             System.Array.Clear(coinLabels,0,coinLabels.Length);
             coinTitle=null;
             System.Array.Clear(coinToggles,0,coinToggles.Length);
+            grimoireDetailCard=null;
+            grimoireDockActive=null;
+            grimoireDockIdle=null;
+            grimoireDockLabel=null;
+            grimoireDockPanel=null;
+            grimoireHealthFillStyle=null;
+            grimoireHealthTrackStyle=null;
+            grimoireHpButton=null;
+            grimoirePortraitFrameStyle=null;
+            grimoirePrimaryButton=null;
+            grimoireXpFillStyle=null;
+            grimoireXpTrackStyle=null;
             heading=null;
             inventoryAcLabel=null;
             inventoryAcValue=null;

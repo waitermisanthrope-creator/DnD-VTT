@@ -9,6 +9,13 @@ namespace DndVtt.UnityPrototype
     public sealed partial class LegacySessionPanel
     {
         private Texture2D sheetParchment;
+        private GUIStyle grimoireDockPanel, grimoireDockIdle, grimoireDockActive, grimoireDockLabel;
+        private Texture2D[] grimoireDockIcons;
+        private bool grimoireMoreOpen;
+        private bool? requestedGrimoireMore;
+        private bool PhoneSheet => UiWidth < 700;
+        private readonly int[] grimoireDockTabs = { 0, 1, 2, 3 };
+        private readonly string[] grimoireDockNames = { "Герой", "Навыки", "Силы", "Вещи", "Ещё" };
         private float classicControlWidth;
         private int? requestedSheetTab,requestedSheetCharacter;
         private FrontScreen? requestedSheetDestination;
@@ -28,7 +35,7 @@ namespace DndVtt.UnityPrototype
         }
         private void DrawClassicSheetBackdrop()
         {
-            PrepareBrand();if(!sheetParchment)sheetParchment=Resources.Load<Texture2D>("UI/Parchment");
+            PrepareBrand();if(!sheetParchment)sheetParchment=Resources.Load<Texture2D>("UI/Grimoire/backgrounds/bg_graphite_1080x1920");
             Rect full=new Rect(0,0,UiWidth,UiHeight);var chosen=SelectedAppearanceImage("wallpaper");
             Shade(full,new Color(.20f,.18f,.15f));Cover(chosen?chosen:sheetParchment?sheetParchment:brandWallpaper,full);
             Shade(full,new Color(0,0,0,chosen?.45f:.40f));
@@ -36,6 +43,17 @@ namespace DndVtt.UnityPrototype
         }
         private void DrawClassicSheetNavigation()
         {
+            if (PhoneSheet)
+            {
+                PrepareGrimoireNavigation();
+                GUILayout.BeginHorizontal();
+                if (MeasuredMenuButton("‹ Меню", sheetTabStyle, GUILayout.Width(66), GUILayout.Height(40)))
+                    requestedSheetDestination = FrontScreen.Characters;
+                GUILayout.Label("DnD-VTT", sheetCharacterName, GUILayout.ExpandWidth(true), GUILayout.Height(40));
+                GUILayout.Label(tabs[Mathf.Clamp(sheetTab, 0, tabs.Length - 1)], sheetQuiet, GUILayout.Height(40));
+                GUILayout.EndHorizontal();
+                return;
+            }
             cloneHome??=new GUIStyle(sheetActiveTab){fontSize=14,padding=new RectOffset(),margin=new RectOffset()};
             GUILayout.BeginHorizontal();GUILayout.Space(-5);
             if(MeasuredMenuButton("Меню",cloneHome,GUILayout.Width(65),GUILayout.Height(40)))requestedSheetDestination=FrontScreen.Characters;
@@ -55,6 +73,61 @@ namespace DndVtt.UnityPrototype
             if(MeasuredMenuButton("◉",cloneEye,GUILayout.Width(43),GUILayout.Height(38)))requestedPortraitVisibility=!classicPortraitOpen;
             GUI.enabled=eyeEnabled;
             GUILayout.EndHorizontal();
+        }
+        private void PrepareGrimoireNavigation()
+        {
+            if (grimoireDockPanel != null) return;
+            grimoireDockPanel = GrimoireNineSlice(Resources.Load<Texture2D>("UI/Grimoire/navigation/nav_bottom_plate_9s"), 16, 16)
+                ?? new GUIStyle(sheetSkin.box);
+            grimoireDockIdle = GrimoireNineSlice(Resources.Load<Texture2D>("UI/Grimoire/navigation/nav_tab_idle_9s"), 12, 12)
+                ?? new GUIStyle(sheetSkin.button);
+            grimoireDockActive = GrimoireNineSlice(Resources.Load<Texture2D>("UI/Grimoire/navigation/nav_tab_active_9s"), 12, 12)
+                ?? new GUIStyle(sheetSkin.button);
+            grimoireDockLabel = new GUIStyle(sheetQuiet) { fontSize = 12, alignment = TextAnchor.LowerCenter, wordWrap = false, padding = new RectOffset(0, 0, 0, 6) };
+            string[] icons = { "hero", "skills", "abilities", "inventory", "settings" };
+            grimoireDockIcons = icons.Select(icon => Resources.Load<Texture2D>("UI/Grimoire/icons/icon_" + icon + "_96")).ToArray();
+        }
+        private void DrawGrimoirePhoneDock()
+        {
+            PrepareGrimoireNavigation();
+            Rect dock = new Rect(10, UiHeight - 76, UiWidth - 20, 66);
+            if (Event.current.type == EventType.Repaint) grimoireDockPanel.Draw(dock, false, false, false, false);
+            float cell = (dock.width - 12) / 5;
+            for (int i = 0; i < 5; i++)
+            {
+                bool active = i == 4 ? grimoireMoreOpen : sheetTab == grimoireDockTabs[i];
+                Rect target = new Rect(dock.x + 6 + i * cell, dock.y + 4, cell - 3, dock.height - 8);
+                if (GUI.Button(target, GUIContent.none, active ? grimoireDockActive : grimoireDockIdle))
+                {
+                    if (i == 4) requestedGrimoireMore = !grimoireMoreOpen;
+                    else { requestedSheetTab = grimoireDockTabs[i]; requestedGrimoireMore = false; }
+                    CompleteNumericKeyboard();
+                }
+                if (Event.current.type == EventType.Repaint)
+                {
+                    Color tint = active ? ThemeHeadingAccent : new Color(.76f, .75f, .72f);
+                    if (grimoireDockIcons[i]) GUI.DrawTexture(new Rect(target.center.x - 12, target.y + 6, 24, 24), grimoireDockIcons[i], ScaleMode.ScaleToFit, true, 0, tint, 0, 0);
+                    Color previous = GUI.contentColor; GUI.contentColor = tint;
+                    GUI.Label(target, grimoireDockNames[i], grimoireDockLabel);
+                    GUI.contentColor = previous;
+                }
+            }
+        }
+        private void DrawGrimoireOverflow()
+        {
+            // This lives in the sheet scroll view, so short screens and keyboards
+            // cannot strand the final destination outside the viewport.
+            GUILayout.BeginVertical(sheetSkin.box);
+            int[] destinations = { 5, 4, 10, 9, 6, 8 };
+            string[] labels = { "Дайсы", "Заметки", "Ремёсла", "Лор / Бестиарий", "Данные", "Паспорт" };
+            for (int i = 0; i < destinations.Length; i++)
+            {
+                if (i % 2 == 0) GUILayout.BeginHorizontal();
+                if (MeasuredMenuButton(labels[i], sheetSkin.button, GUILayout.MinHeight(UiTheme.TouchHeight), GUILayout.ExpandWidth(true)))
+                { requestedSheetTab = destinations[i]; requestedGrimoireMore = false; CompleteNumericKeyboard(); }
+                if (i % 2 == 1) GUILayout.EndHorizontal();
+            }
+            GUILayout.EndVertical();
         }
         private void FinishSheetNavigation()
         {

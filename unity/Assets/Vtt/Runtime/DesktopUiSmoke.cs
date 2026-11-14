@@ -386,9 +386,26 @@ namespace DndVtt.UnityPrototype
             yield return Frame("sheet-long-name-portrait"); if (failed) yield break;
             Field("classicPortraitOpen",true);Field("heroArt3D",true);yield return Frame("hero-3d-coming-soon-portrait");if(failed)yield break;
             Field("heroArt3D",false);Field("classicPortraitOpen",false);Field("sheetTab",6);yield return Frame("hero-actions-portrait");if(failed)yield break;
-            Field("sheetTab",0);Field("frontScroll",new Vector2(0,650));yield return Frame("hero-details-portrait");if(failed)yield break;
-            Field("frontScroll",new Vector2(0,1800));yield return Frame("hero-stats-portrait");if(failed)yield break;
-            Field("frontScroll",Vector2.zero);
+            Field("sheetTab", 0); Field("frontScroll", Vector2.zero);
+            yield return Frame("grimoire-overview-portrait"); if (failed) yield break;
+            try
+            {
+                var state = typeof(LegacySessionPanel).GetField("expanded", Flags).GetValue(panel) as System.Collections.Generic.HashSet<string>;
+                var document = typeof(LegacySessionPanel).GetField("archive", Flags).GetValue(panel) as LegacyCharacterArchive;
+                int chosen = (int)typeof(LegacySessionPanel).GetField("selected", Flags).GetValue(panel);
+                state.Add("grimoire-hero:" + (string)document.Snapshot(chosen)["id"]);
+                Check(Resources.Load<Texture2D>("UI/Grimoire/navigation/nav_bottom_plate_9s"), "bundled phone dock artwork");
+                Check(Resources.Load<Texture2D>("UI/Grimoire/backgrounds/bg_graphite_1080x1920"), "bundled graphite artwork");
+            }
+            catch (Exception error) { Fail(error); yield break; }
+            for (int detail = 0; detail < 4; detail++)
+            {
+                Field("grimoireDetailsTab", detail); Field("frontScroll", new Vector2(0, 680));
+                yield return Frame("grimoire-details-" + detail + "-portrait"); if (failed) yield break;
+            }
+            Field("grimoireMoreOpen", true); Field("frontScroll", Vector2.zero);
+            yield return Frame("grimoire-overflow-portrait"); if (failed) yield break;
+            Field("grimoireMoreOpen", false); Field("frontScroll", Vector2.zero);
             try
             {
                 Check(panel.ExportCurrent() == rosterPreviewJson, "roster search and rendering preserve every character field");

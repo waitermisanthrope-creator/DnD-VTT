@@ -11,6 +11,8 @@ namespace DndVtt.UnityPrototype
         // UI-only state. No profile schema migration and no changes to wallet mechanics.
         private int grimoireDetailsTab;
         private string grimoireDetailsHero;
+        private Vector2 grimoireDetailsScroll;
+        private int? requestedGrimoireDetailsTab;
 
         private void CommitGrimoireDetailKeyboard(JObject hero, ref bool changed)
         {
@@ -71,40 +73,40 @@ namespace DndVtt.UnityPrototype
         {
             PrepareGrimoireHeroStyles();
             PrepareCompactControls();
+            if (Event.current.type == EventType.Layout && requestedGrimoireDetailsTab.HasValue)
+            { grimoireDetailsTab = requestedGrimoireDetailsTab.Value; requestedGrimoireDetailsTab = null; }
             string id = (string)hero["id"];
             if (grimoireDetailsHero != id)
             {
                 grimoireDetailsHero = id;
                 grimoireDetailsTab = 0;
+                requestedGrimoireDetailsTab = null;
+                grimoireDetailsScroll = Vector2.zero;
             }
 
             GUILayout.BeginVertical(grimoireDetailCard ?? uiStyles.HeroPanel);
-            GrimoireIconHeading("СВЕДЕНИЯ О ГЕРОЕ", uiStyles.HeroIcon);
-            GUILayout.Label("Изменения сохраняются в листе персонажа", uiStyles.HeroSubtitle);
             string[] tabs = { "Профиль", "Бой", "Статы", "Данные" };
-            // Two rows on phones: four 44px+ touch targets should never shrink
-            // to unreadable 60px-wide labels.
-            int columns = UiWidth < 600 ? 2 : 4;
-            for (int row = 0; row < tabs.Length; row += columns)
+            // One compact row; scrolling preserves readable touch targets on
+            // very narrow phones instead of shrinking labels below their text.
+            grimoireDetailsScroll = GUILayout.BeginScrollView(SwipePosition("hero-detail-tabs", grimoireDetailsScroll), false, false,
+                GUIStyle.none, GUIStyle.none, GUILayout.Height(54));
+            GUILayout.BeginHorizontal();
+            for (int i = 0; i < tabs.Length; i++)
             {
-                GUILayout.BeginHorizontal();
-                for (int i = row; i < Math.Min(tabs.Length, row + columns); i++)
+                GUIStyle style = grimoireDetailsTab == i
+                    ? (grimoirePrimaryButton ?? uiStyles.ActiveTab)
+                    : (grimoireHpButton ?? uiStyles.SecondaryButton);
+                float width = Mathf.Max(70, style.CalcSize(new GUIContent(tabs[i])).x + 4);
+                if (MeasuredMenuButton(tabs[i], style, GUILayout.Width(width), GUILayout.Height(48))
+                    && grimoireDetailsTab != i)
                 {
-                    int target = i;
-                    GUIStyle style = grimoireDetailsTab == i
-                        ? (grimoirePrimaryButton ?? uiStyles.ActiveTab)
-                        : (grimoireHpButton ?? uiStyles.SecondaryButton);
-                    if (MeasuredMenuButton((grimoireDetailsTab == i ? "◆ " : "") + tabs[i],
-                        style, GUILayout.ExpandWidth(true),
-                        GUILayout.MinHeight(UiTheme.TouchHeight))
-                        && grimoireDetailsTab != target)
-                    {
-                        CommitGrimoireDetailKeyboard(hero, ref changed);
-                        grimoireDetailsTab = target;
-                    }
+                    CommitGrimoireDetailKeyboard(hero, ref changed);
+                    requestedGrimoireDetailsTab = i;
                 }
-                GUILayout.EndHorizontal();
             }
+            GUILayout.EndHorizontal();
+            GUILayout.EndScrollView();
+            RegisterSwipe("hero-detail-tabs", GUILayoutUtility.GetLastRect(), true);
             GUILayout.EndVertical();
 
             switch (grimoireDetailsTab)
@@ -119,10 +121,10 @@ namespace DndVtt.UnityPrototype
         private void GrimoireReadRow(string label, string value)
         {
             GUILayout.BeginHorizontal();
-            GUILayout.Label(label, uiStyles.HeroSubtitle, GUILayout.Width(94),
-                GUILayout.MinHeight(40));
+            GUILayout.Label(label, uiStyles.HeroSubtitle, GUILayout.Width(90),
+                GUILayout.MinHeight(34));
             GUILayout.Label(string.IsNullOrWhiteSpace(value) ? "—" : value,
-                uiStyles.HeroSubtitle, GUILayout.ExpandWidth(true), GUILayout.MinHeight(40));
+                uiStyles.HeroSubtitle, GUILayout.ExpandWidth(true), GUILayout.MinHeight(34));
             GUILayout.EndHorizontal();
             GrimoireRule();
         }
@@ -132,9 +134,9 @@ namespace DndVtt.UnityPrototype
             GrimoireIconHeading("ЛИЧНЫЕ ДАННЫЕ", uiStyles.HeroIcon);
             GUILayout.BeginVertical(grimoireDetailCard ?? uiStyles.HeroPanel);
             GUILayout.BeginHorizontal();
-            GUILayout.Label("Имя", uiStyles.HeroSubtitle, GUILayout.Width(94), GUILayout.MinHeight(40));
+            GUILayout.Label("Имя", uiStyles.HeroSubtitle, GUILayout.Width(90), GUILayout.MinHeight(34));
             string name = (string)hero["name"] ?? "";
-            string value = MenuTextField("clone:name", name, cloneInput, GUILayout.MinHeight(40));
+            string value = MenuTextField("clone:name", name, cloneInput, GUILayout.MinHeight(34));
             if (value != name) { hero["name"] = value; changed = true; }
             GUILayout.EndHorizontal();
 
@@ -301,7 +303,7 @@ namespace DndVtt.UnityPrototype
             GUILayout.BeginVertical(grimoireDetailCard ?? uiStyles.HeroPanel);
             var stats = hero["stats"] as JObject ?? new JObject();
             string[] captions = { "СИЛ", "ЛОВ", "ТЕЛ", "ИНТ", "МУД", "ХАР" };
-            int columns = UiWidth < 650 ? 2 : 3;
+            int columns = 3;
             for (int i = 0; i < 6; i++)
             {
                 if (i % columns == 0) GUILayout.BeginHorizontal();
@@ -330,6 +332,7 @@ namespace DndVtt.UnityPrototype
             }
             GUILayout.EndVertical();
 
+            columns = UiWidth < 650 ? 2 : 3;
             GrimoireSection("ВЛАДЕНИЕ СПАСБРОСКАМИ");
             GUILayout.BeginVertical(grimoireDetailCard ?? uiStyles.HeroPanel);
             var saves = hero["savesData"] as JObject ?? new JObject();

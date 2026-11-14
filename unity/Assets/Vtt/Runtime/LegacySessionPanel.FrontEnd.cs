@@ -83,6 +83,8 @@ namespace DndVtt.UnityPrototype
                 else DrawBrandSettings();
                 return;
             }
+            if (Event.current.type == EventType.Layout && requestedGrimoireMore.HasValue)
+            { grimoireMoreOpen = requestedGrimoireMore.Value; requestedGrimoireMore = null; frontScroll = Vector2.zero; }
             PrepareSheetSkin();
             heading ??= new GUIStyle(GUI.skin.label) { fontSize = 32, fontStyle = FontStyle.Bold, wordWrap = true };
             muted ??= new GUIStyle(GUI.skin.label) { fontSize = 15, wordWrap = true, normal = { textColor = new Color(.65f, .73f, .83f) } };
@@ -92,7 +94,8 @@ namespace DndVtt.UnityPrototype
             GUI.color = oldColor;
             if(screen==FrontScreen.Sheet)DrawClassicSheetBackdrop();else DrawBrandBackdrop(true);
             float inset = screen==FrontScreen.Sheet?15:Mathf.Min(28f,UiWidth*.04f);
-            GUILayout.BeginArea(new Rect(inset, screen==FrontScreen.Sheet?8:20, Mathf.Max(1, UiWidth - inset * 2+(screen==FrontScreen.Sheet?8:0)), Mathf.Max(1, UiHeight - 40)));
+            if (screen == FrontScreen.Sheet && PhoneSheet) DrawGrimoirePhoneDock();
+            GUILayout.BeginArea(new Rect(inset, screen==FrontScreen.Sheet?8:20, Mathf.Max(1, UiWidth - inset * 2+(screen==FrontScreen.Sheet?8:0)), Mathf.Max(1, UiHeight - (screen==FrontScreen.Sheet && PhoneSheet ? 94 : 40))));
             bool portraitLayout = UiHeight > UiWidth;
             if(screen==FrontScreen.Sheet)DrawClassicSheetNavigation();
             else
@@ -116,7 +119,7 @@ namespace DndVtt.UnityPrototype
             }
             GUILayout.EndHorizontal(); GUILayout.Space(18);
             }
-            if(screen==FrontScreen.Sheet)GUILayout.Space(15);
+            if(screen==FrontScreen.Sheet)GUILayout.Space(PhoneSheet ? 4 : 15);
             frontScroll = GUILayout.BeginScrollView(SwipePosition("front",frontScroll),false,true,GUIStyle.none,GUI.skin.verticalScrollbar);
             GUILayout.BeginVertical(new GUIStyle { fixedWidth=Mathf.Max(1,UiWidth-inset*2-(screen==FrontScreen.Sheet?0:22)),stretchWidth=false });
             var sheetBodyEnabled=GUI.enabled;if(screen==FrontScreen.Sheet&&sheetSwipe.Busy)GUI.enabled=false;
@@ -142,7 +145,10 @@ namespace DndVtt.UnityPrototype
                 case FrontScreen.ContentManager: DrawContentManager(); break;
                 case FrontScreen.Characters: DrawRoster(); break;
                 case FrontScreen.Create: DrawCreation(); break;
-                case FrontScreen.Sheet: DrawSheet(); break;
+                case FrontScreen.Sheet:
+                    if (PhoneSheet && grimoireMoreOpen) { DrawGrimoireOverflow(); FinishSheetNavigation(); }
+                    else DrawSheet();
+                    break;
                 case FrontScreen.Settings: DrawSettings(); break;
                 case FrontScreen.Import:
                     GUILayout.Label("Перенос персонажей", heading);

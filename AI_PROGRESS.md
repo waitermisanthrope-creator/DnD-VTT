@@ -1,3 +1,9 @@
+# В РАБОТЕ: мобильный Grimoire 1.00.56 / 2026-11-14
+
+Последний прямой запрос владельца: вид правой части прикреплённого сравнения, подключить GitHub-ассеты, компактнее сведения о герое, затем выпустить Android через встроенный updater поверх1.00.55. Это явное разрешение на checked push/candidate/Android publication; Windows не публиковать, main не менять. База78cd96b7 содержит неопубликованные исправления рамок/полос. Добавлены graphite background, fixed phone icon dock+overflow, compact details tabs/profile/stats, cache reset и portrait evidence. План docs/superpowers/plans/2026-11-14-mobile-grimoire.md.
+
+Локально Python theme/brand/details/menu/update/publisher/cloud10/provenance44/content/preview PASS; .NET numeric17/menu50/hero11/lifecycle3/swipe191/delete1781 PASS.65PNG+meta PASS. Полный workshop со старым cached registry FAIL `optional fantasy merchants coexist with five original libraries`; свежие каталоги загружаются. Ревью исправило меню из overflow. Native Android/Windows GUI пока не выполнены. Следующий этап signed candidate1.00.56; после AndroidSUCCESS и проверки выпуск через существующий Android-only approval/publisher, затем независимый feed/APK verifier. Не объявлять доставку до факта. Публичная55 пока неизменна. Physical Android остаётся пользователю; старый Windows smoke содержит classicHP координаты и может не пройти, это не PASS.
+
 # Перенос UI-тем на актуальную 1.00.53 — 12.11.2026
 
 Ветка `experiment/ui-theme-10053` создана от `08bdf971da5cfe81927bf6fb5362360c8099bbf0`. Из `6980bfbd` перенесена только готовая система оформления с адаптацией к GUI/input/lifecycle 1.00.53. Игровые механики, кошелёк, версия, main и канал обновлений не менялись; выпуска нет. Отчёт и точные ограничения проверок: `docs/ui-redesign/THEME_PORT_10053.md`. Старые записи и очередь ниже сохранены.
