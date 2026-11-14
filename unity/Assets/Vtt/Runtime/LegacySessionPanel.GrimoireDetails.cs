@@ -65,6 +65,8 @@ namespace DndVtt.UnityPrototype
             return open;
         }
 
+        // The details drawer is an editor, not another copy of the overview.
+        // Each page keeps its own focused controls; all state lives in the hero JSON.
         private void GrimoireHeroDetails(JObject hero, ref bool changed)
         {
             PrepareGrimoireHeroStyles();
@@ -76,27 +78,35 @@ namespace DndVtt.UnityPrototype
                 grimoireDetailsTab = 0;
             }
 
-            // Keep editing inside a framed card, not a second long full-width form.
             GUILayout.BeginVertical(uiStyles.HeroPanel);
-            GUILayout.Label("СВЕДЕНИЯ О ГЕРОЕ", uiStyles.HeroSection);
-            GUILayout.Label("Выберите раздел для редактирования", uiStyles.HeroSubtitle);
-            // Four short, thumb-sized pages instead of one enormous edit form.
+            GrimoireIconHeading("СВЕДЕНИЯ О ГЕРОЕ", uiStyles.HeroIcon);
+            GUILayout.Label("Изменения сохраняются в листе персонажа", uiStyles.HeroSubtitle);
             string[] tabs = { "Профиль", "Бой", "Статы", "Данные" };
-            GUILayout.BeginHorizontal();
-            for (int i = 0; i < tabs.Length; i++)
+            // Two rows on phones: four 44px+ touch targets should never shrink
+            // to unreadable 60px-wide labels.
+            int columns = UiWidth < 600 ? 2 : 4;
+            for (int row = 0; row < tabs.Length; row += columns)
             {
-                int target = i;
-                var style = grimoireDetailsTab == i ? uiStyles.ActiveTab :
-                    (grimoireHpButton ?? uiStyles.SecondaryButton);
-                if (MeasuredMenuButton(tabs[i], style, GUILayout.ExpandWidth(true),
-                    GUILayout.MinHeight(UiTheme.TouchHeight)) && grimoireDetailsTab != target)
+                GUILayout.BeginHorizontal();
+                for (int i = row; i < Math.Min(tabs.Length, row + columns); i++)
                 {
-                    CommitGrimoireDetailKeyboard(hero, ref changed);
-                    grimoireDetailsTab = target;
+                    int target = i;
+                    GUIStyle style = grimoireDetailsTab == i
+                        ? (grimoirePrimaryButton ?? uiStyles.ActiveTab)
+                        : (grimoireHpButton ?? uiStyles.SecondaryButton);
+                    if (MeasuredMenuButton((grimoireDetailsTab == i ? "◆ " : "") + tabs[i],
+                        style, GUILayout.ExpandWidth(true),
+                        GUILayout.MinHeight(UiTheme.TouchHeight))
+                        && grimoireDetailsTab != target)
+                    {
+                        CommitGrimoireDetailKeyboard(hero, ref changed);
+                        grimoireDetailsTab = target;
+                    }
                 }
+                GUILayout.EndHorizontal();
             }
-            GUILayout.EndHorizontal();
             GUILayout.EndVertical();
+
             switch (grimoireDetailsTab)
             {
                 case 0: GrimoireDetailsProfile(hero, ref changed); break;
@@ -109,10 +119,12 @@ namespace DndVtt.UnityPrototype
         private void GrimoireReadRow(string label, string value)
         {
             GUILayout.BeginHorizontal();
-            GUILayout.Label(label, uiStyles.HeroSubtitle, GUILayout.Width(94), GUILayout.MinHeight(40));
-            GUILayout.Label(string.IsNullOrWhiteSpace(value) ? "—" : value, cloneReadOnly,
-                GUILayout.ExpandWidth(true), GUILayout.MinHeight(40));
+            GUILayout.Label(label, uiStyles.HeroSubtitle, GUILayout.Width(94),
+                GUILayout.MinHeight(40));
+            GUILayout.Label(string.IsNullOrWhiteSpace(value) ? "—" : value,
+                uiStyles.HeroSubtitle, GUILayout.ExpandWidth(true), GUILayout.MinHeight(40));
             GUILayout.EndHorizontal();
+            GrimoireRule();
         }
 
         private void GrimoireDetailsProfile(JObject hero, ref bool changed)
@@ -143,10 +155,10 @@ namespace DndVtt.UnityPrototype
             bool previous = GUI.enabled;
             GUI.enabled = previous && !RaceLocked(hero);
             string race = (string)(hero["raceName"] ?? hero["race"]) ?? "Выберите расу";
-            if (MeasuredMenuButton(race + " ▾", uiStyles.SecondaryButton,
+            if (MeasuredMenuButton(race + " ▾", grimoireHpButton,
                 GUILayout.ExpandWidth(true), GUILayout.MinHeight(UiTheme.TouchHeight))) requestedRaceView = 1;
             GUI.enabled = previous;
-            if (MeasuredMenuButton("+ Своя", uiStyles.SecondaryButton,
+            if (MeasuredMenuButton("+ Своя", grimoireHpButton,
                 GUILayout.Width(77), GUILayout.MinHeight(UiTheme.TouchHeight)))
             {
                 ResetFormInput();
@@ -254,10 +266,10 @@ namespace DndVtt.UnityPrototype
                 GUILayout.EndHorizontal();
             }
             GUILayout.BeginHorizontal();
-            if (MeasuredMenuButton("Короткий отдых", uiStyles.SecondaryButton,
+            if (MeasuredMenuButton("Короткий отдых", grimoireHpButton,
                 GUILayout.ExpandWidth(true), GUILayout.MinHeight(UiTheme.TouchHeight)))
                 pendingBaseRest = false;
-            if (MeasuredMenuButton("Длинный отдых", uiStyles.SecondaryButton,
+            if (MeasuredMenuButton("Длинный отдых", grimoireHpButton,
                 GUILayout.ExpandWidth(true), GUILayout.MinHeight(UiTheme.TouchHeight)))
                 pendingBaseRest = true;
             GUILayout.EndHorizontal();
@@ -266,7 +278,7 @@ namespace DndVtt.UnityPrototype
                 GUILayout.Label("Восстановить известные счётчики отдыха? Особые эффекты учитываются вручную.",
                     uiStyles.HeroSubtitle);
                 GUILayout.BeginHorizontal();
-                if (MeasuredMenuButton("Подтвердить", uiStyles.PrimaryButton,
+                if (MeasuredMenuButton("Подтвердить", grimoirePrimaryButton,
                     GUILayout.ExpandWidth(true), GUILayout.MinHeight(UiTheme.TouchHeight)))
                 {
                     bool full = pendingBaseRest.Value;
@@ -275,7 +287,7 @@ namespace DndVtt.UnityPrototype
                     InvalidateHealthInputs(hero);
                     pendingBaseRest = null;
                 }
-                if (MeasuredMenuButton("Отмена", uiStyles.SecondaryButton,
+                if (MeasuredMenuButton("Отмена", grimoireHpButton,
                     GUILayout.ExpandWidth(true), GUILayout.MinHeight(UiTheme.TouchHeight)))
                     pendingBaseRest = null;
                 GUILayout.EndHorizontal();
@@ -343,7 +355,7 @@ namespace DndVtt.UnityPrototype
             GUILayout.Label("Экспорт и переход к списку героев", uiStyles.HeroSubtitle);
             if (MeasuredMenuButton("Экспортировать JSON", grimoirePrimaryButton,
                 GUILayout.MinHeight(UiTheme.TouchHeight))) Attempt(() => PickCharacterFile(true));
-            if (MeasuredMenuButton("К выбору героев", uiStyles.SecondaryButton,
+            if (MeasuredMenuButton("К выбору героев", grimoireHpButton,
                 GUILayout.MinHeight(UiTheme.TouchHeight)))
                 requestedSheetDestination = FrontScreen.Characters;
             GUILayout.EndVertical();
