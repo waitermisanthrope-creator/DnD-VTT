@@ -13,3 +13,5 @@ Verification plan:
 - Capture Dice, Attacks and returned Hero GPU frames before the old unrelated light-paper test. Release Android58 only after new VTT_QUICK_NAVIGATION_PASS, successful original-key Android candidate, review and public download/hash/certificate checks. Windows is not published.
 
 Local observed: source boundary red→green; save/syntax1973, numeric17, menu50, swipe191, lifecycle3 and Grimoire/theme/brand/update contracts pass. Two read-only reviews identified overflow closure, keyboard flushing and robust native test positioning; addressed before candidate. Native/runtime checks and58 delivery are pending.
+
+Final candidate43612557699/source826f2a1d32a3e12531b4d8d65abacaf590b05ea6. Standalone Home → 3D Dice → Main menu is included. Superseded preflight43612389093 is cancelled, not a release candidate.
