@@ -14,6 +14,7 @@ namespace DndVtt.UnityPrototype
             85000, 100000, 120000, 140000, 165000, 195000, 225000, 265000, 305000, 355000
         };
         private GUIStyle grimoireHpButton;
+        private Texture2D grimoirePortraitFrame, grimoireShieldIcon, grimoireHpIcon, grimoireXpIcon, grimoireConditionIcon;
         private static readonly CultureInfo GrimoireCulture = CultureInfo.GetCultureInfo("ru-RU");
 
         private void PrepareGrimoireHeroStyles()
@@ -89,6 +90,11 @@ namespace DndVtt.UnityPrototype
                 grimoireHpButton = heroButton;
             }
             else grimoireHpButton = uiStyles.SecondaryButton;
+            grimoirePortraitFrame = Resources.Load<Texture2D>("UI/Grimoire/frames/frame_hero_mask_9s");
+            grimoireShieldIcon = Resources.Load<Texture2D>("UI/Grimoire/icons/icon_shield_96");
+            grimoireHpIcon = Resources.Load<Texture2D>("UI/Grimoire/icons/icon_hp_96");
+            grimoireXpIcon = Resources.Load<Texture2D>("UI/Grimoire/icons/icon_xp_96");
+            grimoireConditionIcon = Resources.Load<Texture2D>("UI/Grimoire/icons/icon_conditions_96");
             uiStyles.HeroIcon = Resources.Load<Texture2D>("UI/Grimoire/icons/icon_hero_96");
             uiStyles.HeroHealthTrack = Resources.Load<Texture2D>("UI/Grimoire/bars/bar_health_track_9s");
             uiStyles.HeroHealthFill = Resources.Load<Texture2D>("UI/Grimoire/bars/bar_health_fill_mask_9s");
@@ -143,6 +149,9 @@ namespace DndVtt.UnityPrototype
                     GUI.Label(photo, "✦", uiStyles.HeroValue);
                 }
             }
+            if (grimoirePortraitFrame && Event.current.type == EventType.Repaint)
+                GUI.DrawTexture(photo, grimoirePortraitFrame, ScaleMode.StretchToFill, true, 0,
+                    ThemeHeadingAccent, 0, 0);
             // Reuse the existing art viewer/import flow rather than a new portrait system.
             if (GUI.Button(photo, GUIContent.none, GUIStyle.none))
                 requestedPortraitVisibility = true;
@@ -162,6 +171,21 @@ namespace DndVtt.UnityPrototype
             GUILayout.EndHorizontal();
             GrimoireRule();
             GUILayout.EndVertical();
+        }
+
+        private void GrimoireIconHeading(string title, Texture2D icon)
+        {
+            GUILayout.Space(4);
+            GUILayout.BeginHorizontal();
+            if (icon)
+            {
+                Rect iconRect = GUILayoutUtility.GetRect(23, 23, GUILayout.Width(23), GUILayout.Height(23));
+                if (Event.current.type == EventType.Repaint)
+                    GUI.DrawTexture(iconRect, icon, ScaleMode.ScaleToFit, true, 0,
+                        ThemeHeadingAccent, 0, 0);
+            }
+            GUILayout.Label(title, uiStyles.HeroSection, GUILayout.ExpandWidth(true));
+            GUILayout.EndHorizontal();
         }
 
         private void GrimoireSection(string title)
@@ -204,7 +228,7 @@ namespace DndVtt.UnityPrototype
 
         private void GrimoireHealth(JObject hero, ref bool changed)
         {
-            GrimoireSection("ЗДОРОВЬЕ");
+            GrimoireIconHeading("ЗДОРОВЬЕ", grimoireHpIcon);
             GUILayout.BeginVertical(uiStyles.HeroPanel);
             int maximum = GrimoireCount(hero["hpMax"], Mathf.RoundToInt(archive.MaximumHp(selected)));
             int current = GrimoireCount(hero["hpCurrent"], Mathf.RoundToInt(archive.CurrentHp(selected)));
@@ -234,15 +258,15 @@ namespace DndVtt.UnityPrototype
         private void GrimoireMetric(string caption, string value)
         {
             GUILayout.BeginVertical(uiStyles.HeroMetric, GUILayout.ExpandWidth(true));
-            GUILayout.Label(caption, uiStyles.HeroSmall, GUILayout.Height(30));
+            GUILayout.Label(caption, uiStyles.HeroSmall, GUILayout.Height(25));
             GUILayout.Label(caption == "СКОРОСТЬ" ? value.Replace(" / ", "\n") : value,
-                uiStyles.HeroValue, GUILayout.MinHeight(62));
+                uiStyles.HeroValue, GUILayout.MinHeight(48));
             GUILayout.EndVertical();
         }
 
         private void GrimoireMetrics(JObject hero)
         {
-            GrimoireSection("БОЕВЫЕ ПОКАЗАТЕЛИ");
+            GrimoireIconHeading("БОЕВЫЕ ПОКАЗАТЕЛИ", grimoireShieldIcon);
             GUILayout.BeginHorizontal();
             GrimoireMetric("КЛАСС ЗАЩИТЫ", GrimoireCount(hero["ac"], 10).ToString(CultureInfo.InvariantCulture));
             GrimoireMetric("ИНИЦИАТИВА", Signed(CharacterSheetRules.Modifier(hero, "dex")));
@@ -252,7 +276,7 @@ namespace DndVtt.UnityPrototype
 
         private void GrimoireExperience(JObject hero)
         {
-            GrimoireSection("ОПЫТ И УРОВЕНЬ");
+            GrimoireIconHeading("ОПЫТ И УРОВЕНЬ", grimoireXpIcon);
             GUILayout.BeginVertical(uiStyles.HeroPanel);
             int level = Math.Max(1, CharacterSheetRules.Level(hero));
             long current = DisplayExperience(hero);
@@ -276,7 +300,7 @@ namespace DndVtt.UnityPrototype
 
         private void GrimoireConditions(JObject hero)
         {
-            GrimoireSection("СОСТОЯНИЕ");
+            GrimoireIconHeading("СОСТОЯНИЕ", grimoireConditionIcon);
             GUILayout.BeginVertical(uiStyles.HeroPanel);
             var conditions = hero["activeConditions"] as JObject;
             string[] active = conditions == null ? Array.Empty<string>() :
