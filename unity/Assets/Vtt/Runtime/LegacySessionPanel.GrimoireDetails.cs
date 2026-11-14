@@ -53,8 +53,8 @@ namespace DndVtt.UnityPrototype
             string key = "grimoire-hero:" + (string)hero["id"];
             bool open = expanded.Contains(key);
             if (MeasuredMenuButton((open ? "▾ " : "▸ ") +
-                "Сведения о герое · подробности и редактирование",
-                uiStyles.SecondaryButton, GUILayout.MinHeight(UiTheme.TouchHeight)))
+                "Сведения о герое",
+                grimoireHpButton ?? uiStyles.SecondaryButton, GUILayout.MinHeight(UiTheme.TouchHeight)))
             {
                 if (open) CommitGrimoireDetailKeyboard(hero, ref changed);
                 else ResetFormInput();
@@ -76,13 +76,17 @@ namespace DndVtt.UnityPrototype
                 grimoireDetailsTab = 0;
             }
 
+            // Keep editing inside a framed card, not a second long full-width form.
+            GUILayout.BeginVertical(uiStyles.HeroPanel);
+            GUILayout.Label("РЕДАКТИРОВАНИЕ ПЕРСОНАЖА", uiStyles.HeroSection);
             // Four short, thumb-sized pages instead of one enormous edit form.
             string[] tabs = { "Профиль", "Бой", "Статы", "Данные" };
             GUILayout.BeginHorizontal();
             for (int i = 0; i < tabs.Length; i++)
             {
                 int target = i;
-                var style = grimoireDetailsTab == i ? uiStyles.ActiveTab : uiStyles.SecondaryButton;
+                var style = grimoireDetailsTab == i ? uiStyles.ActiveTab :
+                    (grimoireHpButton ?? uiStyles.SecondaryButton);
                 if (MeasuredMenuButton(tabs[i], style, GUILayout.ExpandWidth(true),
                     GUILayout.MinHeight(UiTheme.TouchHeight)) && grimoireDetailsTab != target)
                 {
@@ -91,6 +95,7 @@ namespace DndVtt.UnityPrototype
                 }
             }
             GUILayout.EndHorizontal();
+            GUILayout.EndVertical();
             switch (grimoireDetailsTab)
             {
                 case 0: GrimoireDetailsProfile(hero, ref changed); break;
@@ -103,9 +108,9 @@ namespace DndVtt.UnityPrototype
         private void GrimoireReadRow(string label, string value)
         {
             GUILayout.BeginHorizontal();
-            GUILayout.Label(label, uiStyles.HeroSubtitle, GUILayout.Width(105), GUILayout.MinHeight(44));
+            GUILayout.Label(label, uiStyles.HeroSubtitle, GUILayout.Width(94), GUILayout.MinHeight(40));
             GUILayout.Label(string.IsNullOrWhiteSpace(value) ? "—" : value, cloneReadOnly,
-                GUILayout.ExpandWidth(true), GUILayout.MinHeight(44));
+                GUILayout.ExpandWidth(true), GUILayout.MinHeight(40));
             GUILayout.EndHorizontal();
         }
 
