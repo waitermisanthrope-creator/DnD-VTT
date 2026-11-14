@@ -264,12 +264,17 @@ namespace DndVtt.UnityPrototype
             {
                 Rect portion = new Rect(track.x + 2, track.y + 2, width,
                     Mathf.Max(1, track.height - 4));
-                GUI.color = fill;
                 if (fillStyle != null && width >= 12f)
+                {
+                    GUI.color = fill;
                     fillStyle.Draw(portion, false, false, false, false);
+                }
                 else
+                {
+                    GUI.color = Color.white;
                     GUI.DrawTexture(portion, Texture2D.whiteTexture, ScaleMode.StretchToFill,
                         true, 0, fill, 0, 4);
+                }
             }
             GUI.color = previous;
         }
