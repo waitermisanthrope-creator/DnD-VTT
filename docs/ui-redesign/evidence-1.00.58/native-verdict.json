@@ -1,0 +1,54 @@
+{
+  "cycles": [
+    {
+      "advancementBack": true,
+      "diceBack": true,
+      "profileUnchanged": true,
+      "cycle": 0,
+      "attacksBack": true,
+      "sameProcess": 8392
+    },
+    {
+      "advancementBack": true,
+      "diceBack": true,
+      "profileUnchanged": true,
+      "cycle": 1,
+      "attacksBack": true,
+      "sameProcess": 8392
+    },
+    {
+      "advancementBack": true,
+      "diceBack": true,
+      "profileUnchanged": true,
+      "cycle": 2,
+      "attacksBack": true,
+      "sameProcess": 8392
+    },
+    {
+      "advancementBack": true,
+      "diceBack": true,
+      "profileUnchanged": true,
+      "cycle": 3,
+      "attacksBack": true,
+      "sameProcess": 8392
+    },
+    {
+      "advancementBack": true,
+      "diceBack": true,
+      "profileUnchanged": true,
+      "cycle": 4,
+      "attacksBack": true,
+      "sameProcess": 8392
+    }
+  ],
+  "profileSha256": "DBE54381E28A386D9B9D225563CC884E592503799871DEDD2B7A8CB303DF49C5",
+  "source": "3788aacb05be2598b22c0479f297b83196eb8afd",
+  "physicalAndroid": false,
+  "productionBinaryUnchanged": true,
+  "status": "passed",
+  "standaloneBack": true,
+  "version": "1.00.58",
+  "candidateRun": 43618632590,
+  "workflowRun": 43621087084,
+  "job": 132526704038
+}
