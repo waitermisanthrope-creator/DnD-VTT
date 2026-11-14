@@ -405,6 +405,8 @@ namespace DndVtt.UnityPrototype
             }
             Field("grimoireMoreOpen", true); Field("frontScroll", Vector2.zero);
             yield return Frame("grimoire-overflow-portrait"); if (failed) yield break;
+            try { Check(!(bool)typeof(LegacySessionPanel).GetProperty("SheetPagingAllowed", Flags).GetValue(panel), "overflow must not page the hidden sheet or start a stuck swipe animation"); }
+            catch (Exception error) { Fail(error); yield break; }
             Field("grimoireMoreOpen", false); Field("frontScroll", Vector2.zero);
             try
             {

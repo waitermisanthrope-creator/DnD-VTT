@@ -11,7 +11,7 @@ namespace DndVtt.UnityPrototype
         private float suppressMenuClickUntil;
         private readonly SheetSwipeMotion sheetSwipe=new SheetSwipeMotion();
         private bool swipeNavigationPending;
-        private bool SheetPagingAllowed=>screen==FrontScreen.Sheet&&archive!=null&&!marketOpen&&!classicPortraitOpen&&!advancementOpen&&raceView==0&&!showSpellCatalog&&deletePath==null;
+        private bool SheetPagingAllowed=>screen==FrontScreen.Sheet&&archive!=null&&!grimoireMoreOpen&&!marketOpen&&!classicPortraitOpen&&!advancementOpen&&raceView==0&&!showSpellCatalog&&deletePath==null;
         private void CancelPageSwipe(){if(swipeNavigationPending)requestedSheetTab=null;swipeNavigationPending=false;sheetSwipe.Cancel();menuGesture.Clear();}
         private void MoveMenuGesture(float x,float y,float dx,float dy,float scale)
         {
