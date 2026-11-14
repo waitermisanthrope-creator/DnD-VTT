@@ -1,3 +1,11 @@
+# ДОСТАВЛЕНО И ПРОВЕРЕНО Android1.00.57 / 2026-11-14
+
+Финал запроса владельца по UI-референсу: подключены существующие Grimoire ассеты, graphiteфон и fixed phone icon dock/overflow, компактные сведения/характеристики; после реального просмотра56 исправлены светлыйprimaryтекст, подписьпредыстории112 и fixedheaderвнеscroll. Исходникadcf882bc29bf50854ab88ef8033bf1a1edc19ca; кандидат43585320337. Android132418450415 SUCCESS, Windowsbuild132423073746 SUCCESS (непубликовался). NativeQA132424996067: все6новыхGPUкадров просмотрены/сохранены, primarycontrast>=4.5/captionwidth/no labelclips PASS; headerpixelsво всех6кадрахидентичны0.0. ОбщийстарыйWindowsGUI всёещёFAIL на lightpaperthreshold0.08vsнамеренныйgraphite0.05098; не заявлять полныйGUI PASS. Старыймалыйglyphfallbackнаинициативе остаётся, physicalAndroidтестируетвладелец.
+
+Publisher43587801252/job132425956495 SUCCESS; feed9941a9dc3e7abb6f59056e617ac5c80c36fa9327. ПослеCDNpropagation normal+cache-bustedHTTPfeed10057, публичныйAPK64138958байт/SHA90abed77ca847acc7cbd0280427cb67c726ef00973b73c34232c6384d134244c независимо скачан: ZIPCRC/ARM64IL2CPP/package+version/originalcertificate/16KBalign PASS. Отчёт docs/ui-redesign/MOBILE_GRIMOIRE_1.00.57.md, свидетельство *_verification.json, кадры evidence-1.00.57/header-position.json.56такжедоставлялась,57заменяетеё; обновлениепрямоизприложенияповерх55или56. Пользователюсообщеноодоступности57.
+
+Задача доставки закончена; не повторятьсборку/публикацию57/неперезаписыватьAPK. Следующаяruntime58+тольконафактическуюновуюзадачу/ошибку. Main/MMO/кошелёк/схемысохранений/ключинененялись. Историяниже.
+
 # ФИНАЛЬНЫЕ КАДРЫ57 ПРОВЕРЕНЫ / 2026-11-14
 
 Исходникadcf882bc29bf50854ab88ef8033bf1a1edc19ca; кандидат43585320337. Androidjob132418450415 SUCCESS; Windowsbuild132423073746 SUCCESS. NativeQA132424996067: все6новыхGPUкадров просмотрены/сохранены docs/ui-redesign/evidence-1.00.57/, контрастprimary>=4.5 и captionwidth PASS, headercropво всех6изображенияхпиксельновточностиодинаков (0.0), реальная «Предыстория» в1строку, активныйтекстсветлый, headerнеплывёт. ОбщийlegacyGUI harness всёещёFAIL на требованииlightpaper (graphite0.05098<old0.08), этоизвестноенесоответствиетеста, не объявлятьобщийGUI PASS. Малыйстарыйglyphfallbackнаинициативеоставлен, механикаработаетпо-прежнему. Отчёт docs/ui-redesign/MOBILE_GRIMOIRE_1.00.57.md.

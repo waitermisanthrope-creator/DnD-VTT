@@ -11,4 +11,8 @@ Source `adcf882bc29bf50854ab88ef8033bf1a1edc19ca`; candidate43585320337. Android
 
 The full legacy Windows GUI harness still FAILS its obsolete “bundled paper is actually visible” assertion: the intentional graphite brightness0.05098 is below the old paper threshold0.08. Do not claim the full Windows GUI suite passed. An existing initiative-button symbol still uses a font fallback; its action and caption remain readable. Physical Android interaction remains owner testing. Windows is not published.
 
-Android-only publication is pending the existing publisher and independent public verifier. The signed candidate is selected only after native frame review; all reports are committed before the one approval push to avoid the earlier56 concurrent-docs/feed race. Independent verifier: `/workspace/scratch/grimoire57-delivery/verify_public.py`.
+## Delivered Android in-app update
+
+Publisher43587801252/job132425956495 SUCCESS. Feed activation9941a9dc3e7abb6f59056e617ac5c80c36fa9327. Normal and cache-busted public feeds independently return1.00.57/10057 after the initial branch CDN cache expired. Public package independently downloaded:64138958bytes, SHA256 `90abed77ca847acc7cbd0280427cb67c726ef00973b73c34232c6384d134244c`. ZIP CRC, ARM64 IL2CPP, original signing certificate, package/version and16KB alignment PASS. Evidence: `MOBILE_GRIMOIRE_1.00.57_verification.json`.
+
+Update from inside the app over1.00.55 or1.00.56; no uninstall or standalone Windows publication. Original user profiles were not used in QA. Owner informed final57 is available. Signed candidate was selected only after actual native frame review; all preceding documentation was committed before its single approval push. Physical Android testing remains the owner’s test session.
