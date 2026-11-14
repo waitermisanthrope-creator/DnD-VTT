@@ -14,6 +14,8 @@ namespace DndVtt.UnityPrototype
             85000, 100000, 120000, 140000, 165000, 195000, 225000, 265000, 305000, 355000
         };
         private GUIStyle grimoireHpButton, grimoirePrimaryButton;
+        private GUIStyle grimoirePortraitFrameStyle, grimoireHealthTrackStyle,
+            grimoireHealthFillStyle, grimoireXpTrackStyle, grimoireXpFillStyle;
         private Texture2D grimoirePortraitFrame, grimoireShieldIcon, grimoireHpIcon, grimoireXpIcon, grimoireConditionIcon;
         private static readonly CultureInfo GrimoireCulture = CultureInfo.GetCultureInfo("ru-RU");
 
@@ -117,6 +119,23 @@ namespace DndVtt.UnityPrototype
             uiStyles.HeroHealthFill = Resources.Load<Texture2D>("UI/Grimoire/bars/bar_health_fill_mask_9s");
             uiStyles.HeroXpTrack = Resources.Load<Texture2D>("UI/Grimoire/bars/bar_experience_track_9s");
             uiStyles.HeroXpFill = Resources.Load<Texture2D>("UI/Grimoire/bars/bar_experience_fill_mask_9s");
+            grimoirePortraitFrameStyle = GrimoireNineSlice(grimoirePortraitFrame, 12, 12);
+            grimoireHealthTrackStyle = GrimoireNineSlice(uiStyles.HeroHealthTrack, 6, 5);
+            grimoireHealthFillStyle = GrimoireNineSlice(uiStyles.HeroHealthFill, 6, 5);
+            grimoireXpTrackStyle = GrimoireNineSlice(uiStyles.HeroXpTrack, 6, 5);
+            grimoireXpFillStyle = GrimoireNineSlice(uiStyles.HeroXpFill, 6, 5);
+        }
+
+        // GUIStyle backgrounds are nine-sliced; GUI.DrawTexture stretches the ornate
+        // corners and makes progress bars look like blurred strips.
+        private static GUIStyle GrimoireNineSlice(Texture2D texture, int horizontal, int vertical)
+        {
+            if (!texture) return null;
+            return new GUIStyle(GUIStyle.none)
+            {
+                normal = { background = texture },
+                border = new RectOffset(horizontal, horizontal, vertical, vertical)
+            };
         }
 
         // First redesign screen; the original full character editor stays available below.
@@ -166,9 +185,13 @@ namespace DndVtt.UnityPrototype
                     GUI.Label(photo, "✦", uiStyles.HeroValue);
                 }
             }
-            if (grimoirePortraitFrame && Event.current.type == EventType.Repaint)
-                GUI.DrawTexture(photo, grimoirePortraitFrame, ScaleMode.StretchToFill, true, 0,
-                    ThemeHeadingAccent, 0, 0);
+            if (grimoirePortraitFrameStyle != null && Event.current.type == EventType.Repaint)
+            {
+                Color original = GUI.color;
+                GUI.color = ThemeHeadingAccent;
+                grimoirePortraitFrameStyle.Draw(photo, false, false, false, false);
+                GUI.color = original;
+            }
             // Reuse the existing art viewer/import flow rather than a new portrait system.
             if (GUI.Button(photo, GUIContent.none, GUIStyle.none))
                 requestedPortraitVisibility = true;
@@ -222,20 +245,33 @@ namespace DndVtt.UnityPrototype
 
         private void GrimoireProgress(float amount, Color fill, bool experience)
         {
-            Rect track = GUILayoutUtility.GetRect(1, 13, GUILayout.ExpandWidth(true));
+            Rect track = GUILayoutUtility.GetRect(1, 16, GUILayout.ExpandWidth(true));
             if (Event.current.type != EventType.Repaint) return;
-            Texture2D trackArt = experience ? uiStyles.HeroXpTrack : uiStyles.HeroHealthTrack;
-            Texture2D fillMask = experience ? uiStyles.HeroXpFill : uiStyles.HeroHealthFill;
-            GUI.DrawTexture(track, trackArt ? trackArt : Texture2D.whiteTexture,
-                ScaleMode.StretchToFill, true, 0,
-                trackArt ? Color.white : new Color(.10f, .10f, .13f), 0, 6);
-            float width = Mathf.Max(0, track.width - 4) * Mathf.Clamp01(amount);
-            if (width > 0)
+            GUIStyle trackStyle = experience ? grimoireXpTrackStyle : grimoireHealthTrackStyle;
+            GUIStyle fillStyle = experience ? grimoireXpFillStyle : grimoireHealthFillStyle;
+            Color previous = GUI.color;
+            if (trackStyle != null)
             {
-                Rect portion = new Rect(track.x + 2, track.y + 2, width, Mathf.Max(1, track.height - 4));
-                GUI.DrawTexture(portion, fillMask ? fillMask : Texture2D.whiteTexture,
-                    ScaleMode.StretchToFill, true, 0, fill, 0, 4);
+                GUI.color = Color.white;
+                trackStyle.Draw(track, false, false, false, false);
             }
+            else
+                GUI.DrawTexture(track, Texture2D.whiteTexture, ScaleMode.StretchToFill,
+                    true, 0, new Color(.10f, .10f, .13f), 0, 6);
+            float fraction = Mathf.Clamp01(amount);
+            float width = Mathf.Max(0f, track.width - 4f) * fraction;
+            if (width >= 1f)
+            {
+                Rect portion = new Rect(track.x + 2, track.y + 2, width,
+                    Mathf.Max(1, track.height - 4));
+                GUI.color = fill;
+                if (fillStyle != null && width >= 12f)
+                    fillStyle.Draw(portion, false, false, false, false);
+                else
+                    GUI.DrawTexture(portion, Texture2D.whiteTexture, ScaleMode.StretchToFill,
+                        true, 0, fill, 0, 4);
+            }
+            GUI.color = previous;
         }
 
         private static int GrimoireCount(JToken token, int fallback)
