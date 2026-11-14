@@ -1,3 +1,9 @@
+# ДОСТАВЛЕНО Android1.00.56 / 2026-11-14
+
+Прямое поручение владельца по прикреплённому UI-референсу выполнено для Android updater: графитовый фон, иконки нижней панели, компактные сведения/характеристики, сохранение numeric input и блокировка swipe скрытого листа в «Ещё». Исходник35e1ed9696948ff63434d5c5c42f2cc5dddac2d5; кандидат43582205096 Androidjob132409575612 SUCCESS. Publisher43582603729/job132415142213 SUCCESS, feed9ef9185c. Независимо normal+cache-busted feed10056 и публичныйAPK64134862байт/SHAe18bd36322dfc4e19c33b2a4252c717dd4011d07fe70864685b6d857a6d68353; package/version/ARM64/ZIP CRC/original cert/16KB alignment PASS. Полный свежий workshop11523 и целевые UI/input/save/syntax gates PASS. Отчёт docs/ui-redesign/MOBILE_GRIMOIRE_1.00.56.md, публичное свидетельство *_verification.json. Пользователю сообщено: обновляться из приложения поверх55.
+
+Windows build/GUI ещё выполняется отдельно; Windows не публиковать. Physical Android и фактическая визуальная проверка новойGUI пока не завершены; не заявлять их PASS. Предыдущий publisher43582256391 создал правильныйAPK, но feedpush отклонён после docscommits; финальный publisher проверил те же байты и успешно активировал канал. Не перезапускать/не перезаписывать56; следующая runtime57+. main/MMO/кошелёк/схемы сохранений не менялись. История ниже.
+
 # В РАБОТЕ: мобильный Grimoire 1.00.56 / 2026-11-14
 
 Последний прямой запрос владельца: вид правой части прикреплённого сравнения, подключить GitHub-ассеты, компактнее сведения о герое, затем выпустить Android через встроенный updater поверх1.00.55. Это явное разрешение на checked push/candidate/Android publication; Windows не публиковать, main не менять. База78cd96b7 содержит неопубликованные исправления рамок/полос. Добавлены graphite background, fixed phone icon dock+overflow, compact details tabs/profile/stats, cache reset и portrait evidence. План docs/superpowers/plans/2026-11-14-mobile-grimoire.md.

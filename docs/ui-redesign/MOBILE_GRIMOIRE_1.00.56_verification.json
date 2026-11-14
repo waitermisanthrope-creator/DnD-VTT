@@ -1,0 +1,21 @@
+{
+  "version": "1.00.56",
+  "source": "35e1ed9696948ff63434d5c5c42f2cc5dddac2d5",
+  "candidateRunId": 43582205096,
+  "manifestNormalAndCacheBusted": "PASS",
+  "apk": {
+    "url": "https://github.com/waitermisanthrope-creator/DnD-VTT/releases/download/unity-v1.00.56/DnD-VTT-Unity-1.00.56-arm64.apk",
+    "bytes": 64134862,
+    "sha256": "e18bd36322dfc4e19c33b2a4252c717dd4011d07fe70864685b6d857a6d68353"
+  },
+  "zipCrc": "PASS",
+  "arm64": "PASS",
+  "packageVersion": "PASS",
+  "originalSigningCertificate": "PASS",
+  "zipalign16KB": "PASS",
+  "signature": "Verifies\nVerified using v1 scheme (JAR signing): false\nVerified using v2 scheme (APK Signature Scheme v2): true\nVerified using v3 scheme (APK Signature Scheme v3): true\nVerified using v3.1 scheme (APK Signature Scheme v3.1): false\nVerified using v4 scheme (APK Signature Scheme v4): false\nVerified for SourceStamp: false\nNumber of signers: 1\nSigner #1 certificate DN: CN=DnD VTT Unity, OU=Experimental, O=DnD VTT\nSigner #1 certificate SHA-256 digest: c1c1b3e6537f10819a3042817ac91535b47754ed65d084e635f84ff2b1f44c8e\nSigner #1 certificate SHA-1 digest: c33a55a872358fb387e31c9f39e576b9d203520a\nSigner #1 certificate MD5 digest: 04109cee23b8f9b2ec0e44d8d56d3cc0\nSigner #1 key algorithm: RSA\nSigner #1 key size (bits): 3072\nSigner #1 public key SHA-256 digest: 55a5a6d21e408901bb0cb59cb071557fd5db44d822aa784658492938c062089e\nSigner #1 public key SHA-1 digest: d789cf706ea3c3fe94c527f29b7d6282600dbf9f\nSigner #1 public key MD5 digest: 420d697f6f9199665d163f59fda05852\n",
+  "publisherRunId": 43582603729,
+  "publisherJobId": 132415142213,
+  "feedCommit": "9ef9185c",
+  "nativeAndroidJobId": 132409575612
+}

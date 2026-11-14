@@ -24,7 +24,11 @@ Owner request, 2026-11-14: implement the supplied comparison's right-hand phone 
 
 Final source: `35e1ed9696948ff63434d5c5c42f2cc5dddac2d5`.
 Final candidate: https://github.com/waitermisanthrope-creator/DnD-VTT/actions/runs/43582205096 .
-Android-only publisher: https://github.com/waitermisanthrope-creator/DnD-VTT/actions/runs/43582256391 .
+Android-only publisher: https://github.com/waitermisanthrope-creator/DnD-VTT/actions/runs/43582603729 .
 Earlier candidate43581731230/source18185caa was superseded after the touch guard; do not publish it.
 
-At this checkpoint signed build and publisher are pending. Live channel remains1.00.55 until publisher verifies actual Android job success, original certificate, package, version, architecture, alignment, size/hash and a public download. Independent public verifier is prepared at `/workspace/scratch/grimoire56-delivery/verify_public.py`. Physical Android testing belongs to owner; Windows is not published.
+Android job132409575612 SUCCESS. Publisher43582603729/job132415142213 SUCCESS; feed activation9ef9185c. Independent normal/cache-busted public feeds both1.00.56/10056. Public APK independently downloaded:64134862bytes, SHA256 `e18bd36322dfc4e19c33b2a4252c717dd4011d07fe70864685b6d857a6d68353`; ZIP CRC, ARM64 IL2CPP, package/version, original signing certificate and16KB alignment PASS. Evidence: `MOBILE_GRIMOIRE_1.00.56_verification.json`. Owner informed the in-app update is available.
+
+The earlier publisher43582256391 successfully uploaded the identical signed APK but its feed push was rejected by concurrent documentation commits. Final publisher43582603729 reverified that existing public APK and successfully activated the feed from the final checkout; no force-push or replacement APK bytes.
+
+Windows build/GUI is still running as an independent validation, not a published installer. Physical Android testing belongs to owner.
