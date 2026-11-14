@@ -391,10 +391,10 @@ namespace DndVtt.UnityPrototype
             GUILayout.BeginHorizontal();
             if (MeasuredMenuButton("К дайсам", grimoireHpButton,
                 GUILayout.ExpandWidth(true), GUILayout.MinHeight(UiTheme.TouchHeight)))
-                requestedSheetTab = 5;
+                OpenHeroQuickView(5);
             if (MeasuredMenuButton("К атакам", grimoireHpButton,
                 GUILayout.ExpandWidth(true), GUILayout.MinHeight(UiTheme.TouchHeight)))
-                requestedSheetTab = 2;
+                OpenHeroQuickView(2);
             if (narrow) GUILayout.EndHorizontal();
             if (narrow) GUILayout.BeginHorizontal();
             if (MeasuredMenuButton("Развитие", grimoirePrimaryButton,

@@ -93,11 +93,11 @@ namespace DndVtt.UnityPrototype
             GUI.skin.label.fontSize = 16;
             if (screen != FrontScreen.Map)
             {
-                var originalSkin=GUI.skin;var originalMatrix=GUI.matrix;var originalContentColor=GUI.contentColor;
+                var originalSkin=GUI.skin;var originalMatrix=GUI.matrix;var originalContentColor=GUI.contentColor;var originalEnabled=GUI.enabled;
                 if (DesktopUiSmoke.HideText) GUI.contentColor=Color.clear;
                 try { GUI.matrix=Matrix4x4.Scale(new Vector3(MenuScale,MenuScale,1));
                     if(DrawBrandSplash())return; DrawFrontEnd();
-                } finally { GUI.skin=originalSkin;GUI.matrix=originalMatrix;GUI.contentColor=originalContentColor; } return;
+                } finally { GUI.skin=originalSkin;GUI.matrix=originalMatrix;GUI.contentColor=originalContentColor;GUI.enabled=originalEnabled; } return;
             }
 #if UNITY_ANDROID && !UNITY_EDITOR
             // Screen.orientation changes asynchronously. Don't draw a wide

@@ -68,10 +68,13 @@ namespace DndVtt.UnityPrototype
         {
             // Fixed geometry, like the dock: scrolling a long details editor must
             // never move or paint over the app header.
-            Rect menu = new Rect(15, 8, 66, 40);
-            if (GUI.Button(menu, "‹ Меню", sheetTabStyle)) requestedSheetDestination = FrontScreen.Characters;
-            DesktopUiSmoke.RecordButton("‹ Меню", sheetTabStyle, menu);
-            GUI.Label(new Rect(90, 8, Mathf.Max(80, UiWidth - 240), 40), "DnD-VTT", sheetCharacterName);
+            bool canReturn = (sheetTab == 2 || sheetTab == 5) && !advancementOpen && !classicPortraitOpen && raceView == 0;
+            string label = canReturn ? "‹ К герою" : "‹ Меню";
+            Rect menu = new Rect(15, 8, canReturn ? 104 : 66, 40);
+            if (GUI.Button(menu, label, sheetTabStyle)) { if (canReturn) ReturnToHero(); else requestedSheetDestination = FrontScreen.Characters; }
+            DesktopUiSmoke.RecordButton(label, sheetTabStyle, menu);
+            float titleX = canReturn ? 130 : 90;
+            GUI.Label(new Rect(titleX, 8, Mathf.Max(80, UiWidth - titleX - 156), 40), "DnD-VTT", sheetCharacterName);
             GUI.Label(new Rect(UiWidth - 146, 12, 132, 36), tabs[Mathf.Clamp(sheetTab, 0, tabs.Length - 1)], sheetQuiet);
         }
         private void PrepareGrimoireNavigation()
@@ -425,6 +428,7 @@ namespace DndVtt.UnityPrototype
         }
         private void ClassicAbilities(JObject hero,ref bool changed)
         {
+            DrawSheetHeroBack();
             GUILayout.BeginVertical(GUI.skin.box);SheetSection("Способности и приёмы");
             GUILayout.Label("Характеристика приёмов",sheetQuiet);ClassicAbilityStat(hero,"combatAbilityStat","str",ref changed);string stat=(string)hero["combatAbilityStat"]??"str";int bonus=CharacterSheetRules.Modifier(hero,stat)+CharacterSheetRules.Proficiency(hero);
             GUILayout.Label("Атака "+Signed(bonus)+" · СЛ "+(8+bonus),sheetCharacterName);

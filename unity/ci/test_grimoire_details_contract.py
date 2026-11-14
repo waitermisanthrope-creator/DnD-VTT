@@ -8,7 +8,7 @@ adv=file("LegacySessionPanel.Advancement.cs")
 advui=file("LegacySessionPanel.GrimoireAdvancement.cs")
 assert "GrimoireHeroDetails(hero, ref changed);" in hero
 # Check retained action destinations, not the old row implementation.
-for action in ('"К дайсам"', '"К атакам"', 'requestedSheetTab = 5', 'requestedSheetTab = 2', 'BeginAdvancement(hero, true)'):
+for action in ('"К дайсам"', '"К атакам"', 'OpenHeroQuickView(5)', 'OpenHeroQuickView(2)', 'BeginAdvancement(hero, true)'):
     assert action in hero, action
 for key in ('"Профиль", "Бой", "Статы", "Данные"', 'GrimoireDetailsProfile(hero, ref changed)', 'GrimoireDetailsCombat(hero, ref changed)', 'GrimoireDetailsStats(hero, ref changed)', 'GrimoireDetailsData()'):
     assert key in details, key

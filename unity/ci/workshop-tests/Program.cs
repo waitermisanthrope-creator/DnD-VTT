@@ -183,8 +183,12 @@ class Program
                 Check(merged.Count == 2, "rejected file operations retain live roster");
                 foreach (string file in Directory.GetFiles("unity/Assets/Vtt", "*.cs", SearchOption.AllDirectories))
                 {
-                    var tree = Microsoft.CodeAnalysis.CSharp.CSharpSyntaxTree.ParseText(File.ReadAllText(file));
-                    Check(!tree.GetDiagnostics().Any(d => d.Severity == Microsoft.CodeAnalysis.DiagnosticSeverity.Error), "C# syntax " + file);
+                    foreach (string platform in new[] { "", "UNITY_STANDALONE_WIN", "UNITY_ANDROID" })
+                    {
+                        var options = new Microsoft.CodeAnalysis.CSharp.CSharpParseOptions(preprocessorSymbols: platform.Length == 0 ? Array.Empty<string>() : new[] { platform });
+                        var tree = Microsoft.CodeAnalysis.CSharp.CSharpSyntaxTree.ParseText(File.ReadAllText(file), options);
+                        Check(!tree.GetDiagnostics().Any(d => d.Severity == Microsoft.CodeAnalysis.DiagnosticSeverity.Error), "C# syntax " + platform + " " + file);
+                    }
                 }
                 Console.WriteLine("CHARACTER_DELETE_PASS " + checks); return;
             }

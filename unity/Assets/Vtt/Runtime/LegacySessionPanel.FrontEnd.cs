@@ -70,6 +70,8 @@ namespace DndVtt.UnityPrototype
         }
         private void DrawFrontEnd()
         {
+            CommitSheetView();
+            DesktopUiSmoke.BeginGuiFrame();
             MarketLayout();if(tradeRecoveryVisible){DrawTradeRecovery();return;}
             if(marketOpen){DrawMarketModal();return;}
             if(Event.current.type==EventType.Layout)showSheetNotice=!string.IsNullOrWhiteSpace(status)&&status!="Изменения сохранены на устройстве"&&!status.StartsWith("Импорт сохранён",StringComparison.Ordinal);
@@ -83,8 +85,6 @@ namespace DndVtt.UnityPrototype
                 else DrawBrandSettings();
                 return;
             }
-            if (Event.current.type == EventType.Layout && requestedGrimoireMore.HasValue)
-            { grimoireMoreOpen = requestedGrimoireMore.Value; requestedGrimoireMore = null; frontScroll = Vector2.zero; }
             PrepareSheetSkin();
             heading ??= new GUIStyle(GUI.skin.label) { fontSize = 32, fontStyle = FontStyle.Bold, wordWrap = true };
             muted ??= new GUIStyle(GUI.skin.label) { fontSize = 15, wordWrap = true, normal = { textColor = new Color(.65f, .73f, .83f) } };

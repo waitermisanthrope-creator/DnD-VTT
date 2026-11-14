@@ -14,18 +14,26 @@ namespace DndVtt.UnityPrototype
     {
         public static bool HideText, PortraitLayout;
         static bool running;
-        static int buttonChecks, clippedButtons,layoutErrors;
+        static int buttonChecks, clippedButtons,layoutErrors,quickNavigationErrors;
+        static bool trackingQuickNavigation;
+        static Vector2 guiRootScreenOrigin;
+        public static void BeginGuiFrame()
+        {
+            if (!running || Event.current.type != EventType.Repaint) return;
+            guiRootScreenOrigin = GUIUtility.GUIToScreenPoint(Vector2.zero);
+            buttonPoints.Clear();
+        }
         static readonly System.Collections.Generic.Dictionary<string,bool> buttonEnabled=new System.Collections.Generic.Dictionary<string,bool>();
         static readonly System.Collections.Generic.Dictionary<string,Vector2> buttonPoints=new System.Collections.Generic.Dictionary<string,Vector2>();
         void OnEnable(){Application.logMessageReceived+=ObserveGuiError;}
         void OnDisable(){Application.logMessageReceived-=ObserveGuiError;}
         static void ObserveGuiError(string condition,string trace,LogType type)
-        {if(running&&(type==LogType.Exception||type==LogType.Error)&&(condition.Contains("Getting control")||condition.Contains("GUILayout")||trace.Contains("GUILayoutGroup.GetNext")))layoutErrors++;}
+        {if(running&&(type==LogType.Exception||type==LogType.Error)){if(trackingQuickNavigation)quickNavigationErrors++;if(condition.Contains("Getting control")||condition.Contains("GUILayout")||trace.Contains("GUILayoutGroup.GetNext"))layoutErrors++;}}
         public static void RecordButton(string label, GUIStyle style, Rect rect)
         {
             if (!running || Event.current.type != EventType.Repaint) return;
             buttonChecks++;buttonEnabled[label]=GUI.enabled;
-            Vector2 point=GUIUtility.GUIToScreenPoint(rect.center);
+            Vector2 point=GUIUtility.GUIToScreenPoint(rect.center)-guiRootScreenOrigin;
             if(point.x>=0&&point.y>=0&&point.x<Screen.width&&point.y<Screen.height)buttonPoints[label]=point;
             float needed = style.CalcHeight(new GUIContent(label), rect.width);
             if (needed > rect.height + 1 || !style.wordWrap && style.CalcSize(new GUIContent(label)).x > rect.width + 1)
@@ -72,6 +80,95 @@ namespace DndVtt.UnityPrototype
         [System.Runtime.InteropServices.DllImport("user32.dll")] static extern bool ClientToScreen(IntPtr window,ref NativePoint point);
         [System.Runtime.InteropServices.DllImport("user32.dll")] static extern bool SetCursorPos(int x,int y);
         [System.Runtime.InteropServices.DllImport("user32.dll")] static extern void mouse_event(uint flags,uint dx,uint dy,uint data,UIntPtr extra);
+        IEnumerator ClickMeasuredButton(string label, bool exitDuringRoll = false)
+        {
+            yield return new WaitForEndOfFrame();
+            try
+            {
+                Check(buttonPoints.TryGetValue(label, out Vector2 point), "visible measured click target " + label);
+                Check(buttonEnabled.TryGetValue(label, out bool enabled) && enabled, "enabled navigation " + label);
+                IntPtr window = FindWindow("UnityWndClass", null);
+                if (window == IntPtr.Zero) window = GetActiveWindow();
+                Check(window != IntPtr.Zero, "native navigation window"); SetForegroundWindow(window);
+                var target = new NativePoint { x = Mathf.RoundToInt(point.x), y = Mathf.RoundToInt(point.y) };
+                Check(ClientToScreen(window, ref target) && SetCursorPos(target.x, target.y), "native measured pointer " + label);
+                Debug.Log("VTT_NAV_POINTER: " + label + " client=" + point + " screen=" + target.x + "," + target.y);
+            }
+            catch (Exception error) { Fail(error); yield break; }
+            yield return new WaitForSecondsRealtime(.1f);
+            mouse_event(2,0,0,0,UIntPtr.Zero); yield return new WaitForSecondsRealtime(.1f);
+            if (exitDuringRoll)
+            {
+                try
+                {
+                    var table = typeof(LegacySessionPanel).GetField("diceTable",Flags).GetValue(panel) as DiceTable;
+                    Check(table!=null,"live dice table before exit");table.Throw("1d20");
+                    Check(table.Throwing,"roll is active immediately before back pointer release");
+                    Debug.Log("VTT_NAV_EXIT_DURING_ROLL: active before MouseUp");
+                }
+                catch(Exception error){Fail(error);yield break;}
+            }
+            mouse_event(4,0,0,0,UIntPtr.Zero); yield return new WaitForSecondsRealtime(.3f);
+        }
+        IEnumerator SeekQuickAction(string label)
+        {
+            for(int step=0;step<14;step++)
+            {
+                Field("frontScroll",new Vector2(0,step*100));
+                yield return new WaitForSecondsRealtime(.15f);
+                if(buttonPoints.TryGetValue(label,out Vector2 point)&&point.y>Screen.height*.18f&&point.y<Screen.height*.75f)yield break;
+            }
+            Fail(new Exception("VTT_NAV_TARGET_FAIL: quick action not visible after bounded scroll: "+label));
+        }
+        IEnumerator QuickNavigationRoundtrips()
+        {
+            string original = panel.ExportCurrent();
+            trackingQuickNavigation=true;quickNavigationErrors=0;
+            for (int cycle = 0; cycle < 5; cycle++)
+            {
+                yield return SeekQuickAction("К дайсам");if(failed)yield break;
+                yield return ClickMeasuredButton("К дайсам"); if (failed) yield break;
+                try { Check((int)typeof(LegacySessionPanel).GetField("sheetTab",Flags).GetValue(panel)==5,"quick action opens dice"); }
+                catch (Exception error) { Fail(error); yield break; }
+                float deadline = Time.realtimeSinceStartup + 30;
+                while (typeof(LegacySessionPanel).GetField("diceTable",Flags).GetValue(panel)==null && Time.realtimeSinceStartup<deadline)
+                    yield return null;
+                try
+                {
+                    var table = typeof(LegacySessionPanel).GetField("diceTable",Flags).GetValue(panel) as DiceTable;
+                    Check(table!=null,"dice preparation completes without breaking layout");
+                }
+                catch (Exception error) { Fail(error); yield break; }
+                if(cycle==0){yield return Frame("navigation-dice-portrait");if(failed)yield break;}
+                yield return ClickMeasuredButton(cycle==0?"‹ К герою":"← К герою",cycle==0); if(failed)yield break;
+                try { Check((int)typeof(LegacySessionPanel).GetField("sheetTab",Flags).GetValue(panel)==0,"dice exit returns to hero"); }
+                catch(Exception error){Fail(error);yield break;}
+                yield return SeekQuickAction("К атакам");if(failed)yield break;
+                yield return ClickMeasuredButton("К атакам");if(failed)yield break;
+                try {Check((int)typeof(LegacySessionPanel).GetField("sheetTab",Flags).GetValue(panel)==2,"quick action opens attacks");}
+                catch(Exception error){Fail(error);yield break;}
+                if(cycle==0){yield return Frame("navigation-attacks-portrait");if(failed)yield break;}
+                yield return ClickMeasuredButton("← К герою");if(failed)yield break;
+                yield return SeekQuickAction("Развитие");if(failed)yield break;
+                yield return ClickMeasuredButton("Развитие");if(failed)yield break;
+                try {Check((bool)typeof(LegacySessionPanel).GetField("advancementOpen",Flags).GetValue(panel),"advancement remains reachable after dice and attacks");}
+                catch(Exception error){Fail(error);yield break;}
+                yield return ClickMeasuredButton("← Вернуться к герою");if(failed)yield break;
+                try
+                {
+                    Check(!(bool)typeof(LegacySessionPanel).GetField("advancementOpen",Flags).GetValue(panel),"advancement exit still works");
+                    Check((int)typeof(LegacySessionPanel).GetField("sheetTab",Flags).GetValue(panel)==0,"hero remains selected");
+                    Check(panel.ExportCurrent()==original,"navigation preserves every hero and unknown JSON field");
+                    Check(layoutErrors==0&&quickNavigationErrors==0,"no GUI exceptions during real click roundtrip " + cycle);
+                    Debug.Log("VTT_QUICK_NAV_ROUNDTRIP_PASS: " + cycle);
+                }
+                catch(Exception error){Fail(error);yield break;}
+            }
+            Field("frontScroll",Vector2.zero);
+            yield return Frame("navigation-returned-hero-portrait");if(failed)yield break;
+            trackingQuickNavigation=false;
+            Debug.Log("VTT_QUICK_NAVIGATION_PASS: 5 actual OS-pointer dice/attacks/advancement roundtrips; exit during roll; JSON unchanged; no layout errors");
+        }
         IEnumerator ClickNativeButton(string label)
         {
             IntPtr window=IntPtr.Zero;
@@ -411,6 +508,9 @@ namespace DndVtt.UnityPrototype
             try { Check(!(bool)typeof(LegacySessionPanel).GetProperty("SheetPagingAllowed", Flags).GetValue(panel), "overflow must not page the hidden sheet or start a stuck swipe animation"); }
             catch (Exception error) { Fail(error); yield break; }
             Field("grimoireMoreOpen", false); Field("frontScroll", Vector2.zero);
+#if UNITY_STANDALONE_WIN && !UNITY_EDITOR
+            yield return QuickNavigationRoundtrips(); if(failed)yield break;
+#endif
             try
             {
                 Check(panel.ExportCurrent() == rosterPreviewJson, "roster search and rendering preserve every character field");

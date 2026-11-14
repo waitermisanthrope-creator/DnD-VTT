@@ -20,7 +20,7 @@ namespace DndVtt.UnityPrototype
         private bool dicePreparing,diceTrayRestorePending,diceReleaseWhenSettled;
         private string diceLastRoll="";
         private float diceLastVisible;
-        private bool DicePageVisible=>screen==FrontScreen.Dice||(screen==FrontScreen.Sheet&&sheetTab==5&&!marketOpen);
+        private bool DicePageVisible=>screen==FrontScreen.Dice||(screen==FrontScreen.Sheet&&sheetTab==5&&!marketOpen&&!grimoireMoreOpen);
         private void StartDiceCatalog()
         {
             if(diceAppearanceCatalog!=null||diceCatalogTask!=null)return;
@@ -52,9 +52,9 @@ namespace DndVtt.UnityPrototype
             bool follow=PlayerPrefs.GetInt("dndvtt.dice.followIcon",PlayerPrefs.HasKey("dndvtt.dice.theme")?0:1)==1;
             return follow?"icon:"+PlayerPrefs.GetString(AppearancePreference("icon"),"dnd.appearance.icon.default"):"set:"+PlayerPrefs.GetString("dndvtt.dice.theme","");
         }
-        private IEnumerator PrepareDiceTable()
+        private void PrepareDiceTable()
         {
-            dicePreparing=true;yield return null;
+            dicePreparing=true;
             try
             {
                 if(DicePageVisible&&diceTable==null)
@@ -76,7 +76,7 @@ namespace DndVtt.UnityPrototype
         private string diceQuantity="1";
         private bool diceReplaceQuantity;
         private static readonly int[] DiceSides={4,6,8,10,12,20,100};
-        private void CloseDiceTable() { StopDiceSensor();diceTable?.Dispose();diceTable=null;diceThemes=Array.Empty<DiceTheme>();diceTrays=Array.Empty<DiceTray>();diceThemeSelection=0;diceThemePage=0;diceAppearanceCatalog=null;diceCatalogTask=null;diceThemeTask=null;diceIconSelection=null; }
+        private void CloseDiceTable() { dicePreparing=false;StopDiceSensor();diceTable?.Dispose();diceTable=null;diceThemes=Array.Empty<DiceTheme>();diceTrays=Array.Empty<DiceTray>();diceThemeSelection=0;diceThemePage=0;diceAppearanceCatalog=null;diceCatalogTask=null;diceThemeTask=null;diceIconSelection=null; }
         private void InvalidateDiceContent()
         {
             if(diceTable==null||!diceTable.Throwing){CloseDiceTable();return;}
@@ -100,7 +100,7 @@ namespace DndVtt.UnityPrototype
                 catch(Exception error){CloseDiceTable();diceError="Бросок остановлен: "+error.Message;}
                 return;
             }
-            diceLastVisible=Time.unscaledTime;SafePollDiceCatalog();
+            diceLastVisible=Time.unscaledTime;
             if(diceTable==null)return;
             try { UpdateDiceSensor();diceTable.Tick(Time.unscaledDeltaTime); }
             catch(Exception error) { CloseDiceTable();diceError="3D-стол временно недоступен: "+error.Message;return; }
@@ -198,8 +198,14 @@ namespace DndVtt.UnityPrototype
         }
         private void DrawDiceTable()
         {
+            DrawSheetHeroBack();
             GUILayout.Label("Объёмные дайсы",heading);
-            if(Event.current.type==EventType.Layout){StartDiceCatalog();SafePollDiceCatalog();if(diceTable==null&&diceError==null&&!dicePreparing)StartCoroutine(PrepareDiceTable());}
+            if(Event.current.type==EventType.Layout)
+            {
+                StartDiceCatalog();SafePollDiceCatalog();
+                if(diceTable==null&&diceError==null) { if(dicePreparing)PrepareDiceTable();else dicePreparing=true; }
+                SyncDiceIcon();
+            }
             if(diceTable==null) {
                 GUILayout.Label(diceError??"Подготовка 3D-стола…",muted);
                 if(diceError!=null&&GUILayout.Button("Повторить",GUILayout.MinHeight(54)))diceError=null;
@@ -208,12 +214,12 @@ namespace DndVtt.UnityPrototype
                 GUILayout.Label(rollResult);return;
             }
             bool enabled=GUI.enabled;GUI.enabled=enabled&&!diceTable.Throwing;
-            SyncDiceIcon();
             DrawDiceThemePicker();
             DrawDiceTrayPicker();
             DrawDiceShakeControl();
-            if(diceThemeSelection==0)GUILayout.Label("Скачанные 3D-комплекты доступны в «Мои наборы». Режим привязки к иконке работает, если соответствующий комплект установлен.",muted);
-            else if(diceThemes[diceThemeSelection-1].TextureSha256==null)GUILayout.Label("Этот набор ещё версии без UV-текстур. Обновите его в мастерской до 1.1.0.",muted);
+            string themeHint = diceThemeSelection==0 ? "Скачанные 3D-комплекты доступны в «Мои наборы». Режим привязки к иконке работает, если соответствующий комплект установлен."
+                : diceThemeSelection<=diceThemes.Length && diceThemes[diceThemeSelection-1].TextureSha256==null ? "Этот набор ещё версии без UV-текстур. Обновите его в мастерской до 1.1.0." : "";
+            GUILayout.Label(themeHint,muted);
             DrawDiceGroups();
             GUI.enabled=enabled;
             float height=Mathf.Clamp(UiHeight*.38f,200,440);
@@ -223,15 +229,17 @@ namespace DndVtt.UnityPrototype
             GUILayout.Label(diceTable.Value.HasValue||diceLastRoll.Length==0?diceTable.Result:diceLastRoll,heading);
             GUI.enabled=enabled&&!diceTable.Throwing;
             GUILayout.Label(diceGroups.Count==0?"Добавьте дайсы для броска":DiceGroupExpression(),muted);
-            if(diceCatalogTask!=null||diceThemeTask!=null)GUILayout.Label("Подготовка выбранного набора и лотка…",muted);
+            GUILayout.Label(diceCatalogTask!=null||diceThemeTask!=null?"Подготовка выбранного набора и лотка…":"",muted);
             GUI.enabled=GUI.enabled&&diceGroups.Count>0&&diceEditGroup<0&&diceThemeTask==null&&diceCatalogTask==null;
             if(MeasuredMenuButton(diceTable.Throwing?"Бросок…":"Бросить",brandGreen,GUILayout.MinHeight(62))) {
                 try { diceTable.Throw(DiceGroupExpression());diceInputError="";diceAddPicker=false;diceEditGroup=-1; }
                 catch(FormatException error) { diceInputError=error.Message; }
             }
             GUI.enabled=enabled;
-            if(diceTable.Throwing&&GUILayout.Button("Отменить бросок",GUILayout.MinHeight(54))) { diceMotion.Reset();diceTable.Cancel(); }
-            if(diceInputError.Length>0)GUILayout.Label(diceInputError,muted);
+            GUI.enabled=enabled&&diceTable.Throwing;
+            if(GUILayout.Button("Отменить бросок",GUILayout.MinHeight(54))) { diceMotion.Reset();diceTable.Cancel(); }
+            GUI.enabled=enabled;
+            GUILayout.Label(diceInputError,muted);
             GUILayout.Label("До 20 физических кубов одновременно (d100 занимает два места). Общее количество не ограничено: большие броски идут партиями. Результат читается после остановки; движения щупалец и прыжки слайма могут изменить его до фиксации. Фигурные наборы могут быть несбалансированными. Сетевого подтверждения результата нет.",muted);
         }
     }

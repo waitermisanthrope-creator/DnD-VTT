@@ -31,10 +31,65 @@ namespace DndVtt.UnityPrototype
         private bool showItemCatalog;
         private string deletePath, deleteSignature, deleteCharacter, deleteLabel;
         private readonly string[] tabs = { "Герой", "Навыки", "Способности", "Инвентарь", "Заметки", "Дайсы", "Данные", "Кошелёк", "Паспорт", "Лор / Бестиарий", "Ремёсла" };
-        private void ClearSheetInputs() { grimoireMoreOpen=false; requestedGrimoireMore=null; ResetFormInput(); requestedSpellCatalog = null; showSpellCatalog = false; spellSearch = ""; spellCircle = -1; spellPage = 0; raceView=0;requestedRaceView=null;pendingRace=null; CloseAdvancement();requestedPortraitVisibility=null;cloneSkillDropdown=null;classicPortraitOpen=classicProfileEdit=false;healthAmount="1";pendingBaseRest=null;technicalDataOpen=false; heroArt3D=false; edits.Clear(); expanded.Clear(); deletePath = deleteSignature = deleteCharacter = deleteLabel = null; }
+        private void ClearSheetInputs() { heroQuickReturnActive=false;requestedSheetReturnScroll=null; grimoireMoreOpen=false; requestedGrimoireMore=null; ResetFormInput(); requestedSpellCatalog = null; showSpellCatalog = false; spellSearch = ""; spellCircle = -1; spellPage = 0; raceView=0;requestedRaceView=null;pendingRace=null; CloseAdvancement();requestedPortraitVisibility=null;cloneSkillDropdown=null;classicPortraitOpen=classicProfileEdit=false;healthAmount="1";pendingBaseRest=null;technicalDataOpen=false; heroArt3D=false; edits.Clear(); expanded.Clear(); deletePath = deleteSignature = deleteCharacter = deleteLabel = null; }
         private void Attempt(Action action)
         {
             try { action(); } catch (Exception error) { status = error.Message; }
+        }
+        private Vector2 heroQuickReturnScroll;
+        private Vector2? requestedSheetReturnScroll;
+        private bool heroQuickReturnActive;
+        private void CommitSheetView()
+        {
+            if (Event.current.type != EventType.Layout || screen != FrontScreen.Sheet) return;
+            if (requestedGrimoireMore.HasValue)
+            { grimoireMoreOpen = requestedGrimoireMore.Value; requestedGrimoireMore = null; frontScroll = Vector2.zero; }
+            int previousTab = sheetTab;
+            if (requestedSheetTab.HasValue)
+            {
+                int target = requestedSheetTab.Value;
+                if (swipeNavigationPending && sheetSwipe.Waiting) sheetSwipe.Commit();
+                else sheetSwipe.Cancel();
+                swipeNavigationPending = false;
+                showSpellCatalog = false; requestedSpellCatalog = null;
+                raceView = 0; requestedRaceView = null; pendingRace = null;
+                CloseAdvancement();
+                sheetTab = target; requestedSheetTab = null;
+                requestedPortraitVisibility = null; classicPortraitOpen = false;
+                ResetFormInput();
+                frontScroll = requestedSheetReturnScroll ?? Vector2.zero;
+                requestedSheetReturnScroll = null;
+                if (sheetTab != 2 && sheetTab != 5) heroQuickReturnActive = false;
+            }
+            if (previousTab == 5 && sheetTab != 5) StopDiceSensor();
+            if (requestedSpellCatalog.HasValue)
+            {
+                showSpellCatalog = requestedSpellCatalog.Value; requestedSpellCatalog = null;
+                ResetFormInput(); frontScroll = showSpellCatalog ? Vector2.zero : spellReturnScroll;
+            }
+            if (requestedRaceView.HasValue)
+            { raceView = requestedRaceView.Value; requestedRaceView = null; ResetFormInput(); frontScroll = Vector2.zero; }
+            if (requestedPortraitVisibility.HasValue)
+            { classicPortraitOpen = requestedPortraitVisibility.Value; requestedPortraitVisibility = null; ResetFormInput(); frontScroll = Vector2.zero; }
+        }
+        private void OpenHeroQuickView(int target)
+        {
+            heroQuickReturnScroll = frontScroll;
+            heroQuickReturnActive = true;
+            requestedSheetReturnScroll = Vector2.zero;
+            requestedSheetTab = target;
+        }
+        private void ReturnToHero()
+        {
+            requestedSheetReturnScroll = heroQuickReturnActive ? heroQuickReturnScroll : Vector2.zero;
+            requestedSheetTab = 0;
+            requestedGrimoireMore = false;
+            CompleteNumericKeyboard();
+        }
+        private void DrawSheetHeroBack()
+        {
+            if (screen == FrontScreen.Sheet && MeasuredMenuButton("← К герою", GUI.skin.button, GUILayout.MinHeight(UiTheme.TouchHeight)))
+                ReturnToHero();
         }
         private void DrawSheet()
         {
@@ -44,21 +99,7 @@ namespace DndVtt.UnityPrototype
                 if (GUILayout.Button("Создать персонажа", GUILayout.Height(52))) BeginCreation();
                 DrawImportAndMap(); return;
             }
-            // Apply pending view changes before building Layout, never between
-            // Layout and Repaint. The requesting input event saved the old body.
-            if(Event.current.type==EventType.Layout)
-            {
-                CommitContainerTransfer();
-                CommitCraftCommand();
-                if(requestedSheetTab.HasValue){if(swipeNavigationPending&&sheetSwipe.Waiting)sheetSwipe.Commit();else sheetSwipe.Cancel();swipeNavigationPending=false;showSpellCatalog=false;requestedSpellCatalog=null;raceView=0;requestedRaceView=null;pendingRace=null;CloseAdvancement();sheetTab=requestedSheetTab.Value;requestedSheetTab=null;requestedPortraitVisibility=null;classicPortraitOpen=false;ResetFormInput();frontScroll=Vector2.zero;}
-                if(requestedSpellCatalog.HasValue)
-                {
-                    showSpellCatalog=requestedSpellCatalog.Value;requestedSpellCatalog=null;ResetFormInput();
-                    frontScroll=showSpellCatalog?Vector2.zero:spellReturnScroll;
-                }
-                if(requestedRaceView.HasValue){raceView=requestedRaceView.Value;requestedRaceView=null;ResetFormInput();frontScroll=Vector2.zero;}
-                if(requestedPortraitVisibility.HasValue){classicPortraitOpen=requestedPortraitVisibility.Value;requestedPortraitVisibility=null;ResetFormInput();frontScroll=Vector2.zero;}
-            }
+            if(Event.current.type==EventType.Layout){CommitContainerTransfer();CommitCraftCommand();}
             if(raceView>0){DrawClassicRace(archive.Snapshot(selected));FinishSheetNavigation();return;}
             if(classicPortraitOpen){DrawHeroArt(archive.Snapshot(selected));FinishSheetNavigation();return;}
             if(advancementOpen){GUILayout.BeginVertical(ClassicLegacySurface);DrawAdvancement(archive.Snapshot(selected));GUILayout.EndVertical();FinishSheetNavigation();return;}
@@ -109,6 +150,11 @@ namespace DndVtt.UnityPrototype
                     if(technicalDataOpen){GUILayout.Label("Полный документ. Неизвестные поля сохраняются; ID защищены.",sheetQuiet);EditToken(hero,"raw",0,ref changed);}break;
             }
             if(legacySurface)GUILayout.EndVertical();
+            if (sheetTab == 0 && (requestedSheetTab.HasValue || requestedSheetDestination.HasValue || requestedPortraitVisibility.HasValue || requestedGrimoireMore == true))
+            {
+                CommitGrimoireDetailKeyboard(hero, ref changed);
+                InvalidateHealthInputs(hero);
+            }
             if (changed) Attempt(() =>
             {
                 if (persistWallet || persistCommerce)

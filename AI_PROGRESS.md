@@ -1,3 +1,11 @@
+# В РАБОТЕ: баг навигации57 / hotfix58 — 2026-11-14
+
+Пользователь: Dice/быстраяАтака ломаютUI, нетвозвратакаквразвитии, помогаетrestart. Подтвержденокодом: отсутствуютbackcontrols; queuedSheetTab/scroll/swipeкоммитилисьвDrawSheetпослеоткрытияродительскогоскролла; Diceготовность/catмоглименятьGUIвнеLayout. Физическийexceptionнеполучен, optionalasyncвопросописаниясимптомазадан, работанеблокируется.
+
+58локально: CommitSheetViewвначалеDrawFrontEndдоMarketLayout/header/scroll; Backвобеихпанеляхиприкреплённойшапке; закрытиеMore/возвратsourceScroll/flushnumericпередsave; GUI.enabledfinally. DicePrepareтолькоLayout, Updateнеприменяетcatalog, status/error/cancelслотыстабильны. Дваread-onlyreviewисправлены. SourceboundarytestRED57→GREEN; локальноsave/syntax1973 (default/Windows/Android), numeric17/menu50/swipe191/lifecycle3 + UIcontractsPASS. План/отчёт docs/ui-redesign/NAVIGATION_FIX_1.00.58.md.
+
+NativeновыйтестчерезреальныйOSpointerизизмеренныхGUIrects: boundedseekCTA,5цикловDice/back/Attacks/back/Advancement/back, бросокначинаетсянепосредственнопередMouseUpвозврата, JSONunchanged/noGUIexceptions; стоитпередстаройpaperFAIL. Нельзяпубликовать58безреальногоVTT_QUICK_NAVIGATION_PASS, AndroidSUCCESS, reviewновыхGPUкадров. CIdefault58иtestingchangelogготовы. ПослеsourcepushнайтиcandidateID; вседоки/кадрыкоммититьдоОДНОГОapprovalpush, затемfreezeдоpublisher. Владелецразрешилобновленияизприложения, дополнительныхвопросоворазрешенииненужно.57публичнаяпоканеизменна. main/MMO/ключи/схемынетрогать; Windowsнепубликовать.
+
 # ДОСТАВЛЕНО И ПРОВЕРЕНО Android1.00.57 / 2026-11-14
 
 Финал запроса владельца по UI-референсу: подключены существующие Grimoire ассеты, graphiteфон и fixed phone icon dock/overflow, компактные сведения/характеристики; после реального просмотра56 исправлены светлыйprimaryтекст, подписьпредыстории112 и fixedheaderвнеscroll. Исходникadcf882bc29bf50854ab88ef8033bf1a1edc19ca; кандидат43585320337. Android132418450415 SUCCESS, Windowsbuild132423073746 SUCCESS (непубликовался). NativeQA132424996067: все6новыхGPUкадров просмотрены/сохранены, primarycontrast>=4.5/captionwidth/no labelclips PASS; headerpixelsво всех6кадрахидентичны0.0. ОбщийстарыйWindowsGUI всёещёFAIL на lightpaperthreshold0.08vsнамеренныйgraphite0.05098; не заявлять полныйGUI PASS. Старыймалыйglyphfallbackнаинициативе остаётся, physicalAndroidтестируетвладелец.
