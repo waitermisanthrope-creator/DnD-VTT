@@ -36,7 +36,7 @@ jobs:
           python -m pip install -r unity/ci/requirements.txt
           python unity/ci/cloud_release.py unseal --source "$env:RUNNER_TEMP/navigation-encrypted" --destination "$env:RUNNER_TEMP/navigation-candidate"
           $candidate = Get-Content "$env:RUNNER_TEMP/navigation-candidate/candidate.json" -Raw | ConvertFrom-Json
-          if ($candidate.version -ne '1.00.58' -or $candidate.source -ne '826f2a1d32a3e12531b4d8d65abacaf590b05ea6') { throw 'Wrong diagnostic source/version' }
+          if ($candidate.version -ne '1.00.58' -or $candidate.sourceCommit -ne '826f2a1d32a3e12531b4d8d65abacaf590b05ea6') { throw 'Wrong diagnostic source/version' }
       - name: Replay actual installed UI and capture native window/cursor evidence
         shell: pwsh
         run: ./.github/scripts/unity-navigation-diagnostic.ps1 -CandidateFolder "$env:RUNNER_TEMP/navigation-candidate"
