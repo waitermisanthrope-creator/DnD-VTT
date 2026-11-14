@@ -16,3 +16,7 @@ Review focus: 360–440 logical-pixel phones; long names; overflow reachability;
 Evidence: fresh catalog workshop run PASS 11523 checks; old cached registry failed its optional-merchants fixture and was replaced. Candidate43582205096, source35e1ed9696948ff63434d5c5c42f2cc5dddac2d5. Local .NET theme95/numeric17/menu50/hero11/lifecycle3/swipe191/delete1781 and Python contracts PASS. Native builds pending.
 
 Delivery complete: publisher43582603729, feed9ef9185c, independent public verifier PASS; Android job132409575612 SUCCESS. Windows graphical review pending separately.
+
+## Native review follow-up57
+
+56 actual GPU frames reviewed: dark primary foreground (inherited menu style over imported dark artwork), wrapped background caption and non-fixed header need correction.57 clones sheet secondary typography for primary, widens caption112 and separates fixed phone header from scroll. Independent review found no blockers. Native primary contrast>=4.5 and caption width checks added; new native captures required.57 candidate/publisher pending; prepare every report before its one approval push, then freeze branch until feed activated.

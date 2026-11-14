@@ -32,3 +32,7 @@ Android job132409575612 SUCCESS. Publisher43582603729/job132415142213 SUCCESS; f
 The earlier publisher43582256391 successfully uploaded the identical signed APK but its feed push was rejected by concurrent documentation commits. Final publisher43582603729 reverified that existing public APK and successfully activated the feed from the final checkout; no force-push or replacement APK bytes.
 
 Windows build/GUI is still running as an independent validation, not a published installer. Physical Android testing belongs to owner.
+
+## Native portrait review and follow-up57
+
+Android delivered as above. Windows build132414963836 SUCCESS; native QA132416630877 produced actual GPU frames before failing its old `bundled paper is actually visible` expectation (observed graphite brightness0.05098, legacy threshold>0.08). This is not a complete GUI PASS. Six reviewed Grimoire frames are preserved in `evidence-1.00.56/`. They confirm the new artwork/dock/details and no measured button clipping, but exposed dark primary text, wrapped background caption and scrolled header positioning.57 fixes only those observed presentation issues, adds native primary contrast>=4.5/caption-width checks, and keeps data/gameplay intact. Owner informed56 remains available while57 is built.

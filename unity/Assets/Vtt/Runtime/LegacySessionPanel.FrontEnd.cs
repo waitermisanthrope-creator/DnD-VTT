@@ -94,8 +94,8 @@ namespace DndVtt.UnityPrototype
             GUI.color = oldColor;
             if(screen==FrontScreen.Sheet)DrawClassicSheetBackdrop();else DrawBrandBackdrop(true);
             float inset = screen==FrontScreen.Sheet?15:Mathf.Min(28f,UiWidth*.04f);
-            if (screen == FrontScreen.Sheet && PhoneSheet) DrawGrimoirePhoneDock();
-            GUILayout.BeginArea(new Rect(inset, screen==FrontScreen.Sheet?8:20, Mathf.Max(1, UiWidth - inset * 2+(screen==FrontScreen.Sheet?8:0)), Mathf.Max(1, UiHeight - (screen==FrontScreen.Sheet && PhoneSheet ? 94 : 40))));
+            if (screen == FrontScreen.Sheet && PhoneSheet) { DrawGrimoirePhoneDock(); DrawGrimoirePhoneHeader(); }
+            GUILayout.BeginArea(new Rect(inset, screen==FrontScreen.Sheet?(PhoneSheet?60:8):20, Mathf.Max(1, UiWidth - inset * 2+(screen==FrontScreen.Sheet?8:0)), Mathf.Max(1, UiHeight - (screen==FrontScreen.Sheet && PhoneSheet ? 146 : 40))));
             bool portraitLayout = UiHeight > UiWidth;
             if(screen==FrontScreen.Sheet)DrawClassicSheetNavigation();
             else
@@ -119,7 +119,7 @@ namespace DndVtt.UnityPrototype
             }
             GUILayout.EndHorizontal(); GUILayout.Space(18);
             }
-            if(screen==FrontScreen.Sheet)GUILayout.Space(PhoneSheet ? 4 : 15);
+            if(screen==FrontScreen.Sheet)GUILayout.Space(PhoneSheet ? 0 : 15);
             frontScroll = GUILayout.BeginScrollView(SwipePosition("front",frontScroll),false,true,GUIStyle.none,GUI.skin.verticalScrollbar);
             GUILayout.BeginVertical(new GUIStyle { fixedWidth=Mathf.Max(1,UiWidth-inset*2-(screen==FrontScreen.Sheet?0:22)),stretchWidth=false });
             var sheetBodyEnabled=GUI.enabled;if(screen==FrontScreen.Sheet&&sheetSwipe.Busy)GUI.enabled=false;

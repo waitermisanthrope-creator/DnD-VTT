@@ -121,8 +121,9 @@ namespace DndVtt.UnityPrototype
         private void GrimoireReadRow(string label, string value)
         {
             GUILayout.BeginHorizontal();
-            GUILayout.Label(label, uiStyles.HeroSubtitle, GUILayout.Width(90),
+            GUILayout.Label(label, uiStyles.HeroSubtitle, GUILayout.Width(112),
                 GUILayout.MinHeight(34));
+            DesktopUiSmoke.RecordSingleLine(label, uiStyles.HeroSubtitle, GUILayoutUtility.GetLastRect());
             GUILayout.Label(string.IsNullOrWhiteSpace(value) ? "—" : value,
                 uiStyles.HeroSubtitle, GUILayout.ExpandWidth(true), GUILayout.MinHeight(34));
             GUILayout.EndHorizontal();

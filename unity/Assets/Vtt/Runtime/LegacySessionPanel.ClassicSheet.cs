@@ -43,17 +43,7 @@ namespace DndVtt.UnityPrototype
         }
         private void DrawClassicSheetNavigation()
         {
-            if (PhoneSheet)
-            {
-                PrepareGrimoireNavigation();
-                GUILayout.BeginHorizontal();
-                if (MeasuredMenuButton("‹ Меню", sheetTabStyle, GUILayout.Width(66), GUILayout.Height(40)))
-                    requestedSheetDestination = FrontScreen.Characters;
-                GUILayout.Label("DnD-VTT", sheetCharacterName, GUILayout.ExpandWidth(true), GUILayout.Height(40));
-                GUILayout.Label(tabs[Mathf.Clamp(sheetTab, 0, tabs.Length - 1)], sheetQuiet, GUILayout.Height(40));
-                GUILayout.EndHorizontal();
-                return;
-            }
+            if (PhoneSheet) return;
             cloneHome??=new GUIStyle(sheetActiveTab){fontSize=14,padding=new RectOffset(),margin=new RectOffset()};
             GUILayout.BeginHorizontal();GUILayout.Space(-5);
             if(MeasuredMenuButton("Меню",cloneHome,GUILayout.Width(65),GUILayout.Height(40)))requestedSheetDestination=FrontScreen.Characters;
@@ -73,6 +63,16 @@ namespace DndVtt.UnityPrototype
             if(MeasuredMenuButton("◉",cloneEye,GUILayout.Width(43),GUILayout.Height(38)))requestedPortraitVisibility=!classicPortraitOpen;
             GUI.enabled=eyeEnabled;
             GUILayout.EndHorizontal();
+        }
+        private void DrawGrimoirePhoneHeader()
+        {
+            // Fixed geometry, like the dock: scrolling a long details editor must
+            // never move or paint over the app header.
+            Rect menu = new Rect(15, 8, 66, 40);
+            if (GUI.Button(menu, "‹ Меню", sheetTabStyle)) requestedSheetDestination = FrontScreen.Characters;
+            DesktopUiSmoke.RecordButton("‹ Меню", sheetTabStyle, menu);
+            GUI.Label(new Rect(90, 8, Mathf.Max(80, UiWidth - 240), 40), "DnD-VTT", sheetCharacterName);
+            GUI.Label(new Rect(UiWidth - 146, 12, 132, 36), tabs[Mathf.Clamp(sheetTab, 0, tabs.Length - 1)], sheetQuiet);
         }
         private void PrepareGrimoireNavigation()
         {

@@ -106,7 +106,7 @@ namespace DndVtt.UnityPrototype
             Texture2D primaryNormal = Resources.Load<Texture2D>("UI/Grimoire/buttons/button_primary_normal_9s");
             if (primaryNormal)
             {
-                grimoirePrimaryButton = new GUIStyle(uiStyles.PrimaryButton);
+                grimoirePrimaryButton = new GUIStyle(grimoireHpButton);
                 grimoirePrimaryButton.border = new RectOffset(16, 16, 16, 16);
                 grimoirePrimaryButton.normal.background = primaryNormal;
                 Texture2D primaryHover = Resources.Load<Texture2D>("UI/Grimoire/buttons/button_primary_hover_9s");

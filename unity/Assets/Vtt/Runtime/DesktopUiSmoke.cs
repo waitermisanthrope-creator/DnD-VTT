@@ -394,6 +394,9 @@ namespace DndVtt.UnityPrototype
                 var document = typeof(LegacySessionPanel).GetField("archive", Flags).GetValue(panel) as LegacyCharacterArchive;
                 int chosen = (int)typeof(LegacySessionPanel).GetField("selected", Flags).GetValue(panel);
                 state.Add("grimoire-hero:" + (string)document.Snapshot(chosen)["id"]);
+                var primary = typeof(LegacySessionPanel).GetField("grimoirePrimaryButton", Flags).GetValue(panel) as GUIStyle;
+                Check(primary != null && UiTheme.Contrast("#" + ColorUtility.ToHtmlStringRGB(primary.normal.textColor), UiTheme.SecondaryPanelHex) >= 4.5,
+                    "primary Grimoire text must remain readable on the imported dark artwork");
                 Check(Resources.Load<Texture2D>("UI/Grimoire/navigation/nav_bottom_plate_9s"), "bundled phone dock artwork");
                 Check(Resources.Load<Texture2D>("UI/Grimoire/backgrounds/bg_graphite_1080x1920"), "bundled graphite artwork");
             }
