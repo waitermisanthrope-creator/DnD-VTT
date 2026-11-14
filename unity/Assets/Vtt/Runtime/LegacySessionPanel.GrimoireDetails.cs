@@ -301,18 +301,20 @@ namespace DndVtt.UnityPrototype
             GUILayout.BeginVertical(uiStyles.HeroPanel);
             var stats = hero["stats"] as JObject ?? new JObject();
             string[] captions = { "СИЛ", "ЛОВ", "ТЕЛ", "ИНТ", "МУД", "ХАР" };
+            int columns = UiWidth < 650 ? 2 : 3;
             for (int i = 0; i < 6; i++)
             {
-                if (i % 2 == 0) GUILayout.BeginHorizontal();
+                if (i % columns == 0) GUILayout.BeginHorizontal();
                 GUILayout.BeginVertical(uiStyles.HeroMetric, GUILayout.ExpandWidth(true));
                 string stat = CharacterSheetRules.Stats[i];
                 GUILayout.BeginHorizontal();
                 GUILayout.Label(captions[i], uiStyles.HeroSubtitle, GUILayout.ExpandWidth(true));
-                GUILayout.Label(Signed(CharacterSheetRules.Modifier(hero, stat)), uiStyles.HeroSubtitle,
-                    GUILayout.Width(33));
+                GUILayout.Label(Signed(CharacterSheetRules.Modifier(hero, stat)),
+                    uiStyles.HeroSubtitle, GUILayout.Width(38));
                 GUILayout.EndHorizontal();
                 string key = "classic-stat:" + hero["id"] + ":" + stat;
-                string old = edits.TryGetValue(key, out string saved) ? saved : stats[stat]?.ToString() ?? "10";
+                string old = edits.TryGetValue(key, out string saved)
+                    ? saved : stats[stat]?.ToString() ?? "10";
                 string value = IntegerField(key, old, GUILayout.MinHeight(44), GUILayout.MinWidth(42));
                 edits[key] = value;
                 if (value != old && int.TryParse(value, NumberStyles.Integer,
@@ -324,26 +326,33 @@ namespace DndVtt.UnityPrototype
                     changed = true;
                 }
                 GUILayout.EndVertical();
-                if (i % 2 == 1) GUILayout.EndHorizontal();
+                if (i % columns == columns - 1) GUILayout.EndHorizontal();
             }
             GUILayout.EndVertical();
 
-            GrimoireSection("СПАСБРОСКИ");
+            GrimoireSection("ВЛАДЕНИЕ СПАСБРОСКАМИ");
             GUILayout.BeginVertical(uiStyles.HeroPanel);
             var saves = hero["savesData"] as JObject ?? new JObject();
             for (int i = 0; i < 6; i++)
             {
-                if (i % 2 == 0) GUILayout.BeginHorizontal();
+                if (i % columns == 0) GUILayout.BeginHorizontal();
                 string stat = CharacterSheetRules.Stats[i];
-                bool old = saves[stat]?.Type == JTokenType.Boolean && (bool)saves[stat];
-                GUILayout.BeginVertical(GUILayout.ExpandWidth(true));
-                GUILayout.Label(captions[i] + "   " + Signed(CharacterSheetRules.Modifier(hero, stat)
-                    + (old ? CharacterSheetRules.Proficiency(hero) : 0)),
-                    uiStyles.HeroSubtitle, GUILayout.MinHeight(23));
-                bool value = GUILayout.Toggle(old, "Владение", GUILayout.MinHeight(44));
-                if (value != old) { saves[stat] = value; hero["savesData"] = saves; changed = true; }
+                bool proficient = saves[stat]?.Type == JTokenType.Boolean && (bool)saves[stat];
+                GUILayout.BeginVertical(uiStyles.HeroMetric, GUILayout.ExpandWidth(true));
+                GUILayout.Label(captions[i] + "  " +
+                    Signed(CharacterSheetRules.Modifier(hero, stat) +
+                        (proficient ? CharacterSheetRules.Proficiency(hero) : 0)),
+                    uiStyles.HeroSubtitle, GUILayout.MinHeight(26));
+                if (MeasuredMenuButton(proficient ? "✓ Владение" : "○ Нет",
+                    proficient ? grimoirePrimaryButton : grimoireHpButton,
+                    GUILayout.ExpandWidth(true), GUILayout.MinHeight(UiTheme.TouchHeight)))
+                {
+                    saves[stat] = !proficient;
+                    hero["savesData"] = saves;
+                    changed = true;
+                }
                 GUILayout.EndVertical();
-                if (i % 2 == 1) GUILayout.EndHorizontal();
+                if (i % columns == columns - 1) GUILayout.EndHorizontal();
             }
             GUILayout.EndVertical();
         }
