@@ -13,4 +13,4 @@
 
 Review focus: 360–440 logical-pixel phones; long names; overflow reachability; pending numeric input on navigation; theme/lifecycle cache resets. Android physical-device testing remains with owner.
 
-Evidence: fresh catalog workshop run PASS 11523 checks; old cached registry failed its optional-merchants fixture and was replaced. Candidate43581731230, source18185caa0d0511ab3114440acceac2941634ac5a. Local .NET theme95/numeric17/menu50/hero11/lifecycle3/swipe191/delete1781 and Python contracts PASS. Native builds pending.
+Evidence: fresh catalog workshop run PASS 11523 checks; old cached registry failed its optional-merchants fixture and was replaced. Candidate43582205096, source35e1ed9696948ff63434d5c5c42f2cc5dddac2d5. Local .NET theme95/numeric17/menu50/hero11/lifecycle3/swipe191/delete1781 and Python contracts PASS. Native builds pending.
