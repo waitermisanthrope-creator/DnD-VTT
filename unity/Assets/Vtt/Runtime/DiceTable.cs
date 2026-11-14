@@ -207,7 +207,10 @@ namespace DndVtt.UnityPrototype
             if(count==100) { AddDie(10,true);AddDie(10,false,true); }else AddDie(count);
             for(int i=0;i<dice.Count;i++) { var d=dice[i];d.body.isKinematic=true;d.body.position=origin+new Vector3((i-(dice.Count-1)*.5f)*1.6f,1,0);d.body.rotation=Quaternion.Euler(20,25,10);d.body.transform.SetPositionAndRotation(d.body.position,d.body.rotation); }
             FrameDice();
-            Result=count==4?"d4: число у верхней вершины; результат по нижней грани.":count==100?"d100: десятки + единицы. 00 и 0 означают 100.":"d"+count+": результат по верхней грани.";Render();
+            Result=count==4?"d4: число у верхней вершины; результат по нижней грани.":count==100?"d100: десятки + единицы. 00 и 0 означают 100.":"d"+count+": результат по верхней грани.";
+            // Preview can be requested by OnGUI (also called inside URP's render
+            // loop). Submit the camera request only from the next Update/Tick.
+            imageDirty=true;
         }
         public void Throw(int count) { Throw("1d"+count); }
         public void Throw(string expression,float strength=.45f)

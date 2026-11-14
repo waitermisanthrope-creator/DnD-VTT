@@ -20,7 +20,7 @@ namespace DndVtt.UnityPrototype
             ClearDice();
             foreach(var go in trayObjects)if(go)UnityEngine.Object.DestroyImmediate(go);trayObjects.Clear();
             foreach(var asset in trayAssets)if(asset)UnityEngine.Object.DestroyImmediate(asset);trayAssets.Clear();
-            tray=selected;BuildTray();Preview(sides);FrameTray();Render();
+            tray=selected;BuildTray();Preview(sides);FrameTray();
         }
         private GameObject TrayBox(string name,Vector3 position,Vector3 size,Color color,Quaternion rotation=default)
         {

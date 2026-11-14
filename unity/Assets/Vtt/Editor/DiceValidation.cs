@@ -90,12 +90,12 @@ public static class DiceValidation
         // Same native renderer/process, actual old initialize sequence versus one
         // preview and retained reopen. Not Android-device performance claims.
         var benchmark=System.Diagnostics.Stopwatch.StartNew();
-        using(var oldPath=new DiceTable()){oldPath.Preview(20);oldPath.SetTray(null);oldPath.SetTheme(null);benchmark.Stop();}
+        using(var oldPath=new DiceTable()){oldPath.Preview(20);oldPath.Tick(0);oldPath.SetTray(null);oldPath.Tick(0);oldPath.SetTheme(null);oldPath.Tick(0);benchmark.Stop();}
         benchmark.Stop();double legacyMs=benchmark.Elapsed.TotalMilliseconds;
         benchmark.Restart();
         using(var retained=new DiceTable(false))
         {
-            retained.Preview(20);benchmark.Stop();double coldMs=benchmark.Elapsed.TotalMilliseconds;
+            retained.Preview(20);retained.Tick(0);benchmark.Stop();double coldMs=benchmark.Elapsed.TotalMilliseconds;
             benchmark.Restart();for(int repeat=0;repeat<100;repeat++)Check(retained.Image!=null,"reopen retains native image");benchmark.Stop();
             Debug.Log("DICE_NATIVE_OPEN_BENCH legacyInitializeMs="+legacyMs.ToString("F2")+" optimizedInitializeMs="+coldMs.ToString("F2")+" retained100ImageAccessesMs="+benchmark.Elapsed.TotalMilliseconds.ToString("F3")+" scope=UnityEditorRendererOrderedWarmProcessNotIndependentColdStarts");
         }
@@ -103,7 +103,7 @@ public static class DiceValidation
         int rolls=0;
         using(var table=new DiceTable()) {
             foreach(int count in new[]{4,6,8,10,12,20,100}) {
-                table.Preview(count);if(count==20)CheckNumeralOcclusion(table);Check(table.BodyCount==(count==100?2:1),"bounded active dice");
+                table.Preview(count);table.Tick(0);if(count==20)CheckNumeralOcclusion(table);Check(table.BodyCount==(count==100?2:1),"bounded active dice");
                 foreach(var body in UnityEngine.Object.FindObjectsByType<Rigidbody>(FindObjectsSortMode.None)) {
                     Check((body.position-body.transform.position).sqrMagnitude<.000001f,"preview physics/render positions agree d"+count);
                     Check(Quaternion.Angle(body.rotation,body.transform.rotation)<.01f,"preview physics/render rotations agree d"+count);
@@ -133,7 +133,7 @@ public static class DiceValidation
                 var data=WorkshopStore.ValidateData(manifest,File.ReadAllText(payload));var theme=DiceTheme.Read((JObject)data["diceThemes"][0],true);
                 table.SetTheme(theme);Check(table.ActiveThemeId==theme.Id&&table.HasMaterialTexture,"downloaded material is active");bool first=families.Add(theme.Shape);var checkedMeshes=new HashSet<Mesh>();
                 foreach(int count in first?new[]{4,6,8,10,12,20,100}:new[]{20}) {
-                    table.Preview(count);if(count==20) { CheckNumeralOcclusion(table);if(theme.Icon.EndsWith(".01")||theme.Icon.EndsWith(".05"))CheckTexturedRender(table); }SaveImage(table.Image,Path.Combine(folder,theme.Id+"-d"+count+".png"),false);Check(theme.Shape=="rounded"||table.PhysicalOrnamentCount>0,"actual protrusion geometry "+theme.Id);
+                    table.Preview(count);table.Tick(0);if(count==20) { CheckNumeralOcclusion(table);if(theme.Icon.EndsWith(".01")||theme.Icon.EndsWith(".05"))CheckTexturedRender(table); }SaveImage(table.Image,Path.Combine(folder,theme.Id+"-d"+count+".png"),false);Check(theme.Shape=="rounded"||table.PhysicalOrnamentCount>0,"actual protrusion geometry "+theme.Id);
                     foreach(var body in UnityEngine.Object.FindObjectsByType<Rigidbody>(FindObjectsSortMode.None)) {
                         var colliders=body.GetComponentsInChildren<MeshCollider>();Check(colliders.Length>(theme.Shape=="rounded"?0:1),"physical collision "+theme.Id);
                         var sculpt=body.transform.Find("Sculpted details");
@@ -176,7 +176,7 @@ public static class DiceValidation
                 string payload=Path.Combine(fixture,"packages",Path.GetFileName((string)manifest["url"]));WorkshopStore.Verify(manifest,payload);
                 var theme=DiceTheme.Read((JObject)WorkshopStore.ValidateData(manifest,File.ReadAllText(payload))["diceThemes"][0],true);table.SetTheme(theme);
                 foreach(int count in new[]{4,6,8,10,12,20,100}) {
-                    table.Preview(count);
+                    table.Preview(count);table.Tick(0);
                     CheckAtlasHandedness(count==100?10:count);
                     Check(!UnityEngine.Object.FindObjectsByType<TextMesh>(FindObjectsSortMode.None).Any(),"numbered material has no floating text layers");
                     Check(table.MaterialBehavior==theme.Behavior,"actual profile selected");
@@ -265,13 +265,13 @@ public static class DiceValidation
                     Check(!table.Value.HasValue&&table.Completed==0&&actors.Select((b,i)=>(b.transform.position-positions[i]).sqrMagnitude<.000001f).All(v=>v),"cancelled partial slime cannot teleport to an uninitialized settled position");
                 }
                 Debug.Log("VTT_DICE_ATLAS_HANDEDNESS_PASS: "+theme.Behavior+" exterior U direction,70 faces incl percentile");
-                table.Preview(20);Check(table.EffectCount==0,"old marks/roots cleared with next preview");experimentCount++;
+                table.Preview(20);table.Tick(0);Check(table.EffectCount==0,"old marks/roots cleared with next preview");experimentCount++;
             }
             Check(experimentCount==6,"six complete experimental sets");
             table.SetTheme(null);
             // Deterministic camera-edge control; not substituted for real throw images.
             foreach(int n in new[]{4,6,8,10,12,20,100}) {
-                table.Preview(n);
+                table.Preview(n);table.Tick(0);
                 var edgeBodies=UnityEngine.Object.FindObjectsByType<Rigidbody>(FindObjectsSortMode.None);
                 for(int i=0;i<edgeBodies.Length;i++) {
                     var actor=edgeBodies[i];Vector3 extent=actor.GetComponent<MeshRenderer>().bounds.extents;
@@ -294,7 +294,7 @@ public static class DiceValidation
             foreach(JObject manifest in trays.Where(m=>(string)m["imageKind"]=="dice-tray")) {
                 string payload=Path.Combine(fixture,"packages",Path.GetFileName((string)manifest["url"]));WorkshopStore.Verify(manifest,payload);
                 var selected=DiceTray.Read((JObject)WorkshopStore.ValidateData(manifest,File.ReadAllText(payload))["diceTrays"][0]);
-                table.SetTray(selected);Check(table.ActiveTrayId==selected.Id,"installed tray selected");
+                table.SetTray(selected);table.Tick(0);Check(table.ActiveTrayId==selected.Id,"installed tray selected");
                 if(selected.Profile=="hexagon"||selected.Profile=="octagon") {
                     var floor=UnityEngine.Object.FindObjectsByType<MeshFilter>(FindObjectsSortMode.None).Single(f=>f.gameObject.name=="Tray floor");
                     Check(floor.sharedMesh.name=="Closed polygon tray floor"&&floor.GetComponent<MeshCollider>().convex,"entire floor is a real polygon prism");

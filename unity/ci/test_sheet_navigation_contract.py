@@ -16,4 +16,8 @@ assert render.index('CommitGrimoireDetailKeyboard(hero, ref changed)')<render.in
 
 assert 'SafePollDiceCatalog()' not in dice[dice.index('private void UpdateDiceTable()'):dice.index('// Manual installed-set selection')], 'catalog changes must commit on Layout'
 assert '← Главное меню' in dice, 'standalone Dice opened from home also needs an exit'
+table=read('DiceTable.cs')
+preview=table[table.index('public void Preview(int count)'):table.index('public void Throw(int count)')]
+assert 'Render();' not in preview and 'imageDirty=true;' in preview, 'Preview invoked from OnGUI must defer URP rendering until Update/Tick'
+assert 'Render();' not in read('DiceTable.Trays.cs'), 'SetTray invoked from OnGUI must also defer rendering'
 print('SHEET_NAVIGATION_FRAME_BOUNDARY_PASS')

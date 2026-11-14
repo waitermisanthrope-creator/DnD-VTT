@@ -1,3 +1,7 @@
+# В РАБОТЕ: hotfix58 — дополнительный URP-дефект найден реальным кликом
+
+Кандидат43612557699/source826 не публиковать: Android и Windows build SUCCESS, реальный внешний Win32 replay43618277357 прошёл пять циклов Dice/Attack/Advancement/back, active-roll/back и standalone HomeDice/back с неизменными JSON+bak, но обнаружил UniversalCameraData already created: DiceTable.Preview вызывал Render из OnGUI внутри URP renderloop. Исправление: Preview лишь imageDirty=true, рендер выполняется следующим Update/Tick. Новый source contract RED→GREEN, syntax1973 PASS. Требуется новый подписанный кандидат58 и внешний native replay на его точном source/hash; embedded measured-pointer smoke промахивается из-за scrollcoords, не является доказательством дефекта приложения. Ни58, ни Windows не опубликованы. Авторизация Android updater сохраняется, разрешение повторно не спрашивать. Следующий шаг — sourcepush/build, затем независимый native PASS и review кадров, docs до одного approvalpush, freeze до publisher, публичный APK/feed verifier.
+
 # В РАБОТЕ: баг навигации57 / hotfix58 — 2026-11-14
 
 Пользователь: Dice/быстраяАтака ломаютUI, нетвозвратакаквразвитии, помогаетrestart. Подтвержденокодом: отсутствуютbackcontrols; queuedSheetTab/scroll/swipeкоммитилисьвDrawSheetпослеоткрытияродительскогоскролла; Diceготовность/catмоглименятьGUIвнеLayout. Физическийexceptionнеполучен, optionalasyncвопросописаниясимптомазадан, работанеблокируется.
