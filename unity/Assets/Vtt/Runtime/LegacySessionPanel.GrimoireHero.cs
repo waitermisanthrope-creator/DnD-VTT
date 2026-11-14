@@ -174,7 +174,9 @@ namespace DndVtt.UnityPrototype
                 requestedPortraitVisibility = true;
             GUILayout.Space(10);
             GUILayout.BeginVertical(GUILayout.ExpandWidth(true));
-            GUILayout.Label((string)hero["name"] ?? "Безымянный герой", uiStyles.HeroName);
+            string heroName = (string)hero["name"];
+            GUILayout.Label(string.IsNullOrWhiteSpace(heroName) ? "Безымянный герой" : heroName,
+                uiStyles.HeroName);
             var classes = hero["classes"] as JArray;
             string classLabel = classes != null && classes.Count > 0
                 ? string.Join(" / ", classes.OfType<JObject>().Select(c => (string)c["name"] ?? "Класс"))
@@ -186,7 +188,6 @@ namespace DndVtt.UnityPrototype
                 GUILayout.Label(background, uiStyles.HeroSubtitle);
             GUILayout.EndVertical();
             GUILayout.EndHorizontal();
-            GrimoireRule();
             GUILayout.EndVertical();
         }
 
@@ -252,18 +253,19 @@ namespace DndVtt.UnityPrototype
             int temporary = GrimoireCount(hero["hpTemp"], Mathf.RoundToInt(archive.TemporaryHp(selected)));
             GUILayout.BeginHorizontal();
             GUILayout.Label("♥ " + current + " / " + maximum + " HP", uiStyles.HeroValue, GUILayout.ExpandWidth(true));
-            GUILayout.Label("Временные: " + temporary, uiStyles.HeroSubtitle, GUILayout.Width(Mathf.Min(142, UiWidth * .29f)));
+            if (temporary > 0)
+                GUILayout.Label("+" + temporary + " врем.", uiStyles.HeroSubtitle,
+                    GUILayout.MinWidth(72));
             GUILayout.EndHorizontal();
             GrimoireProgress(maximum <= 0 ? 0 : (float)current / maximum, new Color(.70f, .37f, .37f), false);
             GUILayout.Space(7);
             GUILayout.BeginHorizontal();
-            GUILayout.FlexibleSpace();
-            if (MeasuredMenuButton("−1 HP", grimoireHpButton, GUILayout.MinWidth(93), GUILayout.MinHeight(UiTheme.TouchHeight)))
+            if (MeasuredMenuButton("−1 HP", grimoireHpButton, GUILayout.ExpandWidth(true), GUILayout.MinHeight(UiTheme.TouchHeight)))
             {
                 SheetAction(() => CharacterSheetRules.ChangeHealth(hero, 1, false), ref changed);
                 InvalidateHealthInputs(hero);
             }
-            if (MeasuredMenuButton("+1 HP", grimoireHpButton, GUILayout.MinWidth(93), GUILayout.MinHeight(UiTheme.TouchHeight)))
+            if (MeasuredMenuButton("+1 HP", grimoireHpButton, GUILayout.ExpandWidth(true), GUILayout.MinHeight(UiTheme.TouchHeight)))
             {
                 SheetAction(() => CharacterSheetRules.ChangeHealth(hero, 1, true), ref changed);
                 InvalidateHealthInputs(hero);
@@ -275,9 +277,9 @@ namespace DndVtt.UnityPrototype
         private void GrimoireMetric(string caption, string value)
         {
             GUILayout.BeginVertical(uiStyles.HeroMetric, GUILayout.ExpandWidth(true));
-            GUILayout.Label(caption, uiStyles.HeroSmall, GUILayout.Height(25));
+            GUILayout.Label(caption, uiStyles.HeroSmall, GUILayout.MinHeight(24));
             GUILayout.Label(caption == "СКОРОСТЬ" ? value.Replace(" / ", "\n") : value,
-                uiStyles.HeroValue, GUILayout.MinHeight(48));
+                uiStyles.HeroValue, GUILayout.MinHeight(42));
             GUILayout.EndVertical();
         }
 
@@ -285,8 +287,8 @@ namespace DndVtt.UnityPrototype
         {
             GrimoireIconHeading("БОЕВЫЕ ПОКАЗАТЕЛИ", grimoireShieldIcon);
             GUILayout.BeginHorizontal();
-            GrimoireMetric("КЛАСС ЗАЩИТЫ", GrimoireCount(hero["ac"], 10).ToString(CultureInfo.InvariantCulture));
-            GrimoireMetric("ИНИЦИАТИВА", Signed(CharacterSheetRules.Modifier(hero, "dex")));
+            GrimoireMetric("КД", GrimoireCount(hero["ac"], 10).ToString(CultureInfo.InvariantCulture));
+            GrimoireMetric("ИНИЦ.", Signed(CharacterSheetRules.Modifier(hero, "dex")));
             GrimoireMetric("СКОРОСТЬ", CharacterSpeedDisplay.Format(hero["speed"]?.ToString()));
             GUILayout.EndHorizontal();
         }
@@ -298,7 +300,7 @@ namespace DndVtt.UnityPrototype
             int level = Math.Max(1, CharacterSheetRules.Level(hero));
             long current = DisplayExperience(hero);
             GUILayout.BeginHorizontal();
-            GUILayout.Label("Уровень " + level, uiStyles.HeroSubtitle);
+            GUILayout.Label("Уровень " + level, uiStyles.HeroSubtitle, GUILayout.ExpandWidth(true));
             GUILayout.FlexibleSpace();
             if (level < GrimoireXpThresholds.Length)
                 GUILayout.Label(current.ToString("N0", GrimoireCulture) + " / " +
@@ -324,7 +326,7 @@ namespace DndVtt.UnityPrototype
                 conditions.Properties()
                     .Where(p => p.Value.Type == JTokenType.Boolean && (bool)p.Value)
                     .Select(p => p.Name).ToArray();
-            GUILayout.Label(active.Length == 0 ? "✓ Без негативных состояний" :
+            GUILayout.Label(active.Length == 0 ? "✓ Нет активных состояний" :
                 string.Join(" · ", active), uiStyles.HeroSubtitle);
             GUILayout.EndVertical();
         }
@@ -332,6 +334,8 @@ namespace DndVtt.UnityPrototype
         private void GrimoireQuickActions(JObject hero)
         {
             GrimoireSection("БЫСТРЫЕ ДЕЙСТВИЯ");
+            // Narrow phones use two rows to keep touch targets legible.
+            bool narrow = UiWidth < 470;
             GUILayout.BeginHorizontal();
             if (MeasuredMenuButton("⚄ Дайсы", grimoireHpButton,
                 GUILayout.ExpandWidth(true), GUILayout.MinHeight(UiTheme.TouchHeight)))
@@ -339,6 +343,8 @@ namespace DndVtt.UnityPrototype
             if (MeasuredMenuButton("⚔ Атаки", grimoireHpButton,
                 GUILayout.ExpandWidth(true), GUILayout.MinHeight(UiTheme.TouchHeight)))
                 requestedSheetTab = 2;
+            if (narrow) GUILayout.EndHorizontal();
+            if (narrow) GUILayout.BeginHorizontal();
             if (MeasuredMenuButton("✦ Развитие", grimoirePrimaryButton,
                 GUILayout.ExpandWidth(true), GUILayout.MinHeight(UiTheme.TouchHeight)))
                 BeginAdvancement(hero, true);
