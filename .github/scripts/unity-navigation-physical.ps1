@@ -109,9 +109,9 @@ try {
   $cycles+=@{cycle=$cycle;diceBack=$true;attacksBack=$true;advancementBack=$true;sameProcess=$game.Id;profileUnchanged=$true}
   Write-Output ('VTT_PHYSICAL_NAV_CYCLE_PASS: '+$cycle)
  }
- Click 45 28;Start-Sleep -Milliseconds 300;Click 110 90;Start-Sleep -Milliseconds 350;$home=Shot 'home-before-dice'
- Click ([int]($home.w*.73)) ([int]($home.h*.718));Start-Sleep -Milliseconds 400;$standalone=Shot 'standalone-dice';Check ([NavPhysical]::HeaderDiff($home.bytes,$standalone.bytes,$home.w,$home.stride) -gt 2) 'Home Dice opens'
- Click ([int]($home.w/2)) 165;Start-Sleep -Milliseconds 350;$homeAgain=Shot 'home-returned';Check ([NavPhysical]::HeaderDiff($home.bytes,$homeAgain.bytes,$home.w,$home.stride) -lt 2) 'standalone Dice returns home'
+ Click 45 28;Start-Sleep -Milliseconds 300;Click 110 90;Start-Sleep -Milliseconds 350;$homeFrame=Shot 'home-before-dice'
+ Click ([int]($homeFrame.w*.73)) ([int]($homeFrame.h*.718));Start-Sleep -Milliseconds 400;$standalone=Shot 'standalone-dice';Check ([NavPhysical]::HeaderDiff($homeFrame.bytes,$standalone.bytes,$homeFrame.w,$homeFrame.stride) -gt 2) 'Home Dice opens'
+ Click ([int]($homeFrame.w/2)) 165;Start-Sleep -Milliseconds 350;$homeFrameAgain=Shot 'home-returned';Check ([NavPhysical]::HeaderDiff($homeFrame.bytes,$homeFrameAgain.bytes,$homeFrame.w,$homeFrame.stride) -lt 2) 'standalone Dice returns home'
  Check ((Get-FileHash $profile).Hash -eq $before -and (Get-FileHash ($profile+'.bak')).Hash -eq $before) 'final archive and backup unchanged'
  $errors=Select-String -Path $log -Pattern 'NullReferenceException|ArgumentException|InvalidOperationException|Exception:|Getting control|Invalid GUILayout|GUI Error|EndLayoutGroup'
  Check (!$errors) 'no GUI/runtime exceptions in actual player log'
