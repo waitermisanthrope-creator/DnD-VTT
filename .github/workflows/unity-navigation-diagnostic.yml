@@ -1,0 +1,51 @@
+name: Replay built Unity navigation candidate
+on:
+  push:
+    branches: [experiment/unity-vtt]
+    paths:
+      - '.github/workflows/unity-navigation-diagnostic.yml'
+      - '.github/scripts/unity-navigation-diagnostic.ps1'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: unity-navigation-diagnostic
+  cancel-in-progress: true
+jobs:
+  replay:
+    if: github.repository == 'waitermisanthrope-creator/DnD-VTT' && github.ref == 'refs/heads/experiment/unity-vtt' && github.actor == 'waitermisanthrope-creator'
+    runs-on: windows-latest
+    environment: unity-ci
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ github.token }}
+          run-id: 43612557699
+          name: Unity-private-candidate-43612557699
+          path: ${{ runner.temp }}/navigation-encrypted
+      - name: Authenticate existing candidate without rebuilding
+        env:
+          UNITY_CI_ARTIFACT_PASSWORD: ${{ secrets.UNITY_CI_ARTIFACT_PASSWORD }}
+        shell: pwsh
+        run: |
+          python -m pip install -r unity/ci/requirements.txt
+          python unity/ci/cloud_release.py unseal --source "$env:RUNNER_TEMP/navigation-encrypted" --destination "$env:RUNNER_TEMP/navigation-candidate"
+          $candidate = Get-Content "$env:RUNNER_TEMP/navigation-candidate/candidate.json" -Raw | ConvertFrom-Json
+          if ($candidate.version -ne '1.00.58' -or $candidate.source -ne '826f2a1d32a3e12531b4d8d65abacaf590b05ea6') { throw 'Wrong diagnostic source/version' }
+      - name: Replay actual installed UI and capture native window/cursor evidence
+        shell: pwsh
+        run: ./.github/scripts/unity-navigation-diagnostic.ps1 -CandidateFolder "$env:RUNNER_TEMP/navigation-candidate"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: Navigation-diagnostic-${{ github.run_id }}
+          path: |
+            ${{ runner.temp }}/navigation-native/
+            ${{ runner.temp }}/windows-ui-evidence/
+          if-no-files-found: error
+          retention-days: 3
