@@ -90,12 +90,12 @@ $cycles=@();$failure=$null
 try {
  for($i=0;$i -lt 100;$i++){$game.Refresh();if($game.MainWindowHandle -ne 0){$script:handle=$game.MainWindowHandle;break};Start-Sleep -Milliseconds 200}
  Check ($script:handle -ne [IntPtr]::Zero) 'visible Unity window';[NavPhysical]::SetForegroundWindow($script:handle)|Out-Null
+ Start-Sleep -Seconds 30
+ $game.Refresh();$script:handle=$game.MainWindowHandle;[NavPhysical]::SetForegroundWindow($script:handle)|Out-Null
  $wr=[NavPhysical+Rect]::new();$cr=[NavPhysical+Rect]::new();[NavPhysical]::GetWindowRect($script:handle,[ref]$wr)|Out-Null;[NavPhysical]::GetClientRect($script:handle,[ref]$cr)|Out-Null
  [NavPhysical]::MoveWindow($script:handle,20,0,(440+$wr.right-$wr.left-$cr.right),(704+$wr.bottom-$wr.top-$cr.bottom),$true)|Out-Null
  Start-Sleep -Seconds 3
- for($ready=0;$ready -lt 100;$ready++){$frame=Shot;$lit=0;for($pixel=0;$pixel -lt $frame.bytes.Length;$pixel+=40){if($frame.bytes[$pixel+2] -gt 80){$lit++}};if($lit -gt 150){break};Start-Sleep -Milliseconds 500}
- Start-Sleep -Seconds 2
- $s=Shot 'splash';Click ($s.w-80) ($s.h-41);Start-Sleep -Milliseconds 400
+ $s=Shot 'splash';Start-Sleep -Milliseconds 400
  $s=Shot 'home-initial';Click ($s.w-70) 55;Start-Sleep -Milliseconds 450
  $s=Shot 'hero-initial';Check (Hero $s) 'Home Sheet button opens hero'
  for($cycle=0;$cycle -lt 5;$cycle++) {
@@ -120,7 +120,7 @@ try {
  @{status='passed';candidateRun=43612557699;source=$report.sourceCommit;version=$report.version;cycles=$cycles;standaloneBack=$true;productionBinaryUnchanged=$true;profileSha256=$before;physicalAndroid=$false} | ConvertTo-Json -Depth 8 | Set-Content (Join-Path $root 'verdict.json')
  Write-Output 'VTT_PHYSICAL_NAVIGATION_PASS: five real pointer roundtrips in unchanged candidate; standalone Home Dice/back; profile+backup unchanged; no GUI/runtime exceptions'
 }
-catch {$failure=$_;Write-Output ('PHYSICAL_NAV_DIAGNOSTIC: '+$_);try{Shot 'failure'|Out-Null}catch{}}
+catch {$failure=$_;Write-Output ('PHYSICAL_NAV_DIAGNOSTIC: '+$_);Get-Content $log -Tail 35 | Write-Output;try{Shot 'failure'|Out-Null}catch{}}
 finally {
  if(!$game.HasExited){Stop-Process $game.Id -Force}
  foreach($p in Get-ChildItem $root -Filter '*.png'){
