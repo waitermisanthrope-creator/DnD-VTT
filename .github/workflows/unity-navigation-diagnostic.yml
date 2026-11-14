@@ -5,6 +5,7 @@ on:
     paths:
       - '.github/workflows/unity-navigation-diagnostic.yml'
       - '.github/scripts/unity-navigation-diagnostic.ps1'
+      - '.github/scripts/unity-navigation-physical.ps1'
   workflow_dispatch:
 permissions:
   contents: read
@@ -39,13 +40,14 @@ jobs:
           if ($candidate.version -ne '1.00.58' -or $candidate.sourceCommit -ne '826f2a1d32a3e12531b4d8d65abacaf590b05ea6') { throw 'Wrong diagnostic source/version' }
       - name: Replay actual installed UI and capture native window/cursor evidence
         shell: pwsh
-        run: ./.github/scripts/unity-navigation-diagnostic.ps1 -CandidateFolder "$env:RUNNER_TEMP/navigation-candidate"
+        run: ./.github/scripts/unity-navigation-physical.ps1 -CandidateFolder "$env:RUNNER_TEMP/navigation-candidate"
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: Navigation-diagnostic-${{ github.run_id }}
           path: |
             ${{ runner.temp }}/navigation-native/
+            ${{ runner.temp }}/navigation-physical/
             ${{ runner.temp }}/windows-ui-evidence/
           if-no-files-found: error
           retention-days: 3
