@@ -13,6 +13,7 @@ namespace DndVtt.UnityPrototype
             0, 300, 900, 2700, 6500, 14000, 23000, 34000, 48000, 64000,
             85000, 100000, 120000, 140000, 165000, 195000, 225000, 265000, 305000, 355000
         };
+        private GUIStyle grimoireHpButton;
         private static readonly CultureInfo GrimoireCulture = CultureInfo.GetCultureInfo("ru-RU");
 
         private void PrepareGrimoireHeroStyles()
@@ -67,6 +68,29 @@ namespace DndVtt.UnityPrototype
                 uiStyles.HeroMetric.normal.background = inset;
                 uiStyles.HeroMetric.border = new RectOffset(16, 16, 16, 16);
             }
+            // Skin the Hero quick HP controls with the imported nine-slice artwork.
+            // Keep this local to Hero: other sheets (especially the wallet) retain
+            // their existing button styles and behavior.
+            Texture2D buttonNormal = Resources.Load<Texture2D>("UI/Grimoire/buttons/button_secondary_normal_9s");
+            if (buttonNormal)
+            {
+                GUIStyle heroButton = new GUIStyle(uiStyles.SecondaryButton);
+                heroButton.border = new RectOffset(16, 16, 16, 16);
+                heroButton.normal.background = buttonNormal;
+                Texture2D buttonHover = Resources.Load<Texture2D>("UI/Grimoire/buttons/button_secondary_hover_9s");
+                Texture2D buttonPressed = Resources.Load<Texture2D>("UI/Grimoire/buttons/button_secondary_pressed_9s");
+                Texture2D buttonDisabled = Resources.Load<Texture2D>("UI/Grimoire/buttons/button_secondary_disabled_9s");
+                heroButton.hover.background = buttonHover ? buttonHover : buttonNormal;
+                heroButton.active.background = buttonPressed ? buttonPressed : buttonNormal;
+                heroButton.focused.background = buttonNormal;
+                heroButton.onNormal.background = buttonNormal;
+                heroButton.onHover.background = heroButton.hover.background;
+                heroButton.onActive.background = heroButton.active.background;
+                heroButton.onFocused.background = buttonNormal;
+                if (buttonDisabled) heroButton.onNormal.background = buttonNormal;
+                grimoireHpButton = heroButton;
+            }
+            else grimoireHpButton = uiStyles.SecondaryButton;
             uiStyles.HeroIcon = Resources.Load<Texture2D>("UI/Grimoire/icons/icon_hero_96");
             uiStyles.HeroHealthTrack = Resources.Load<Texture2D>("UI/Grimoire/bars/bar_health_track_9s");
             uiStyles.HeroHealthFill = Resources.Load<Texture2D>("UI/Grimoire/bars/bar_health_fill_mask_9s");
@@ -195,12 +219,12 @@ namespace DndVtt.UnityPrototype
             GUILayout.Space(7);
             GUILayout.BeginHorizontal();
             GUILayout.FlexibleSpace();
-            if (MeasuredMenuButton("−1 HP", uiStyles.SecondaryButton, GUILayout.MinWidth(93), GUILayout.MinHeight(UiTheme.TouchHeight)))
+            if (MeasuredMenuButton("−1 HP", grimoireHpButton, GUILayout.MinWidth(93), GUILayout.MinHeight(UiTheme.TouchHeight)))
             {
                 SheetAction(() => CharacterSheetRules.ChangeHealth(hero, 1, false), ref changed);
                 InvalidateHealthInputs(hero);
             }
-            if (MeasuredMenuButton("+1 HP", uiStyles.SecondaryButton, GUILayout.MinWidth(93), GUILayout.MinHeight(UiTheme.TouchHeight)))
+            if (MeasuredMenuButton("+1 HP", grimoireHpButton, GUILayout.MinWidth(93), GUILayout.MinHeight(UiTheme.TouchHeight)))
             {
                 SheetAction(() => CharacterSheetRules.ChangeHealth(hero, 1, true), ref changed);
                 InvalidateHealthInputs(hero);
