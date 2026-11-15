@@ -35,6 +35,17 @@ namespace DndVtt.UnityPrototype
             return Math.Max(10, damage / 2);
         }
 
+        // Apply a resolved Constitution saving throw, without rolling dice here.
+        // No concentration means no mutation. Damage 0 requires no save.
+        public static bool ResolveConcentrationSave(JObject hero, int damage, int saveTotal)
+        {
+            if (hero == null || damage < 0) throw new FormatException("Некорректный урон");
+            if (hero["concentratingOn"] == null || damage == 0) return true;
+            if (saveTotal >= ConcentrationDifficulty(damage)) return true;
+            EndConcentration(hero);
+            return false;
+        }
+
         public static void Cast(JObject hero, JObject spell, int slotLevel)
         {
             Cast(hero, spell, slotLevel, false);
