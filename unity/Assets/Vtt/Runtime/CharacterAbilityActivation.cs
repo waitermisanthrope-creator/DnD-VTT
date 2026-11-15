@@ -12,8 +12,6 @@ namespace DndVtt.UnityPrototype
             if (hero == null || ability == null) throw new FormatException("Приём не выбран");
             string id = (string)ability["id"];
             if (string.IsNullOrWhiteSpace(id)) throw new FormatException("Приём без идентификатора");
-            if ((string)hero["turnPhase"] == "ended")
-                throw new FormatException("Ход завершён. Начните следующий ход");
             var copy = (JObject)hero.DeepClone();
             CharacterResourceEngine.EnsureTurnResources(copy);
             string action = ((string)(ability["actionType"] ?? ability["activation"] ??
@@ -24,6 +22,8 @@ namespace DndVtt.UnityPrototype
                 action == "бонусное" || action == "бонусное действие" ? "turn.bonus" :
                 action == "reaction" || action == "реакция" ? "turn.reaction" : null;
             if (cost == null) throw new FormatException("Для приёма не задан поддерживаемый тип действия");
+            if ((string)hero["turnPhase"] == "ended" && cost != "turn.reaction")
+                throw new FormatException("Ход завершён. Доступны только реакции");
             var costs = new Dictionary<string, int> { [cost] = 1 };
             var resourceId = (string)ability["resourceId"];
             if (!string.IsNullOrWhiteSpace(resourceId))
