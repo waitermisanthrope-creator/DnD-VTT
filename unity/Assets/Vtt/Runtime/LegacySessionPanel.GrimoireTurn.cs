@@ -45,7 +45,7 @@ namespace DndVtt.UnityPrototype
                         ((int?)value["current"] ?? 0) + "/" + ((int?)definition["max"] ?? 0));
                     int spend = id == "turn.movement" ? 5 : 1;
                     bool wasEnabled = GUI.enabled;
-                    GUI.enabled = wasEnabled && (string)hero["turnPhase"] != "ended" &&
+                    GUI.enabled = wasEnabled && ((string)hero["turnPhase"] != "ended" || id == "turn.reaction") &&
                         ((int?)value["current"] ?? 0) >= spend;
                     if (MeasuredMenuButton(id == "turn.movement" ? "−5 фт" : "Использовать",
                         uiStyles.AbilityChip, GUILayout.Width(110), GUILayout.Height(35)))
@@ -69,6 +69,17 @@ namespace DndVtt.UnityPrototype
                 MeasuredMenuButton("Завершить ход", uiStyles.AbilityGold,
                 GUILayout.ExpandWidth(true), GUILayout.Height(42)))
                 SheetAction(() => CharacterResourceEngine.EndTurn(hero), ref changed);
+            if (hero["concentratingOn"] is JObject focus)
+            {
+                GUILayout.Label("Концентрация: " +
+                    ((string)focus["name"] ?? (string)focus["id"] ?? "Заклинание"),
+                    uiStyles.AbilitySub);
+                if (MeasuredMenuButton("Прекратить концентрацию", uiStyles.AbilityChip,
+                    GUILayout.ExpandWidth(true), GUILayout.Height(35)))
+                    SheetAction(() => CharacterSpellCasting.EndConcentration(hero), ref changed);
+            }
+            if (hero["timedEffects"] is JArray effects && effects.Count > 0)
+                GUILayout.Label("Активные эффекты: " + effects.Count, uiStyles.AbilitySub);
             GUILayout.EndVertical();
             GUILayout.Space(6);
         }
