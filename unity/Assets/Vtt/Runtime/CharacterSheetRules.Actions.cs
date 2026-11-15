@@ -99,9 +99,11 @@ namespace DndVtt.UnityPrototype
             }
             if(full)CharacterResourceEngine.Restore(copy,"short");
             CharacterResourceEngine.Restore(copy,full?"long":"short");
+            if(full) CharacterSpellCasting.EndConcentration(copy);
             copy["lastRest"]=new JObject{["type"]=full?"long":"short",["at"]=DateTime.UtcNow.ToString("o"),["id"]=Guid.NewGuid().ToString()};
             // All work above is detached: unsupported data cannot leave a partial rest.
-            foreach(string field in new[]{"resources","combatAbilities","pactMagicData","pactMagic","spellSlotsData","hpCurrent","hpMax","hpTemp","currentHP","maxHp","tempHp","hp","hitPoints","deathSaves","lastRest","resourceState","resourceDefinitions"})if(copy[field]!=null)hero[field]=copy[field].DeepClone();
+            foreach(string field in new[]{"resources","combatAbilities","pactMagicData","pactMagic","spellSlotsData","hpCurrent","hpMax","hpTemp","currentHP","maxHp","tempHp","hp","hitPoints","deathSaves","lastRest","resourceState","resourceDefinitions","timedEffects"})if(copy[field]!=null)hero[field]=copy[field].DeepClone();
+            if(full) hero.Remove("concentratingOn");
         }
         private static int RaceInteger(JToken token,int fallback,int minimum,int maximum)
         {
