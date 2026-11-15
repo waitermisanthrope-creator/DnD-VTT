@@ -56,6 +56,65 @@ namespace DndVtt.UnityPrototype
                 if (copy[key] != null) hero[key] = copy[key].DeepClone();
         }
 
+        // Supported declarative formulas; never execute expressions from packages.
+        private static int ResolveMaximum(JObject hero, JObject definition)
+        {
+            string formula = (string)definition["maxFormula"];
+            if (string.IsNullOrWhiteSpace(formula))
+            {
+                if (definition["max"] == null ||
+                    !CharacterSheetRules.TrySheetCount(definition["max"], out int literal))
+                    throw new FormatException("HB-ресурс требует целого максимума");
+                return literal;
+            }
+            int level = 1;
+            if (hero["level"] != null &&
+                (!CharacterSheetRules.TrySheetCount(hero["level"], out level) || level < 1 || level > 20))
+                throw new FormatException("Некорректный уровень персонажа");
+            int value;
+            if (formula == "level") value = level;
+            else if (formula == "proficiency") value = 2 + (level - 1) / 4;
+            else if (formula.StartsWith("modifier:", StringComparison.Ordinal))
+            {
+                string stat = formula.Substring("modifier:".Length);
+                if (stat != "str" && stat != "dex" && stat != "con" &&
+                    stat != "int" && stat != "wis" && stat != "cha")
+                    throw new FormatException("Неизвестная характеристика HB-ресурса");
+                value = CharacterSheetRules.Modifier(hero, stat);
+            }
+            else throw new FormatException("Неподдерживаемая формула HB-ресурса");
+            int minimum = 0;
+            if (definition["minimum"] != null &&
+                (!CharacterSheetRules.TrySheetCount(definition["minimum"], out minimum) ||
+                 minimum > 1000000))
+                throw new FormatException("Некорректный минимум HB-ресурса");
+            return Math.Max(minimum, value);
+        }
+
+        public static bool RefreshFormulaResources(JObject hero)
+        {
+            if (hero == null) return false;
+            var copy = (JObject)hero.DeepClone();
+            var definitions = copy[CharacterResourceEngine.DefinitionsKey] as JArray;
+            if (definitions == null) return false;
+            bool changed = false;
+            foreach (var token in definitions)
+            {
+                if (!(token is JObject definition) || definition["maxFormula"] == null) continue;
+                int maximum = ResolveMaximum(copy, definition);
+                if (maximum > 1000000) throw new FormatException("Превышен максимум HB-ресурса");
+                if ((int?)definition["max"] != maximum)
+                {
+                    definition["max"] = maximum;
+                    changed = true;
+                }
+            }
+            CharacterResourceEngine.Synchronize(copy);
+            hero[CharacterResourceEngine.DefinitionsKey] = copy[CharacterResourceEngine.DefinitionsKey].DeepClone();
+            hero[CharacterResourceEngine.StateKey] = copy[CharacterResourceEngine.StateKey].DeepClone();
+            return changed;
+        }
+
         // Register explicit HB definitions without overwriting spent charges.
         // Only concrete maxima are accepted; formula evaluation belongs to import.
         public static int ImportDefinitions(JObject hero, JArray incoming)
@@ -79,13 +138,15 @@ namespace DndVtt.UnityPrototype
                 string id = (string)definition["id"];
                 if (string.IsNullOrWhiteSpace(id) || id.StartsWith("turn.", StringComparison.Ordinal))
                     throw new FormatException("Некорректный ID HB-ресурса");
-                if (!CharacterSheetRules.TrySheetCount(definition["max"], out int max) ||
-                    definition["max"] == null || max > 1000000)
-                    throw new FormatException("HB-ресурс требует конкретного максимума");
+                int max = ResolveMaximum(copy, definition);
+                if (max > 1000000)
+                    throw new FormatException("Превышен максимум HB-ресурса");
                 if (definition["restoreOn"] != null && !(definition["restoreOn"] is JArray))
                     throw new FormatException("Некорректное восстановление HB-ресурса");
                 if (!ids.Add(id)) continue;
-                definitions.Add(definition.DeepClone());
+                var resolved = (JObject)definition.DeepClone();
+                resolved["max"] = max;
+                definitions.Add(resolved);
                 added++;
             }
             CharacterResourceEngine.Synchronize(copy);
