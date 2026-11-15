@@ -18,7 +18,7 @@ namespace DndVtt
         public static Sprite GetSprite(int id)
         {
             if (id < 1 || id > 160) return null;
-            if (Sprites.TryGetValue(id, out var sprite)) return sprite;
+            if (Sprites.TryGetValue(id, out var cachedSprite)) return cachedSprite;
             if (Missing.Contains(id)) return null;
 
             // Unity Resources.Load<Sprite> requires Sprite (2D and UI) import settings.
