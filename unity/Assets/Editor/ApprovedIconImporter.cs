@@ -20,9 +20,9 @@ namespace DndVtt.Editor
         {
             var zipPath = EditorUtility.OpenFilePanel("Select dnd_vtt_icons_160_complete.zip", "", "zip");
             if (string.IsNullOrEmpty(zipPath)) return;
-            if (!Directory.Exists(Destination)) Directory.CreateDirectory(Destination);
-
-            int imported = 0;
+            // Validate the entire archive BEFORE writing any Unity assets.
+            // A broken or partial ZIP must not leave half an imported pack.
+            var payloads = new byte[161][];
             var seen = new bool[161];
             using (var archive = ZipFile.OpenRead(zipPath))
             {
@@ -35,16 +35,31 @@ namespace DndVtt.Editor
                         id < 1 || id > 160 || seen[id])
                         throw new InvalidDataException("Invalid or duplicate icon: " + name);
                     seen[id] = true;
-                    string destination = Destination + "/icon_" + id.ToString("D3") + ".png";
                     using (var input = entry.Open())
-                    using (var output = File.Create(destination))
-                        input.CopyTo(output);
-                    imported++;
+                    using (var memory = new MemoryStream())
+                    {
+                        input.CopyTo(memory);
+                        payloads[id] = memory.ToArray();
+                    }
+                    var texture = new Texture2D(2, 2);
+                    try
+                    {
+                        if (!texture.LoadImage(payloads[id]))
+                            throw new InvalidDataException("Unreadable PNG: " + name);
+                        if (texture.width < 24 || texture.height < 24)
+                            throw new InvalidDataException("Icon too small: " + name);
+                    }
+                    finally { UnityEngine.Object.DestroyImmediate(texture); }
                 }
             }
-            if (imported != 160)
-                throw new InvalidDataException("Expected 160 icons, found " + imported +
-                    ". Partial import may exist; correct archive and reimport.");
+            for (int id = 1; id <= 160; id++)
+                if (!seen[id])
+                    throw new InvalidDataException("Missing approved icon: " + id.ToString("D3"));
+
+            if (!Directory.Exists(Destination)) Directory.CreateDirectory(Destination);
+            for (int id = 1; id <= 160; id++)
+                File.WriteAllBytes(Destination + "/icon_" + id.ToString("D3") + ".png",
+                    payloads[id]);
             AssetDatabase.Refresh();
             for (int id = 1; id <= 160; id++)
             {
