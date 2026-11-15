@@ -14,9 +14,10 @@ namespace DndVtt.UnityPrototype
             public Texture2D HeroIcon, HeroHealthTrack, HeroHealthFill, HeroXpTrack, HeroXpFill;
             // Scoped to the abilities page; allocated once per sheet skin, not per OnGUI.
             public GUIStyle AbilityPanel, AbilityCard, AbilityName, AbilitySub, AbilityTitle,
-                AbilityCounter, AbilityCircleTitle, AbilityGlyph, AbilityGold, AbilityTab,
-                AbilityChip, AbilitySelectedChip, AbilityStar, AbilitySearchPanel,
-                AbilityInput, AbilitySearchGlyph, AbilityOrnament;
+                AbilitySpellMeta, AbilityCounter, AbilityCircleTitle, AbilityGlyph,
+                AbilityGold, AbilityTab, AbilityChip, AbilitySelectedChip, AbilityStar,
+                AbilitySearchPanel, AbilityInput, AbilitySearchGlyph, AbilitySearchHint,
+                AbilityOrnament, AbilityDockLabel, AbilityBack;
             public Texture2D AbilityResourceTrack, AbilityPlaceholder, AbilityDivider,
                 AbilityOrbFilled, AbilityOrbEmpty;
             public Texture2D[] AbilityDockIcons;

@@ -14,10 +14,13 @@ namespace DndVtt.UnityPrototype
         private int abilityActionFilter;
         private int abilitySpellCircle = -1;
         private bool abilitySpellFiltersOpen;
+        private bool abilityMoreFeaturesOpen;
+        private bool abilityEditorOpen;
         private string abilitySpellQuery = "";
         private Vector2 abilitySlotsScroll, abilitySpellFiltersScroll;
         private int? pendingAbilityViewMode, pendingAbilityActionFilter, pendingAbilitySpellCircle;
-        private bool? pendingAbilitySpellFilters;
+        private bool? pendingAbilitySpellFilters, pendingAbilityMoreFeatures, pendingAbilityEditor;
+        private string pendingAbilityFold;
         private static readonly string[] AbilityActionLabels = { "Все", "Действия", "Бонусные", "Реакции" };
         private static readonly string[] AbilityRoman = { "Ф", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX" };
 
@@ -26,10 +29,13 @@ namespace DndVtt.UnityPrototype
             abilityViewMode = abilityActionFilter = 0;
             abilitySpellCircle = -1;
             abilitySpellFiltersOpen = false;
+            abilityMoreFeaturesOpen = false;
+            abilityEditorOpen = false;
             abilitySpellQuery = "";
             abilitySlotsScroll = abilitySpellFiltersScroll = Vector2.zero;
             pendingAbilityViewMode = pendingAbilityActionFilter = pendingAbilitySpellCircle = null;
-            pendingAbilitySpellFilters = null;
+            pendingAbilitySpellFilters = pendingAbilityMoreFeatures = pendingAbilityEditor = null;
+            pendingAbilityFold = null;
         }
 
         private void CommitGrimoireAbilityView()
@@ -56,6 +62,22 @@ namespace DndVtt.UnityPrototype
             {
                 abilitySpellFiltersOpen = pendingAbilitySpellFilters.Value;
                 pendingAbilitySpellFilters = null;
+            }
+            if (pendingAbilityMoreFeatures.HasValue)
+            {
+                abilityMoreFeaturesOpen = pendingAbilityMoreFeatures.Value;
+                pendingAbilityMoreFeatures = null;
+            }
+            if (pendingAbilityEditor.HasValue)
+            {
+                abilityEditorOpen = pendingAbilityEditor.Value;
+                pendingAbilityEditor = null;
+            }
+            if (pendingAbilityFold != null)
+            {
+                ResetFormInput();
+                if (!expanded.Add(pendingAbilityFold)) expanded.Remove(pendingAbilityFold);
+                pendingAbilityFold = null;
             }
         }
 
@@ -101,7 +123,8 @@ namespace DndVtt.UnityPrototype
             CommitGrimoireAbilityView();
             if (!PhoneSheet) DrawSheetHeroBack();
 
-            GUILayout.Space(5);
+            // A single visual stream exactly like the approved right-hand phone.
+            GUILayout.Space(2);
             DrawAbilityModeTabs();
             if (abilityViewMode == 0)
             {
@@ -125,6 +148,7 @@ namespace DndVtt.UnityPrototype
                 GUILayout.ExpandWidth(true), GUILayout.Height(47)))
                 pendingAbilityViewMode = 1;
             GUILayout.EndHorizontal();
+            GUILayout.Space(8);
         }
 
         private void DrawAbilityActionTabs()
@@ -135,11 +159,11 @@ namespace DndVtt.UnityPrototype
                 int value = i;
                 if (MeasuredMenuButton(AbilityActionLabels[i],
                     abilityActionFilter == i ? uiStyles.AbilitySelectedChip : uiStyles.AbilityChip,
-                    GUILayout.ExpandWidth(true), GUILayout.MinHeight(35)))
+                    GUILayout.ExpandWidth(true), GUILayout.Height(36)))
                     pendingAbilityActionFilter = value;
             }
             GUILayout.EndHorizontal();
-            GUILayout.Space(4);
+            GUILayout.Space(5);
         }
 
         private void DrawAbilityCards(JObject hero, ref bool changed)
@@ -181,51 +205,47 @@ namespace DndVtt.UnityPrototype
                 bool known = CharacterSheetRules.TrySheetCount(ability["maxUses"], out int max) &&
                     CharacterSheetRules.TrySheetCount(ability["usedCount"], out int used);
                 if (!known) { max = 0; used = 0; }
-                GUILayout.BeginVertical(uiStyles.AbilityCard);
-                GUILayout.BeginHorizontal();
-                DrawGrimoireQuestionIcon(47);
+                GUILayout.BeginVertical(uiStyles.AbilityCard, GUILayout.MinHeight(68));
+                GUILayout.BeginHorizontal(GUILayout.MinHeight(51));
+                DrawGrimoireQuestionIcon(51);
                 GUILayout.Space(7);
                 GUILayout.BeginVertical(GUILayout.ExpandWidth(true));
-                GUILayout.Label(name, uiStyles.AbilityName);
+                if (GUILayout.Button(name + (open ? "  ▴" : "  ▾"),
+                    uiStyles.AbilityName))
+                    ToggleAbilityFold(key);
                 string recharge = (string)ability["rechargeOn"] ?? "none";
                 string rechargeLabel = recharge == "short" || recharge == "short_rest" ? "короткий отдых" :
                     recharge == "long" || recharge == "long_rest" ? "длинный отдых" : "не требуется";
                 GUILayout.Label(known ? "Восстановление: " + rechargeLabel : "Особый счётчик · данные сохранены",
                     uiStyles.AbilitySub);
                 GUILayout.EndVertical();
-                GUILayout.BeginVertical(GUILayout.Width(85));
+                GUILayout.BeginVertical(GUILayout.Width(90));
                 if (known && max > 0)
-                    GUILayout.Label(Math.Max(0, max - used) + "/" + max, uiStyles.AbilityCounter, GUILayout.Height(19));
+                    GUILayout.Label(Math.Max(0, max - used) + "/" + max, uiStyles.AbilityCounter, GUILayout.Height(21));
                 else
-                    GUILayout.Label("—", uiStyles.AbilityCounter, GUILayout.Height(19));
+                    GUILayout.Label("—", uiStyles.AbilityCounter, GUILayout.Height(21));
                 bool old = GUI.enabled;
                 GUI.enabled = old && known && max > 0 && used < max;
                 if (max > 0 && known)
                 {
                     if (MeasuredMenuButton(used < max ? "Применить" : "Исчерпано", uiStyles.AbilityGold,
-                        GUILayout.Width(85), GUILayout.Height(29)))
+                        GUILayout.Width(90), GUILayout.Height(31)))
                         SheetAction(() => CharacterSheetRules.ChangeAbilityUse(hero, ability["id"]?.ToString(), 1), ref changed);
                 }
                 GUI.enabled = old;
                 if (!(known && max > 0) &&
-                    MeasuredMenuButton(open ? "Свернуть" : "Подробнее", uiStyles.AbilityChip, GUILayout.Width(85), GUILayout.Height(29)))
+                    MeasuredMenuButton(open ? "Свернуть" : "Подробнее", uiStyles.AbilityChip, GUILayout.Width(90), GUILayout.Height(31)))
                     ToggleAbilityFold(key);
                 GUILayout.EndVertical();
                 GUILayout.EndHorizontal();
-                if (known && max > 0)
-                {
-                    GUILayout.BeginHorizontal();
-                    GUILayout.FlexibleSpace();
-                    if (used > 0 && MeasuredMenuButton("↶ Вернуть", uiStyles.AbilityChip,
-                        GUILayout.Width(95), GUILayout.Height(30)))
-                        SheetAction(() => CharacterSheetRules.ChangeAbilityUse(hero, ability["id"]?.ToString(), -1), ref changed);
-                    if (MeasuredMenuButton(open ? "▴ Свернуть" : "▾ Подробнее", uiStyles.AbilityChip,
-                        GUILayout.Width(105), GUILayout.Height(30)))
-                        ToggleAbilityFold(key);
-                    GUILayout.EndHorizontal();
-                }
+                // Details open by tapping the ability name. No second control
+                // row is needed in the collapsed reference-sized card.
                 if (open)
                 {
+                    if (known && max > 0 && used > 0 &&
+                        MeasuredMenuButton("↶ Вернуть использование", uiStyles.AbilityChip,
+                            GUILayout.MinHeight(40)))
+                        SheetAction(() => CharacterSheetRules.ChangeAbilityUse(hero, ability["id"]?.ToString(), -1), ref changed);
                     GUILayout.Label("Параметры приёма", uiStyles.AbilitySub);
                     foreach (var pair in new[] { ("name", "Название"), ("description", "Описание"),
                         ("maxUses", "Максимум использований"), ("rechargeOn", "Восстановление: short / long / none") })
@@ -238,14 +258,16 @@ namespace DndVtt.UnityPrototype
 
             // Imported class features may be purely descriptive. Show them as
             // read-only cards, never fabricate uses or a playable effect.
-            for (int index = 0; index < additional.Count; index++)
+            int visibleFeatures = abilityMoreFeaturesOpen ? additional.Count :
+                Math.Min(additional.Count, 2);
+            for (int index = 0; index < visibleFeatures; index++)
             {
                 var feature = additional[index];
                 string key = "grimoire-feature:" + index + ":" + feature.name;
                 bool open = expanded.Contains(key);
-                GUILayout.BeginVertical(uiStyles.AbilityCard);
-                GUILayout.BeginHorizontal();
-                DrawGrimoireQuestionIcon(47);
+                GUILayout.BeginVertical(uiStyles.AbilityCard, GUILayout.MinHeight(65));
+                GUILayout.BeginHorizontal(GUILayout.MinHeight(49));
+                DrawGrimoireQuestionIcon(49);
                 GUILayout.Space(7);
                 GUILayout.BeginVertical(GUILayout.ExpandWidth(true));
                 GUILayout.Label(feature.name, uiStyles.AbilityName);
@@ -262,18 +284,30 @@ namespace DndVtt.UnityPrototype
                 GUILayout.EndVertical();
             }
 
-            if (MeasuredMenuButton("+ Свой приём", uiStyles.AbilityTab,
-                GUILayout.ExpandWidth(true), GUILayout.MinHeight(42)))
-                SheetAction(() => CharacterSheetRules.Array(hero, "combatAbilities").Add(new JObject {
-                    ["id"] = Guid.NewGuid().ToString(), ["name"] = "Новый приём", ["description"] = "",
-                    ["rechargeOn"] = "none", ["maxUses"] = 0, ["usedCount"] = 0
-                }), ref changed);
+            if (additional.Count > 2)
+            {
+                if (MeasuredMenuButton(abilityMoreFeaturesOpen ? "▴ Свернуть особенности" :
+                    "▾ Все особенности (" + additional.Count + ")", uiStyles.AbilityChip,
+                    GUILayout.MinHeight(36)))
+                    pendingAbilityMoreFeatures = !abilityMoreFeaturesOpen;
+            }
+            if (abilityEditorOpen)
+            {
+                GUILayout.BeginVertical(uiStyles.AbilityPanel);
+                if (MeasuredMenuButton("+ Свой приём", uiStyles.AbilityTab,
+                    GUILayout.MinHeight(42)))
+                    SheetAction(() => CharacterSheetRules.Array(hero, "combatAbilities").Add(new JObject {
+                        ["id"] = Guid.NewGuid().ToString(), ["name"] = "Новый приём", ["description"] = "",
+                        ["rechargeOn"] = "none", ["maxUses"] = 0, ["usedCount"] = 0
+                    }), ref changed);
+                GUILayout.EndVertical();
+            }
         }
 
         private void ToggleAbilityFold(string key)
         {
-            ResetFormInput();
-            if (!expanded.Add(key)) expanded.Remove(key);
+            // IMGUI layout must only change at the next Layout event.
+            pendingAbilityFold = key;
         }
 
         private void DrawAbilitySlotPanel(JObject hero, ref bool changed)
@@ -312,27 +346,35 @@ namespace DndVtt.UnityPrototype
             if (slots.Count == 0 && unusual.Count == 0)
                 GUILayout.Label("Обычных ячеек пока нет", uiStyles.AbilitySub);
 
-            int maxHeight = 110;
+            // Group widths are fixed; the full row scrolls horizontally if more
+            // than three circles are unlocked. No squashing of the glowing orbs.
+            int highestRows = slots.Count == 0 ? 1 : slots.Max(s => (Math.Min(s.max, 20) + 4) / 5);
+            int maxHeight = Mathf.Clamp(43 + highestRows * 26, 75, 150);
             abilitySlotsScroll = GUILayout.BeginScrollView(
-                SwipePosition("grimoire-ability-slots", abilitySlotsScroll), true, false,
+                SwipePosition("grimoire-ability-slots", abilitySlotsScroll), false, false,
                 GUI.skin.horizontalScrollbar, GUIStyle.none, GUILayout.Height(maxHeight));
             GUILayout.BeginHorizontal();
             foreach (var slot in slots)
             {
                 int level = slot.level, max = slot.max, used = slot.used;
                 bool pact = slot.pact;
-                GUILayout.BeginVertical(GUILayout.Width(116));
+                GUILayout.BeginVertical(GUILayout.Width(117));
                 GUILayout.Label(pact ? "ПАКТ " + AbilityRoman[level] : AbilityRoman[level],
                     uiStyles.AbilityCircleTitle, GUILayout.Height(22));
                 int display = Math.Min(max, 20);
                 for (int start = 0; start < display; start += 5)
                 {
-                    GUILayout.BeginHorizontal();
+                    // Fixed geometry; a GUILayout row of five tiny buttons can
+                    // add implicit spacing and incorrectly wrap to six columns.
+                    Rect row = GUILayoutUtility.GetRect(111, 26,
+                        GUILayout.Width(111), GUILayout.Height(26));
                     for (int index = start; index < Math.Min(display, start + 5); index++)
                     {
                         bool filled = index < Math.Max(0, max - used);
-                        Rect orb = GUILayoutUtility.GetRect(17, 17, GUILayout.Width(17), GUILayout.Height(17));
-                        if (GUI.Button(orb, GUIContent.none, GUIStyle.none))
+                        Rect hit = new Rect(row.x + (index - start) * 22,
+                            row.y, 22, 26);
+                        Rect orb = new Rect(hit.x + 2, hit.y + 4, 18, 18);
+                        if (GUI.Button(hit, GUIContent.none, GUIStyle.none))
                         {
                             if (pact) SheetAction(() => CharacterSheetRules.ChangePactUse(hero, filled ? 1 : -1), ref changed);
                             else SheetAction(() => CharacterSheetRules.ChangeSpellUse(hero, level, filled ? 1 : -1), ref changed);
@@ -340,7 +382,6 @@ namespace DndVtt.UnityPrototype
                         if (Event.current.type == EventType.Repaint)
                             DrawGrimoireAbilityOrb(orb, filled, level);
                     }
-                    GUILayout.EndHorizontal();
                 }
                 if (max > display)
                     GUILayout.Label("+" + (max - display) + " ячеек", uiStyles.AbilitySub);
@@ -353,22 +394,25 @@ namespace DndVtt.UnityPrototype
             GUILayout.EndScrollView();
             RegisterSwipe("grimoire-ability-slots", GUILayoutUtility.GetLastRect(), true);
             foreach (string message in unusual) GUILayout.Label(message, uiStyles.AbilitySub);
-            if (SheetFold("grimoire-slot-settings", "⚙ Настроить ячейки"))
-                Tree(hero, "spellSlotsData", "Максимум / использовано", ref changed);
             GUILayout.EndVertical();
             DrawGrimoireAbilityFrame(GUILayoutUtility.GetLastRect());
         }
 
         private void DrawAbilitySpellToolbar(JObject hero)
         {
-            GUILayout.Space(7);
-            GUILayout.BeginHorizontal(uiStyles.AbilitySearchPanel, GUILayout.MinHeight(43));
+            GUILayout.Space(4);
+            GUILayout.BeginHorizontal(uiStyles.AbilitySearchPanel, GUILayout.Height(44));
             GUILayout.Label("⌕", uiStyles.AbilitySearchGlyph, GUILayout.Width(25), GUILayout.Height(32));
             abilitySpellQuery = MenuTextField("grimoire-abilities-spell-search", abilitySpellQuery,
-                uiStyles.AbilityInput, GUILayout.ExpandWidth(true), GUILayout.MinHeight(36));
-            if (MeasuredMenuButton("⚲", uiStyles.AbilityChip, GUILayout.Width(38), GUILayout.Height(36)))
+                uiStyles.AbilityInput, GUILayout.ExpandWidth(true), GUILayout.Height(36));
+            Rect searchRect = GUILayoutUtility.GetLastRect();
+            if (Event.current.type == EventType.Repaint && string.IsNullOrEmpty(abilitySpellQuery))
+                GUI.Label(new Rect(searchRect.x + 8, searchRect.y + 2,
+                    searchRect.width - 16, searchRect.height - 4),
+                    "Поиск заклинаний…", uiStyles.AbilitySearchHint);
+            if (MeasuredMenuButton("⚲", uiStyles.AbilityChip, GUILayout.Width(39), GUILayout.Height(36)))
                 pendingAbilitySpellFilters = !abilitySpellFiltersOpen;
-            if (MeasuredMenuButton("＋", uiStyles.AbilityChip, GUILayout.Width(38), GUILayout.Height(36)))
+            if (MeasuredMenuButton("☷", uiStyles.AbilityChip, GUILayout.Width(39), GUILayout.Height(36)))
                 OpenSpellCatalog();
             GUILayout.EndHorizontal();
             if (abilitySpellFiltersOpen)
@@ -415,19 +459,20 @@ namespace DndVtt.UnityPrototype
                 string key = "spell:" + spell["id"];
                 bool open = expanded.Contains(key);
                 bool prepared = spell["prepared"]?.Type == JTokenType.Boolean && (bool)spell["prepared"];
-                GUILayout.BeginVertical(uiStyles.AbilityCard);
-                GUILayout.BeginHorizontal();
-                DrawGrimoireQuestionIcon(45);
+                GUILayout.BeginVertical(uiStyles.AbilityCard, GUILayout.MinHeight(56));
+                GUILayout.BeginHorizontal(GUILayout.MinHeight(47));
+                DrawGrimoireQuestionIcon(47);
                 GUILayout.Space(6);
                 GUILayout.BeginVertical(GUILayout.ExpandWidth(true));
                 GUILayout.Label(name, uiStyles.AbilityName);
                 string time = (string)spell["castingTime"] ?? (string)spell["time"] ?? "—";
                 string range = (string)spell["range"] ?? "—";
-                GUILayout.Label((level < 0 ? "?" : AbilityRoman[level]) +
-                    "   " + time + "    ◉ " + range +
+                string summary = (level < 0 ? "?" : AbilityRoman[level]) + "   " +
+                    CompactSpellAttribute(time, 14) + "  ◉ " +
+                    CompactSpellAttribute(range, 12) +
                     (spell["concentration"]?.Type == JTokenType.Boolean && (bool)spell["concentration"]
-                        ? "   ◇ Конц." : ""),
-                    uiStyles.AbilitySub);
+                        ? "  ◇ Конц." : "");
+                GUILayout.Label(summary, uiStyles.AbilitySpellMeta, GUILayout.MinHeight(17));
                 GUILayout.EndVertical();
                 if (MeasuredMenuButton(prepared ? "★" : "☆", uiStyles.AbilityStar,
                     GUILayout.Width(33), GUILayout.Height(39)))
@@ -450,6 +495,15 @@ namespace DndVtt.UnityPrototype
                 }
                 GUILayout.EndVertical();
             }
+        }
+
+        // Display-only truncation. Original time/range stays in JSON and the
+        // expanded description, so no user content is modified.
+        private static string CompactSpellAttribute(string value, int maxLength)
+        {
+            if (string.IsNullOrWhiteSpace(value)) return "—";
+            value = value.Trim().Replace("\\n", " ");
+            return value.Length > maxLength ? value.Substring(0, maxLength - 1) + "…" : value;
         }
 
         private void DrawAbilityResources(JObject hero, ref bool changed)
@@ -496,6 +550,11 @@ namespace DndVtt.UnityPrototype
             GUILayout.BeginVertical(uiStyles.AbilityPanel);
             if (SheetFold("class-features", "Особенности класса"))
                 ReadOnlyToken(hero["features"] ?? new JArray(), "features", 0);
+            if (SheetFold("grimoire-slot-settings", "⚙ Настроить ячейки"))
+                Tree(hero, "spellSlotsData", "Максимум / использовано", ref changed);
+            if (MeasuredMenuButton(abilityEditorOpen ? "▴ Скрыть инструменты" :
+                "＋ Добавить свой приём", uiStyles.AbilityChip, GUILayout.MinHeight(39)))
+                pendingAbilityEditor = !abilityEditorOpen;
             if (SheetFold("grimoire-ability-stats", "⚙ Параметры приёмов и магии"))
             {
                 GUILayout.Label("Характеристика приёмов", uiStyles.AbilitySub);

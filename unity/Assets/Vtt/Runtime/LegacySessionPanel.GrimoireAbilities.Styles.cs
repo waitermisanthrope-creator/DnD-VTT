@@ -19,13 +19,14 @@ namespace DndVtt.UnityPrototype
                 ?? Resources.Load<Texture2D>("UI/Grimoire/panels/panel_secondary_9s");
             var activeTexture = Resources.Load<Texture2D>(art + "tab_gold_9s");
             var idleTexture = Resources.Load<Texture2D>(art + "tab_idle_9s");
-            var gold = ThemeHeadingAccent;
+            // The owner-approved mockup specifies gold independently of global accent.
+            var gold = new Color(.95f, .76f, .41f);
             var text = new Color(.98f, .94f, .85f);
 
             uiStyles.AbilityPanel = new GUIStyle(uiStyles.HeroPanel)
             {
-                padding = new RectOffset(10, 10, 9, 10),
-                margin = new RectOffset(1, 1, 3, 9)
+                padding = new RectOffset(9, 9, 7, 7),
+                margin = new RectOffset(1, 1, 2, 7)
             };
             if (panel)
             {
@@ -35,8 +36,8 @@ namespace DndVtt.UnityPrototype
 
             uiStyles.AbilityCard = new GUIStyle(uiStyles.AbilityPanel)
             {
-                padding = new RectOffset(9, 9, 8, 8),
-                margin = new RectOffset(1, 1, 3, 5)
+                padding = new RectOffset(7, 7, 4, 5),
+                margin = new RectOffset(1, 1, 2, 5)
             };
             if (inset)
             {
@@ -47,21 +48,31 @@ namespace DndVtt.UnityPrototype
             uiStyles.AbilityName = new GUIStyle(uiStyles.HeroSection)
             {
                 fontSize = 16, fontStyle = FontStyle.Bold,
-                wordWrap = true, margin = new RectOffset(0, 0, 0, 0),
+                font = sheetSerif, wordWrap = true, margin = new RectOffset(0, 0, 0, 0),
                 normal = { textColor = text }
             };
+            // Ability names are tappable detail controls while keeping label styling.
+            uiStyles.AbilityName.hover.textColor = text;
+            uiStyles.AbilityName.active.textColor = text;
+            uiStyles.AbilityName.focused.textColor = text;
             uiStyles.AbilitySub = new GUIStyle(uiStyles.HeroSubtitle)
             {
-                fontSize = 12, wordWrap = true,
-                margin = new RectOffset(0, 0, 2, 2),
+                fontSize = 12, wordWrap = false,
+                margin = new RectOffset(0, 0, 2, 0),
                 normal = { textColor = new Color(.78f, .77f, .74f) }
             };
             uiStyles.AbilityTitle = new GUIStyle(uiStyles.HeroSection)
             {
                 fontSize = 19, alignment = TextAnchor.MiddleCenter,
-                fontStyle = FontStyle.Bold, wordWrap = false,
+                font = sheetSerif, fontStyle = FontStyle.Bold, wordWrap = false,
                 margin = new RectOffset(0, 0, 2, 5),
                 normal = { textColor = gold }
+            };
+            uiStyles.AbilitySpellMeta = new GUIStyle(uiStyles.AbilitySub)
+            {
+                font = sheetSerif, fontSize = 11, wordWrap = false,
+                alignment = TextAnchor.MiddleLeft,
+                margin = new RectOffset(0, 0, 0, 0)
             };
             uiStyles.AbilityCounter = new GUIStyle(uiStyles.HeroSmall)
             {
@@ -86,7 +97,7 @@ namespace DndVtt.UnityPrototype
             {
                 alignment = TextAnchor.MiddleCenter,
                 fontStyle = FontStyle.Bold,
-                border = new RectOffset(28, 28, 28, 28)
+                border = new RectOffset(25, 25, 12, 12)
             };
             if (activeTexture)
             {
@@ -127,17 +138,10 @@ namespace DndVtt.UnityPrototype
 
             uiStyles.AbilityChip = new GUIStyle(uiStyles.AbilityTab)
             {
-                fontSize = 11, padding = new RectOffset(3, 3, 4, 4),
+                fontSize = 12, border = new RectOffset(18, 18, 10, 10),
+                padding = new RectOffset(3, 3, 4, 4),
                 margin = new RectOffset(1, 1, 1, 1)
             };
-            var ghost = Resources.Load<Texture2D>("UI/Grimoire/buttons/button_ghost_normal_9s");
-            if (ghost)
-            {
-                uiStyles.AbilityChip.normal.background = ghost;
-                uiStyles.AbilityChip.hover.background = ghost;
-                uiStyles.AbilityChip.active.background = ghost;
-                uiStyles.AbilityChip.focused.background = ghost;
-            }
             uiStyles.AbilitySelectedChip = new GUIStyle(uiStyles.AbilityChip);
             uiStyles.AbilitySelectedChip.normal.background = activeTexture
                 ? activeTexture : uiStyles.AbilityGold.normal.background;
@@ -147,10 +151,15 @@ namespace DndVtt.UnityPrototype
 
             uiStyles.AbilityStar = new GUIStyle(uiStyles.AbilityChip)
             {
-                fontSize = 26, alignment = TextAnchor.MiddleCenter,
+                fontSize = 25, alignment = TextAnchor.MiddleCenter,
                 padding = new RectOffset(0, 0, 0, 0),
                 normal = { textColor = gold }
             };
+            // Star is drawn on the card face, not in its own large button.
+            uiStyles.AbilityStar.normal.background = null;
+            uiStyles.AbilityStar.hover.background = null;
+            uiStyles.AbilityStar.active.background = null;
+            uiStyles.AbilityStar.focused.background = null;
             uiStyles.AbilitySearchPanel = new GUIStyle(uiStyles.AbilityPanel)
             {
                 padding = new RectOffset(6, 6, 2, 2),
@@ -158,8 +167,36 @@ namespace DndVtt.UnityPrototype
             };
             uiStyles.AbilityInput = new GUIStyle(sheetSkin.textField)
             {
-                fontSize = 13, padding = new RectOffset(8, 8, 7, 7),
+                font = sheetSerif, fontSize = 13,
+                border = new RectOffset(19, 19, 12, 12),
+                padding = new RectOffset(8, 8, 7, 7),
                 margin = new RectOffset(0, 0, 0, 0)
+            };
+            if (idleTexture)
+            {
+                uiStyles.AbilityInput.normal.background = idleTexture;
+                uiStyles.AbilityInput.focused.background = idleTexture;
+                uiStyles.AbilityInput.hover.background = idleTexture;
+            }
+            uiStyles.AbilityInput.normal.textColor = text;
+            uiStyles.AbilityInput.focused.textColor = text;
+            uiStyles.AbilitySearchHint = new GUIStyle(sheetSkin.label)
+            {
+                fontSize = 12, alignment = TextAnchor.MiddleLeft,
+                padding = new RectOffset(0, 0, 0, 0),
+                normal = { textColor = new Color(.61f, .60f, .58f) }
+            };
+            uiStyles.AbilityDockLabel = new GUIStyle(sheetQuiet)
+            {
+                font = sheetSerif, fontSize = 12,
+                alignment = TextAnchor.LowerCenter, wordWrap = false,
+                padding = new RectOffset(0, 0, 0, 5),
+                normal = { textColor = Color.white }
+            };
+            uiStyles.AbilityBack = new GUIStyle(uiStyles.AbilityChip)
+            {
+                fontSize = 24, fontStyle = FontStyle.Bold,
+                alignment = TextAnchor.MiddleCenter
             };
             uiStyles.AbilityStar.hover.textColor = gold;
             uiStyles.AbilityStar.active.textColor = gold;
@@ -256,43 +293,51 @@ namespace DndVtt.UnityPrototype
         private void DrawGrimoireAbilityPhoneHeader()
         {
             PrepareGrimoireAbilityStyles();
+            // The shared sheet header has a gray overlay. This opaque graphite
+            // cover only applies to sheetTab 2 and restores the reference palette.
             if (Event.current.type == EventType.Repaint)
-                DrawGrimoireAbilityFrame(new Rect(12, 4, UiWidth - 24, 49));
-            Rect back = new Rect(13, 9, 58, 36);
-            if (GUI.Button(back, "‹", sheetTabStyle)) ReturnToHero();
-            DesktopUiSmoke.RecordButton("‹ К герою", sheetTabStyle, back);
-            GUI.Label(new Rect(74, 11, UiWidth - 86, 36),
-                "СПОСОБНОСТИ И МАГИЯ", uiStyles.AbilityTitle);
+            {
+                Shade(new Rect(0, 0, UiWidth, 60), new Color(.045f, .043f, .055f, 1f));
+                DrawGrimoireAbilityFrame(new Rect(10, 3, UiWidth - 20, 54));
+            }
+            Rect back = new Rect(13, 8, 46, 43);
+            if (GUI.Button(back, "‹", uiStyles.AbilityBack)) ReturnToHero();
+            DesktopUiSmoke.RecordButton("‹ К герою", uiStyles.AbilityBack, back);
+            Rect title = new Rect(64, 12, Mathf.Max(180, UiWidth - 77), 38);
+            GUI.Label(title, "СПОСОБНОСТИ И МАГИЯ", uiStyles.AbilityTitle);
         }
 
         private void DrawGrimoireAbilityPhoneDock()
         {
             PrepareGrimoireNavigation();
             PrepareGrimoireAbilityStyles();
-            Rect dock = new Rect(10, UiHeight - 76, UiWidth - 20, 66);
+            Rect dock = new Rect(10, UiHeight - 78, UiWidth - 20, 69);
             if (Event.current.type == EventType.Repaint)
-                grimoireDockPanel.Draw(dock, false, false, false, false);
+                uiStyles.AbilityPanel.Draw(dock, false, false, false, false);
             string[] labels = { "Герой", "Инвентарь", "Умения", "Знания", "Настройки" };
             int[] targets = { 0, 3, 2, 9, -1 };
             float cell = (dock.width - 12) / 5;
             for (int i = 0; i < 5; i++)
             {
                 bool active = i == 2;
-                Rect button = new Rect(dock.x + 6 + i * cell, dock.y + 4, cell - 3, dock.height - 8);
-                if (GUI.Button(button, GUIContent.none, active ? uiStyles.AbilityGold : grimoireDockIdle))
+                Rect button = new Rect(dock.x + 6 + i * cell, dock.y + 4,
+                    cell - 3, dock.height - 8);
+                if (GUI.Button(button, GUIContent.none, active ? uiStyles.AbilityGold : uiStyles.AbilityTab))
                 {
                     if (i == 4) OpenSettings();
                     else requestedSheetTab = targets[i];
                     CompleteNumericKeyboard();
                 }
                 if (Event.current.type != EventType.Repaint) continue;
-                Color tint = active ? ThemeHeadingAccent : new Color(.80f, .75f, .67f);
+                Color tint = active ? new Color(1f, .78f, .38f) :
+                    new Color(.85f, .70f, .42f);
                 if (uiStyles.AbilityDockIcons[i])
-                    GUI.DrawTexture(new Rect(button.center.x - 12, button.y + 6, 24, 24),
+                    GUI.DrawTexture(new Rect(button.center.x - 13, button.y + 5, 26, 26),
                         uiStyles.AbilityDockIcons[i], ScaleMode.ScaleToFit, true, 0, tint, 0, 0);
                 Color previous = GUI.contentColor;
-                GUI.contentColor = tint;
-                GUI.Label(button, labels[i], grimoireDockLabel);
+                GUI.contentColor = active ? new Color(1, .94f, .79f) :
+                    new Color(.89f, .82f, .70f);
+                GUI.Label(button, labels[i], uiStyles.AbilityDockLabel);
                 GUI.contentColor = previous;
             }
         }
