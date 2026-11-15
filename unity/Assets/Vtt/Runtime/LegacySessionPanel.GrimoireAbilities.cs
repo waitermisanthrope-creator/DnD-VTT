@@ -214,8 +214,8 @@ namespace DndVtt.UnityPrototype
                 DrawGrimoireQuestionIcon(51);
                 GUILayout.Space(7);
                 GUILayout.BeginVertical(GUILayout.ExpandWidth(true));
-                if (GUILayout.Button(name + (open ? "  ▴" : "  ▾"),
-                    uiStyles.AbilityName))
+                if (MeasuredMenuButton(name + (open ? "  ▴" : "  ▾"),
+                    uiStyles.AbilityTab, GUILayout.MinHeight(44)))
                     ToggleAbilityFold(key);
                 string recharge = (string)ability["rechargeOn"] ?? "none";
                 string rechargeLabel = recharge == "short" || recharge == "short_rest" ? "короткий отдых" :
@@ -229,7 +229,8 @@ namespace DndVtt.UnityPrototype
                 else
                     GUILayout.Label("—", uiStyles.AbilityCounter, GUILayout.Height(21));
                 bool old = GUI.enabled;
-                GUI.enabled = old && known && max > 0 && used < max;
+                GUI.enabled = old && known && max > 0 && used < max &&
+                    ((string)hero["turnPhase"] != "ended" || GrimoireAbilityMatches(ability, 3));
                 if (max > 0 && known)
                 {
                     if (MeasuredMenuButton(used < max ? "Применить" : "Исчерпано", uiStyles.AbilityGold,
@@ -274,7 +275,8 @@ namespace DndVtt.UnityPrototype
                 DrawGrimoireQuestionIcon(49);
                 GUILayout.Space(7);
                 GUILayout.BeginVertical(GUILayout.ExpandWidth(true));
-                GUILayout.Label(feature.name, uiStyles.AbilityName);
+                if (MeasuredMenuButton(feature.name, uiStyles.AbilityTab,
+                    GUILayout.MinHeight(44))) ToggleAbilityFold(key);
                 GUILayout.Label("Особенность класса", uiStyles.AbilitySub);
                 GUILayout.EndVertical();
                 if (MeasuredMenuButton(open ? "⌃" : "⌄", uiStyles.AbilityChip,
