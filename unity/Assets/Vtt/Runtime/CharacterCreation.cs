@@ -28,15 +28,15 @@ namespace DndVtt.UnityPrototype
             hero["class"] = cls["name"].DeepClone(); hero["className"] = cls["name"].DeepClone();
             hero["classId"] = cls["id"].DeepClone();
             foreach (var entry in new[] { race, cls }) RecordPackage(hero, entry);
-            // Optional explicit HB resources supplied by class packages.
-            if (cls["resourceDefinitions"] is JArray classResources)
-                CharacterAbilityActivation.ImportDefinitions(hero, classResources);
             hero["raceId"] = race["id"].DeepClone(); hero["raceName"] = race["name"].DeepClone();
             hero["background"] = background["nameRu"] ?? background["name"];
             hero["_builderBaseStats"] = stats.DeepClone(); hero["statGenerationMode"] = mode;
             hero["stats"] = stats.DeepClone();
             foreach (string stat in CharacterSheetRules.Stats)
                 hero["stats"][stat] = (int)(LegacyJson.Number(stats[stat]) + LegacyJson.Number((race["seed"]?["stats"] as JObject)?[stat], 10) - 10);
+            // Optional explicit HB resources supplied by class packages.
+            if (cls["resourceDefinitions"] is JArray classResources)
+                CharacterAbilityActivation.ImportDefinitions(hero, classResources);
             hero["choiceState"] = new JObject(); hero["choiceHistory"] = new JArray(); hero["pendingChoices"] = new JArray();
             foreach (var entry in new[] { race, cls, background })
                 foreach (JObject choice in (JArray)entry["choices"])
