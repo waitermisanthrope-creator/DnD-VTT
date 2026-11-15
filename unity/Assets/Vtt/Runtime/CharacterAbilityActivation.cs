@@ -56,33 +56,142 @@ namespace DndVtt.UnityPrototype
                 if (copy[key] != null) hero[key] = copy[key].DeepClone();
         }
 
-        // Supported declarative formulas; never execute expressions from packages.
+        // Bounded declarative arithmetic; never evaluate C# or scripts from HB.
+        // Grammar: numbers, level, proficiency, modifier:wis (etc),
+        // + - * /, parentheses, min(a,b), max(a,b), floor(a), ceil(a).
+        private sealed class FormulaParser
+        {
+            private readonly string source;
+            private readonly JObject hero;
+            private int position;
+            private int nodes;
+            public FormulaParser(string formula, JObject character)
+            {
+                source = formula;
+                hero = character;
+                if (source.Length > 256) throw new FormatException("Слишком длинная HB-формула");
+            }
+            private void Space()
+            {
+                while (position < source.Length && char.IsWhiteSpace(source[position])) position++;
+            }
+            private bool Eat(char c)
+            {
+                Space();
+                if (position < source.Length && source[position] == c)
+                { position++; return true; }
+                return false;
+            }
+            private decimal Expression()
+            {
+                decimal value = Term();
+                while (true)
+                {
+                    if (Eat('+')) value = checked(value + Term());
+                    else if (Eat('-')) value = checked(value - Term());
+                    else return value;
+                }
+            }
+            private decimal Term()
+            {
+                decimal value = Atom();
+                while (true)
+                {
+                    if (Eat('*')) value = checked(value * Atom());
+                    else if (Eat('/'))
+                    {
+                        decimal divisor = Atom();
+                        if (divisor == 0) throw new FormatException("Деление на ноль в HB-формуле");
+                        value /= divisor;
+                    }
+                    else return value;
+                }
+            }
+            private decimal Atom()
+            {
+                if (++nodes > 128) throw new FormatException("Слишком сложная HB-формула");
+                if (Eat('+')) return Atom();
+                if (Eat('-')) return -Atom();
+                if (Eat('('))
+                {
+                    decimal nested = Expression();
+                    if (!Eat(')')) throw new FormatException("Не закрыта скобка HB-формулы");
+                    return nested;
+                }
+                Space();
+                int start = position;
+                while (position < source.Length &&
+                    (char.IsLetterOrDigit(source[position]) || source[position] == ':' ||
+                     source[position] == '_' || source[position] == '.'))
+                    position++;
+                if (start == position) throw new FormatException("Неожиданный символ HB-формулы");
+                string token = source.Substring(start, position - start).ToLowerInvariant();
+                if (decimal.TryParse(token, System.Globalization.NumberStyles.AllowDecimalPoint,
+                    System.Globalization.CultureInfo.InvariantCulture, out decimal number))
+                    return number;
+                if (token == "min" || token == "max")
+                {
+                    if (!Eat('(')) throw new FormatException("Ожидалась скобка функции");
+                    decimal left = Expression();
+                    if (!Eat(',')) throw new FormatException("Ожидалась запятая функции");
+                    decimal right = Expression();
+                    if (!Eat(')')) throw new FormatException("Ожидалась закрывающая скобка");
+                    return token == "min" ? Math.Min(left, right) : Math.Max(left, right);
+                }
+                if (token == "floor" || token == "ceil")
+                {
+                    if (!Eat('(')) throw new FormatException("Ожидалась скобка функции");
+                    decimal arg = Expression();
+                    if (!Eat(')')) throw new FormatException("Ожидалась закрывающая скобка");
+                    return token == "floor" ? Math.Floor(arg) : Math.Ceiling(arg);
+                }
+                int level = 1;
+                if (hero["level"] != null &&
+                    (!CharacterSheetRules.TrySheetCount(hero["level"], out level) ||
+                     level < 1 || level > 20))
+                    throw new FormatException("Некорректный уровень персонажа");
+                if (token == "level") return level;
+                if (token == "proficiency") return 2 + (level - 1) / 4;
+                if (token.StartsWith("modifier:", StringComparison.Ordinal))
+                {
+                    string stat = token.Substring("modifier:".Length);
+                    if (stat != "str" && stat != "dex" && stat != "con" &&
+                        stat != "int" && stat != "wis" && stat != "cha")
+                        throw new FormatException("Неизвестная характеристика HB-ресурса");
+                    return CharacterSheetRules.Modifier(hero, stat);
+                }
+                throw new FormatException("Неизвестный токен HB-формулы: " + token);
+            }
+            public int Evaluate()
+            {
+                try
+                {
+                    decimal value = Expression();
+                    Space();
+                    if (position != source.Length)
+                        throw new FormatException("Лишние символы в HB-формуле");
+                    if (value < -1000000 || value > 1000000)
+                        throw new FormatException("HB-формула вышла за допустимый диапазон");
+                    return (int)Math.Floor(value);
+                }
+                catch (OverflowException)
+                {
+                    throw new FormatException("Переполнение HB-формулы");
+                }
+            }
+        }
+
         private static int ResolveMaximum(JObject hero, JObject definition)
         {
             string formula = (string)definition["maxFormula"];
+            int value;
             if (string.IsNullOrWhiteSpace(formula))
             {
                 if (definition["max"] == null ||
-                    !CharacterSheetRules.TrySheetCount(definition["max"], out int literal))
+                    !CharacterSheetRules.TrySheetCount(definition["max"], out value))
                     throw new FormatException("HB-ресурс требует целого максимума");
-                return literal;
             }
-            int level = 1;
-            if (hero["level"] != null &&
-                (!CharacterSheetRules.TrySheetCount(hero["level"], out level) || level < 1 || level > 20))
-                throw new FormatException("Некорректный уровень персонажа");
-            int value;
-            if (formula == "level") value = level;
-            else if (formula == "proficiency") value = 2 + (level - 1) / 4;
-            else if (formula.StartsWith("modifier:", StringComparison.Ordinal))
-            {
-                string stat = formula.Substring("modifier:".Length);
-                if (stat != "str" && stat != "dex" && stat != "con" &&
-                    stat != "int" && stat != "wis" && stat != "cha")
-                    throw new FormatException("Неизвестная характеристика HB-ресурса");
-                value = CharacterSheetRules.Modifier(hero, stat);
-            }
-            else throw new FormatException("Неподдерживаемая формула HB-ресурса");
+            else value = new FormulaParser(formula, hero).Evaluate();
             int minimum = 0;
             if (definition["minimum"] != null &&
                 (!CharacterSheetRules.TrySheetCount(definition["minimum"], out minimum) ||
