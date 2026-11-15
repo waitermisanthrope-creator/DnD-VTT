@@ -36,6 +36,22 @@ namespace DndVtt.UnityPrototype
 
             var copy = (JObject)hero.DeepClone();
             CharacterResourceEngine.EnsureTurnResources(copy);
+            string rules = ((string)(copy["rulesVersion"] ?? copy["ruleset"]) ?? "2014").Trim();
+            if (rules != "2014" && rules != "2024")
+                throw new FormatException("Неизвестная редакция правил: " + rules);
+            var history = copy["turnSpellcasting"] as JObject ?? new JObject();
+            bool bonusCast = action == "turn.bonus";
+            bool oneActionCantrip = level == 0 && action == "turn.action";
+            if (rules == "2014")
+            {
+                // A bonus-action spell prohibits other spells except
+                // one-action cantrips on that same turn.
+                if (bonusCast && (bool?)history["incompatibleWithBonus"] == true ||
+                    (bool?)history["bonusCast"] == true && !oneActionCantrip)
+                    throw new FormatException("Ограничение бонусного заклинания (2014)");
+            }
+            else if (level > 0 && (bool?)history["slotCast"] == true)
+                throw new FormatException("В этом ходу уже потрачена ячейка на заклинание (2024)");
             if (level > 0)
             {
                 if (pactMagic)
@@ -69,7 +85,13 @@ namespace DndVtt.UnityPrototype
                     ["name"] = spell["name"]?.DeepClone() ?? JValue.CreateNull()
                 };
 
+            if (bonusCast) history["bonusCast"] = true;
+            if (!oneActionCantrip) history["incompatibleWithBonus"] = true;
+            if (level > 0) history["slotCast"] = true;
+            copy["turnSpellcasting"] = history;
+
             // Commit only after all validations pass.
+            hero["turnSpellcasting"] = copy["turnSpellcasting"].DeepClone();
             if (concentration) hero["concentratingOn"] = copy["concentratingOn"].DeepClone();
             hero[CharacterResourceEngine.StateKey] = copy[CharacterResourceEngine.StateKey].DeepClone();
             hero[CharacterResourceEngine.DefinitionsKey] = copy[CharacterResourceEngine.DefinitionsKey].DeepClone();
