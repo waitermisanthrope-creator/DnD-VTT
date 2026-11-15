@@ -1,10 +1,10 @@
 {
   "schema": 1,
-  "version": "1.00.58",
-  "candidateRunId": 43618632590,
+  "version": "1.00.59",
+  "candidateRunId": 43707679730,
   "approved": true,
   "releaseType": "public-prerelease",
   "channel": "unity-experiment",
   "scope": "Android-only",
-  "note": "Прямое поручение владельца и постоянное разрешение: выпускать проверенные Android-обновления через встроенный updater без повторного вопроса. Hotfix навигации, финальный source3788aacb05be2598b22c0479f297b83196eb8afd/candidate43618632590. Android132519132252 и Windowsbuild132524781370 SUCCESS. Независимый внешний Win32 native replay43621087084/job132526704038 SUCCESS: пять циклов Dice/back/Attacks/back/Advancement/back, выход во время броска и standaloneHomeDice/back, exact original binary hashes, JSON+bak неизменны, zero runtime/GUI exceptions. Кадры просмотрены; отчёт, native verdict и атлас закоммичены1e400ca0 до активации. EmbeddedWindowsQA132526650317 FAIL из-за промаха координатного помощника; полную WindowsGUI не объявляем PASS, Windows не публикуем. Публиковать только Android58 с исходным ключом/SHA4aed89868c5476a026f55798f75062acdd1bcca83a086a443d058532e0123823, повторно проверить пакет и публичную загрузку, затем активировать feed поверх57/56/55. До publisherSUCCESS других push не будет. Main/MMO/ключи/схемы сохранений не менять. PhysicalAndroid тестирует владелец."
+  "note": "15.11.2026: владелец напрямую поручил выпустить Android-обновление 1.00.59 для тестирования новой страницы «Способности и магия». Источник — experiment/unity-vtt commit de028f80a847aa3c29ee83db1d64b6c4c85a67ef, кандидат run 43707679730. Публиковать только после успешной Android job, исходного ключа подписи, проверки APK и его публичной загрузки; обновить in-app feed только после совпадения SHA256. Не трогать main, WebView, Windows или формат персонажей. Физический Android QA выполнит владелец после установки."
 }
