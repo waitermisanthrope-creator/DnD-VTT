@@ -57,13 +57,13 @@ namespace DndVtt.UnityPrototype
             if (hero == null || spell == null) throw new FormatException("Заклинание не выбрано");
             string action = ActionResource(spell);
             if (action == null) throw new FormatException("Неизвестное время накладывания: требуется ручной режим");
+            if ((string)hero["turnPhase"] == "ended" && action != "turn.reaction")
+                throw new FormatException("Ход завершён. Доступны только реакции");
             int level = (int?)spell["level"] ?? -1;
             if (level < 0 || level > 9) throw new FormatException("Неизвестный круг заклинания");
             if (level == 0 && (slotLevel != 0 || pactMagic) || level > 0 && (slotLevel < level || slotLevel > 9))
                 throw new FormatException("Неподходящий круг ячейки");
 
-            if ((string)hero["turnPhase"] == "ended")
-                throw new FormatException("Ход завершён. Начните следующий ход");
             var copy = (JObject)hero.DeepClone();
             CharacterResourceEngine.EnsureTurnResources(copy);
             string rules = ((string)(copy["rulesVersion"] ?? copy["ruleset"]) ?? "2014").Trim();
