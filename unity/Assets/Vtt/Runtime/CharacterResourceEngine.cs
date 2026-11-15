@@ -11,76 +11,108 @@ namespace DndVtt.UnityPrototype
         public const string StateKey = "resourceState";
         public const string DefinitionsKey = "resourceDefinitions";
 
+        private static int Maximum(JObject definition)
+        {
+            int max;
+            if (!CharacterSheetRules.TrySheetCount(definition["max"], out max))
+                throw new FormatException("Максимум ресурса должен быть целым неотрицательным числом");
+            return max;
+        }
+
+        private static int Current(JObject entry)
+        {
+            int current;
+            if (!CharacterSheetRules.TrySheetCount(entry["current"], out current))
+                throw new FormatException("Остаток ресурса должен быть целым неотрицательным числом");
+            return current;
+        }
+
         public static void Synchronize(JObject hero)
         {
             if (hero == null) throw new ArgumentNullException(nameof(hero));
-            var state = hero[StateKey] as JObject;
-            if (state == null) { state = new JObject(); hero[StateKey] = state; }
             var definitions = hero[DefinitionsKey] as JArray;
-            if (definitions == null) return;
-            foreach (var item in definitions)
+            var original = hero[StateKey] as JObject;
+            var state = original == null ? new JObject() : (JObject)original.DeepClone();
+            if (definitions != null)
             {
-                var definition = item as JObject;
-                string id = (string)definition?["id"];
-                if (string.IsNullOrWhiteSpace(id)) continue;
-                int maximum = Math.Max(0, (int?)definition["max"] ?? 0);
-                if (!(state[id] is JObject entry))
+                var ids = new HashSet<string>(StringComparer.Ordinal);
+                foreach (var item in definitions)
                 {
-                    entry = new JObject { ["current"] = maximum };
-                    state[id] = entry;
+                    var definition = item as JObject;
+                    string id = (string)definition?["id"];
+                    if (string.IsNullOrWhiteSpace(id)) throw new FormatException("У ресурса отсутствует ID");
+                    if (!ids.Add(id)) throw new FormatException("Повторяющийся ID ресурса: " + id);
+                    int maximum = Maximum(definition);
+                    var entry = state[id] as JObject;
+                    if (entry == null)
+                    {
+                        entry = new JObject { ["current"] = maximum };
+                        state[id] = entry;
+                    }
+                    int current = Current(entry);
+                    entry["current"] = Math.Min(maximum, current);
                 }
-                entry["current"] = Math.Min(maximum, Math.Max(0, (int?)entry["current"] ?? maximum));
             }
+            hero[StateKey] = state;
         }
 
-        // Atomic payment: all costs are validated before any resource is changed.
+        // Validation and spending happen on a detached copy: failure never
+        // creates missing counters or changes an existing character.
         public static bool TrySpend(JObject hero, IDictionary<string, int> costs)
         {
             if (hero == null || costs == null) return false;
-            Synchronize(hero);
-            var state = (JObject)hero[StateKey];
+            var copy = (JObject)hero.DeepClone();
+            Synchronize(copy);
+            var state = (JObject)copy[StateKey];
+            var definitions = copy[DefinitionsKey] as JArray;
+            var known = new HashSet<string>(StringComparer.Ordinal);
+            if (definitions != null)
+                foreach (var token in definitions)
+                    known.Add((string)((JObject)token)["id"]);
             foreach (var cost in costs)
             {
                 if (string.IsNullOrWhiteSpace(cost.Key) || cost.Value < 0 ||
-                    !(state[cost.Key] is JObject entry) ||
-                    ((int?)entry["current"] ?? 0) < cost.Value) return false;
+                    !known.Contains(cost.Key) || !(state[cost.Key] is JObject entry) ||
+                    Current(entry) < cost.Value) return false;
             }
             foreach (var cost in costs)
             {
                 var entry = (JObject)state[cost.Key];
-                entry["current"] = (int)entry["current"] - cost.Value;
+                entry["current"] = Current(entry) - cost.Value;
             }
+            hero[StateKey] = copy[StateKey].DeepClone();
             return true;
         }
 
         public static bool Restore(JObject hero, string trigger)
         {
             if (hero == null || string.IsNullOrWhiteSpace(trigger)) return false;
-            Synchronize(hero);
-            var state = hero[StateKey] as JObject;
-            var definitions = hero[DefinitionsKey] as JArray;
-            if (state == null || definitions == null) return false;
+            var copy = (JObject)hero.DeepClone();
+            Synchronize(copy);
+            var state = (JObject)copy[StateKey];
+            var definitions = copy[DefinitionsKey] as JArray;
             bool changed = false;
-            foreach (var item in definitions)
-            {
-                var definition = item as JObject;
-                string id = (string)definition?["id"];
-                if (string.IsNullOrWhiteSpace(id) || !(state[id] is JObject entry)) continue;
-                var restoreOn = definition["restoreOn"] as JArray;
-                bool matches = false;
-                if (restoreOn != null)
-                    foreach (var value in restoreOn)
-                        if (string.Equals((string)value, trigger, StringComparison.OrdinalIgnoreCase))
-                            matches = true;
-                if (!matches) continue;
-                int max = Math.Max(0, (int?)definition["max"] ?? 0);
-                if ((int?)entry["current"] == max) continue;
-                entry["current"] = max;
-                changed = true;
-            }
+            if (definitions != null)
+                foreach (var item in definitions)
+                {
+                    var definition = (JObject)item;
+                    string id = (string)definition["id"];
+                    var entry = (JObject)state[id];
+                    var restoreOn = definition["restoreOn"] as JArray;
+                    bool matches = false;
+                    if (restoreOn != null)
+                        foreach (var value in restoreOn)
+                            if (string.Equals((string)value, trigger, StringComparison.OrdinalIgnoreCase))
+                                matches = true;
+                    if (!matches) continue;
+                    int max = Maximum(definition);
+                    if (Current(entry) == max) continue;
+                    entry["current"] = max;
+                    changed = true;
+                }
+            hero[StateKey] = copy[StateKey].DeepClone();
             return changed;
         }
-
 
         // Default turn resources. Existing values are preserved on every render.
         public static void EnsureTurnResources(JObject hero)
@@ -116,16 +148,18 @@ namespace DndVtt.UnityPrototype
         public static bool Grant(JObject hero, string id, int amount)
         {
             if (hero == null || string.IsNullOrWhiteSpace(id) || amount < 0) return false;
-            Synchronize(hero);
-            var state = hero[StateKey] as JObject;
-            var definitions = hero[DefinitionsKey] as JArray;
-            if (state == null || definitions == null || !(state[id] is JObject entry)) return false;
+            var copy = (JObject)hero.DeepClone();
+            Synchronize(copy);
+            var state = (JObject)copy[StateKey];
+            var definitions = copy[DefinitionsKey] as JArray;
+            if (definitions == null || !(state[id] is JObject entry)) return false;
             foreach (var token in definitions)
             {
-                var definition = token as JObject;
-                if ((string)definition?["id"] != id) continue;
-                int max = Math.Max(0, (int?)definition["max"] ?? 0);
-                entry["current"] = Math.Min(max, (int?)entry["current"] + amount ?? amount);
+                var definition = (JObject)token;
+                if ((string)definition["id"] != id) continue;
+                int max = Maximum(definition);
+                entry["current"] = (int)Math.Min(max, (long)Current(entry) + amount);
+                hero[StateKey] = copy[StateKey].DeepClone();
                 return true;
             }
             return false;
