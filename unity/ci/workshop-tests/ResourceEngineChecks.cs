@@ -27,7 +27,9 @@ internal static class ResourceEngineChecks
         Check(!CharacterResourceEngine.TrySpend(hero, new Dictionary<string,int> {
             ["unknown"] = 0 }), "unknown zero-cost resource rejected");
         Check(CharacterResourceEngine.EndTurn(hero), "turn refresh");
-        Check((int)hero["resourceState"]["turn.action"]["current"] == 1, "action restored");
+        Check((int)hero["resourceState"]["turn.action"]["current"] == 0, "action remains spent after end");
+        Check(CharacterResourceEngine.StartTurn(hero), "next turn starts");
+        Check((int)hero["resourceState"]["turn.action"]["current"] == 1, "action restored at start");
         Check((int)hero["turnNumber"] == 1, "turn counter");
         var definitions = (JArray)hero["resourceDefinitions"];
         definitions.Add(new JObject {
@@ -53,6 +55,8 @@ internal static class ResourceEngineChecks
             ["turn.movement"] = 5 }), "movement consumed");
         Check((int)walker["resourceState"]["turn.movement"]["current"] == 25, "movement remaining");
         Check(CharacterResourceEngine.EndTurn(walker), "movement turn ended");
+        Check((int)walker["resourceState"]["turn.movement"]["current"] == 25, "movement stays spent until start");
+        Check(CharacterResourceEngine.StartTurn(walker), "walker starts next turn");
         Check((int)walker["resourceState"]["turn.movement"]["current"] == 30, "movement restored");
         var custom = new JObject { ["speed"] = "30 ft, fly 60 ft" };
         CharacterResourceEngine.EnsureTurnResources(custom);
@@ -81,6 +85,23 @@ internal static class ResourceEngineChecks
             "extra action expires");
         Check(!CharacterResourceEngine.TrySpend(extraHero, new Dictionary<string,int> {
             ["turn.extra_action"] = 1 }), "expired action cannot be used");
+        var reactive = new JObject();
+        CharacterResourceEngine.EnsureTurnResources(reactive);
+        Check(CharacterResourceEngine.TrySpend(reactive, new Dictionary<string,int> {
+            ["turn.reaction"] = 1 }), "reaction spent");
+        Check(CharacterResourceEngine.EndTurn(reactive), "reaction turn ended");
+        Check((int)reactive["resourceState"]["turn.reaction"]["current"] == 0,
+            "reaction does not refresh at end");
+        Check(CharacterResourceEngine.StartTurn(reactive), "reaction next turn started");
+        Check((int)reactive["resourceState"]["turn.reaction"]["current"] == 1,
+            "reaction refreshes at start");
+        var concentrationSpell = new JObject {
+            ["id"] = "spell.focus", ["name"] = "Focus", ["level"] = 0,
+            ["castingTime"] = "1 action", ["concentration"] = true
+        };
+        CharacterSpellCasting.Cast(reactive, concentrationSpell, 0);
+        Check((string)reactive["concentratingOn"]["id"] == "spell.focus",
+            "concentration recorded");
         return checks;
     }
 }
