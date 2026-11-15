@@ -195,6 +195,48 @@ internal static class ResourceEngineChecks
         catch (FormatException) { legacyRejected = true; }
         Check(legacyRejected && legacyHero.ToString() == legacySnapshot,
             "failed legacy activation atomic");
+        var formulaHero = new JObject {
+            ["level"] = 9,
+            ["stats"] = new JObject { ["wis"] = 18 }
+        };
+        Check(CharacterAbilityActivation.ImportDefinitions(formulaHero,
+            new JArray(new JObject {
+                ["id"] = "hb.proficiency", ["maxFormula"] = "proficiency",
+                ["restoreOn"] = new JArray("short")
+            }, new JObject {
+                ["id"] = "hb.wisdom", ["maxFormula"] = "modifier:wis",
+                ["minimum"] = 1, ["restoreOn"] = new JArray("long")
+            })) == 2, "HB formula resources imported");
+        Check((int)formulaHero["resourceState"]["hb.proficiency"]["current"] == 4,
+            "proficiency formula evaluated");
+        Check((int)formulaHero["resourceState"]["hb.wisdom"]["current"] == 4,
+            "ability modifier formula evaluated");
+        Check(CharacterResourceEngine.TrySpend(formulaHero, new Dictionary<string,int> {
+            ["hb.proficiency"] = 2 }), "formula resource spent");
+        formulaHero["level"] = 13;
+        Check(CharacterAbilityActivation.RefreshFormulaResources(formulaHero),
+            "level-based maximum refreshed");
+        Check((int)formulaHero["resourceState"]["hb.proficiency"]["current"] == 2,
+            "level-up does not refill spent charges");
+        Check((int)formulaHero["resourceDefinitions"][0]["max"] == 5,
+            "proficiency maximum advances");
+        var effectHero = new JObject();
+        CharacterResourceEngine.EnsureTurnResources(effectHero);
+        CharacterTimedEffects.Apply(effectHero, "ward", "Ward", 2);
+        Check(CharacterResourceEngine.EndTurn(effectHero), "first effect turn ends");
+        Check((int)effectHero["timedEffects"][0]["roundsRemaining"] == 1,
+            "effect duration decremented");
+        Check(CharacterResourceEngine.StartTurn(effectHero), "effect turn starts");
+        Check(CharacterResourceEngine.EndTurn(effectHero), "second effect turn ends");
+        Check(((JArray)effectHero["timedEffects"]).Count == 0,
+            "expired effect removed");
+        CharacterTimedEffects.Apply(effectHero, "focus", "Focus", 3, true);
+        effectHero["concentratingOn"] = new JObject { ["id"] = "focus" };
+        Check(!CharacterSpellCasting.ResolveConcentrationSave(effectHero, 30, 14),
+            "failed concentration save");
+        Check(effectHero["concentratingOn"] == null &&
+            ((JArray)effectHero["timedEffects"]).Count == 0,
+            "failed save removes concentration and associated effects");
         return checks;
     }
 }
