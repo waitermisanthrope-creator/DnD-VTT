@@ -127,6 +127,7 @@ namespace DndVtt.UnityPrototype
 
             // A single visual stream exactly like the approved right-hand phone.
             GUILayout.Space(2);
+            DrawAbilityTurnPanel(hero, ref changed);
             DrawAbilityModeTabs();
             if (abilityViewMode == 0)
             {
