@@ -237,6 +237,26 @@ internal static class ResourceEngineChecks
         Check(effectHero["concentratingOn"] == null &&
             ((JArray)effectHero["timedEffects"]).Count == 0,
             "failed save removes concentration and associated effects");
+        var complexHero = new JObject {
+            ["level"] = 9, ["stats"] = new JObject { ["wis"] = 18 }
+        };
+        Check(CharacterAbilityActivation.ImportDefinitions(complexHero,
+            new JArray(new JObject {
+                ["id"] = "hb.complex", ["maxFormula"] = "max(1, floor(level / 2) + modifier:wis)",
+                ["restoreOn"] = new JArray("short")
+            })) == 1, "complex HB formula imports");
+        Check((int)complexHero["resourceState"]["hb.complex"]["current"] == 8,
+            "nested HB expression evaluates");
+        string formulaSnapshot = complexHero.ToString();
+        bool unsafeRejected = false;
+        try {
+            CharacterAbilityActivation.ImportDefinitions(complexHero,
+                new JArray(new JObject {
+                    ["id"] = "hb.bad", ["maxFormula"] = "max(3, 4 / 0)"
+                }));
+        } catch (FormatException) { unsafeRejected = true; }
+        Check(unsafeRejected && complexHero.ToString() == formulaSnapshot,
+            "invalid HB formula rejected atomically");
         return checks;
     }
 }
