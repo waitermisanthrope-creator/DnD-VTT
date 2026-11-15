@@ -444,7 +444,9 @@ namespace DndVtt.UnityPrototype
         {
             GUILayout.Space(4);
             GUILayout.BeginHorizontal(uiStyles.AbilitySearchPanel, GUILayout.Height(44));
-            GUILayout.Label(DndVtt.ApprovedIconRegistry.GetSprite(11) == null ? "Поиск" : "", uiStyles.AbilitySearchGlyph, GUILayout.Width(48), GUILayout.Height(32));
+            var searchIcon = DndVtt.ApprovedIconRegistry.GetSprite(11);
+            GUILayout.Label(searchIcon == null ? new GUIContent("Поиск") : new GUIContent(searchIcon.texture),
+                uiStyles.AbilitySearchGlyph, GUILayout.Width(48), GUILayout.Height(32));
             abilitySpellQuery = MenuTextField("grimoire-abilities-spell-search", abilitySpellQuery,
                 uiStyles.AbilityInput, GUILayout.ExpandWidth(true), GUILayout.Height(36));
             Rect searchRect = GUILayoutUtility.GetLastRect();
