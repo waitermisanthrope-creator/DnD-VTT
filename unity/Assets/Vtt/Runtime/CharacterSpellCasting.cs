@@ -50,6 +50,8 @@ namespace DndVtt.UnityPrototype
             if (level == 0 && (slotLevel != 0 || pactMagic) || level > 0 && (slotLevel < level || slotLevel > 9))
                 throw new FormatException("Неподходящий круг ячейки");
 
+            if ((string)hero["turnPhase"] == "ended")
+                throw new FormatException("Ход завершён. Начните следующий ход");
             var copy = (JObject)hero.DeepClone();
             CharacterResourceEngine.EnsureTurnResources(copy);
             string rules = ((string)(copy["rulesVersion"] ?? copy["ruleset"]) ?? "2014").Trim();
