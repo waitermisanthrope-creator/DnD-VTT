@@ -141,13 +141,41 @@ namespace DndVtt.UnityPrototype
             DrawAbilityLegacyControls(hero, ref changed);
         }
 
+        // A normal GUILayout button owns input; the approved icon is drawn only on Repaint.
+        // Until artwork is imported, use a readable text label rather than a missing glyph.
+        private bool ApprovedGrimoireButton(string label, int iconId, GUIStyle style,
+            params GUILayoutOption[] options)
+        {
+            var sprite = DndVtt.ApprovedIconRegistry.GetSprite(iconId);
+            if (sprite == null)
+                return MeasuredMenuButton(label, style, options);
+
+            bool clicked = MeasuredMenuButton("", style, options);
+            if (Event.current.type == EventType.Repaint)
+            {
+                Rect rect = GUILayoutUtility.GetLastRect();
+                var tex = sprite.texture;
+                var source = sprite.textureRect;
+                float side = Mathf.Min(rect.height * .55f, 27f);
+                float labelWidth = Mathf.Max(0f, rect.width - side - 10f);
+                var iconRect = new Rect(rect.x + Mathf.Max(4f, (rect.width - side - labelWidth) / 2f),
+                    rect.y + (rect.height - side) / 2f, side, side);
+                GUI.DrawTextureWithTexCoords(iconRect, tex,
+                    new Rect(source.x / tex.width, source.y / tex.height,
+                        source.width / tex.width, source.height / tex.height), true);
+                if (!string.IsNullOrEmpty(label))
+                    GUI.Label(new Rect(iconRect.xMax + 4f, rect.y, labelWidth, rect.height), label, style);
+            }
+            return clicked;
+        }
+
         private void DrawAbilityModeTabs()
         {
             GUILayout.BeginHorizontal();
-            if (MeasuredMenuButton("Умения", abilityViewMode == 0 ? uiStyles.AbilityGold : uiStyles.AbilityTab,
+            if (ApprovedGrimoireButton("Умения", 19, abilityViewMode == 0 ? uiStyles.AbilityGold : uiStyles.AbilityTab,
                 GUILayout.ExpandWidth(true), GUILayout.Height(47)))
                 pendingAbilityViewMode = 0;
-            if (MeasuredMenuButton("Заклинания", abilityViewMode == 1 ? uiStyles.AbilityGold : uiStyles.AbilityTab,
+            if (ApprovedGrimoireButton("Заклинания", 20, abilityViewMode == 1 ? uiStyles.AbilityGold : uiStyles.AbilityTab,
                 GUILayout.ExpandWidth(true), GUILayout.Height(47)))
                 pendingAbilityViewMode = 1;
             // Approved art is drawn over the existing buttons, without changing their click handlers.
@@ -416,7 +444,7 @@ namespace DndVtt.UnityPrototype
         {
             GUILayout.Space(4);
             GUILayout.BeginHorizontal(uiStyles.AbilitySearchPanel, GUILayout.Height(44));
-            GUILayout.Label("⌕", uiStyles.AbilitySearchGlyph, GUILayout.Width(25), GUILayout.Height(32));
+            GUILayout.Label(DndVtt.ApprovedIconRegistry.GetSprite(11) == null ? "Поиск" : "", uiStyles.AbilitySearchGlyph, GUILayout.Width(48), GUILayout.Height(32));
             abilitySpellQuery = MenuTextField("grimoire-abilities-spell-search", abilitySpellQuery,
                 uiStyles.AbilityInput, GUILayout.ExpandWidth(true), GUILayout.Height(36));
             Rect searchRect = GUILayoutUtility.GetLastRect();
@@ -424,9 +452,9 @@ namespace DndVtt.UnityPrototype
                 GUI.Label(new Rect(searchRect.x + 8, searchRect.y + 2,
                     searchRect.width - 16, searchRect.height - 4),
                     "Поиск заклинаний…", uiStyles.AbilitySearchHint);
-            if (MeasuredMenuButton("⚲", uiStyles.AbilityChip, GUILayout.Width(39), GUILayout.Height(36)))
+            if (ApprovedGrimoireButton("Фильтр", 11, uiStyles.AbilityChip, GUILayout.Width(39), GUILayout.Height(36)))
                 pendingAbilitySpellFilters = !abilitySpellFiltersOpen;
-            if (MeasuredMenuButton("☷", uiStyles.AbilityChip, GUILayout.Width(39), GUILayout.Height(36)))
+            if (ApprovedGrimoireButton("Список", 20, uiStyles.AbilityChip, GUILayout.Width(39), GUILayout.Height(36)))
                 OpenSpellCatalog();
             GUILayout.EndHorizontal();
             if (abilitySpellFiltersOpen)
