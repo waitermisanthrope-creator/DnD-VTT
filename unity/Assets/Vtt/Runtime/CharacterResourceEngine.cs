@@ -81,6 +81,38 @@ namespace DndVtt.UnityPrototype
             return changed;
         }
 
+
+        // Default turn resources. Existing values are preserved on every render.
+        public static void EnsureTurnResources(JObject hero)
+        {
+            if (hero == null) return;
+            var definitions = hero[DefinitionsKey] as JArray;
+            if (definitions == null) { definitions = new JArray(); hero[DefinitionsKey] = definitions; }
+            AddDefault(definitions, "turn.action", "Действие", 1);
+            AddDefault(definitions, "turn.bonus", "Бонусное действие", 1);
+            AddDefault(definitions, "turn.reaction", "Реакция", 1);
+            Synchronize(hero);
+        }
+
+        private static void AddDefault(JArray definitions, string id, string name, int maximum)
+        {
+            foreach (var token in definitions)
+                if (string.Equals((string)(token as JObject)?["id"], id, StringComparison.Ordinal))
+                    return;
+            definitions.Add(new JObject {
+                ["id"] = id, ["name"] = name, ["max"] = maximum,
+                ["restoreOn"] = new JArray("turn")
+            });
+        }
+
+        public static bool EndTurn(JObject hero)
+        {
+            EnsureTurnResources(hero);
+            bool changed = Restore(hero, "turn");
+            hero["turnNumber"] = Math.Max(0, (int?)hero["turnNumber"] ?? 0) + 1;
+            return changed;
+        }
+
         public static bool Grant(JObject hero, string id, int amount)
         {
             if (hero == null || string.IsNullOrWhiteSpace(id) || amount < 0) return false;
