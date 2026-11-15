@@ -234,7 +234,7 @@ namespace DndVtt.UnityPrototype
                 {
                     if (MeasuredMenuButton(used < max ? "Применить" : "Исчерпано", uiStyles.AbilityGold,
                         GUILayout.Width(90), GUILayout.Height(31)))
-                        SheetAction(() => CharacterSheetRules.ChangeAbilityUse(hero, ability["id"]?.ToString(), 1), ref changed);
+                        SheetAction(() => CharacterAbilityActivation.Activate(hero, ability), ref changed);
                 }
                 GUI.enabled = old;
                 if (!(known && max > 0) &&
