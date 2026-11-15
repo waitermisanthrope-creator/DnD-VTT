@@ -45,7 +45,8 @@ namespace DndVtt.UnityPrototype
                         ((int?)value["current"] ?? 0) + "/" + ((int?)definition["max"] ?? 0));
                     int spend = id == "turn.movement" ? 5 : 1;
                     bool wasEnabled = GUI.enabled;
-                    GUI.enabled = wasEnabled && ((int?)value["current"] ?? 0) >= spend;
+                    GUI.enabled = wasEnabled && (string)hero["turnPhase"] != "ended" &&
+                        ((int?)value["current"] ?? 0) >= spend;
                     if (MeasuredMenuButton(id == "turn.movement" ? "−5 фт" : "Использовать",
                         uiStyles.AbilityChip, GUILayout.Width(110), GUILayout.Height(35)))
                     {
