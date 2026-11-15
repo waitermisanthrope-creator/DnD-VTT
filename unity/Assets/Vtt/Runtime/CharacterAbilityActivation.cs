@@ -1,0 +1,83 @@
+using System;
+using System.Collections.Generic;
+using Newtonsoft.Json.Linq;
+
+namespace DndVtt.UnityPrototype
+{
+    // One transaction across action economy, ability charges and class resources.
+    public static class CharacterAbilityActivation
+    {
+        public static void Activate(JObject hero, JObject ability)
+        {
+            if (hero == null || ability == null) throw new FormatException("Приём не выбран");
+            string id = (string)ability["id"];
+            if (string.IsNullOrWhiteSpace(id)) throw new FormatException("Приём без идентификатора");
+            var copy = (JObject)hero.DeepClone();
+            CharacterResourceEngine.EnsureTurnResources(copy);
+            string action = ((string)(ability["actionType"] ?? ability["activation"] ??
+                ability["actionEconomy"]) ?? "").Trim().ToLowerInvariant();
+            string cost = action == "action" || action == "1 action" ||
+                action == "действие" || action == "основное действие" ? "turn.action" :
+                action == "bonus" || action == "bonus action" ||
+                action == "бонусное" || action == "бонусное действие" ? "turn.bonus" :
+                action == "reaction" || action == "реакция" ? "turn.reaction" : null;
+            if (cost == null) throw new FormatException("Для приёма не задан поддерживаемый тип действия");
+            var costs = new Dictionary<string, int> { [cost] = 1 };
+            var resourceId = (string)ability["resourceId"];
+            if (!string.IsNullOrWhiteSpace(resourceId))
+            {
+                if (costs.ContainsKey(resourceId)) throw new FormatException("Ресурс дублирует стоимость действия");
+                int amount = 1;
+                if (ability["resourceCost"] != null &&
+                    (!CharacterSheetRules.TrySheetCount(ability["resourceCost"], out amount) || amount == 0))
+                    throw new FormatException("Некорректная стоимость ресурса");
+                costs[resourceId] = amount;
+            }
+            if (ability["maxUses"] != null)
+                CharacterSheetRules.ChangeAbilityUse(copy, id, 1);
+            if (!CharacterResourceEngine.TrySpend(copy, costs))
+                throw new FormatException("Недостаточно действий или ресурсов");
+            foreach (string key in new[] { "combatAbilities", CharacterResourceEngine.StateKey,
+                CharacterResourceEngine.DefinitionsKey })
+                if (copy[key] != null) hero[key] = copy[key].DeepClone();
+        }
+
+        // Register explicit HB definitions without overwriting spent charges.
+        // Only concrete maxima are accepted; formula evaluation belongs to import.
+        public static int ImportDefinitions(JObject hero, JArray incoming)
+        {
+            if (hero == null || incoming == null) return 0;
+            var copy = (JObject)hero.DeepClone();
+            var definitions = copy[CharacterResourceEngine.DefinitionsKey] as JArray;
+            if (definitions == null)
+            {
+                definitions = new JArray();
+                copy[CharacterResourceEngine.DefinitionsKey] = definitions;
+            }
+            var ids = new HashSet<string>(StringComparer.Ordinal);
+            foreach (var token in definitions)
+                if (token is JObject obj && (string)obj["id"] != null)
+                    ids.Add((string)obj["id"]);
+            int added = 0;
+            foreach (var token in incoming)
+            {
+                if (!(token is JObject definition)) throw new FormatException("Некорректное описание HB-ресурса");
+                string id = (string)definition["id"];
+                if (string.IsNullOrWhiteSpace(id) || id.StartsWith("turn.", StringComparison.Ordinal))
+                    throw new FormatException("Некорректный ID HB-ресурса");
+                if (!CharacterSheetRules.TrySheetCount(definition["max"], out int max) ||
+                    definition["max"] == null || max > 1000000)
+                    throw new FormatException("HB-ресурс требует конкретного максимума");
+                if (definition["restoreOn"] != null && !(definition["restoreOn"] is JArray))
+                    throw new FormatException("Некорректное восстановление HB-ресурса");
+                if (!ids.Add(id)) continue;
+                definitions.Add(definition.DeepClone());
+                added++;
+            }
+            CharacterResourceEngine.Synchronize(copy);
+            hero[CharacterResourceEngine.DefinitionsKey] = copy[CharacterResourceEngine.DefinitionsKey].DeepClone();
+            hero[CharacterResourceEngine.StateKey] = copy[CharacterResourceEngine.StateKey].DeepClone();
+            return added;
+        }
+    }
+}
