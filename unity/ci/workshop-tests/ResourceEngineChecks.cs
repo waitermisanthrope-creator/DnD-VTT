@@ -138,6 +138,37 @@ internal static class ResourceEngineChecks
         Check(CharacterResourceEngine.StartTurn(mage2024), "2024 next turn starts");
         Check(mage2024["turnSpellcasting"] is JObject &&
             !((JObject)mage2024["turnSpellcasting"]).HasValues, "spell casting history resets");
+        var fighter = new JObject {
+            ["combatAbilities"] = new JArray(new JObject {
+                ["id"] = "surge", ["actionType"] = "action",
+                ["maxUses"] = 1, ["usedCount"] = 0
+            })
+        };
+        CharacterResourceEngine.EnsureTurnResources(fighter);
+        var surge = (JObject)((JArray)fighter["combatAbilities"])[0];
+        CharacterAbilityActivation.Activate(fighter, surge);
+        Check((int)fighter["resourceState"]["turn.action"]["current"] == 0,
+            "ability spends action");
+        Check((int)fighter["combatAbilities"][0]["usedCount"] == 1,
+            "ability spends charge");
+        string fighterSaved = fighter.ToString();
+        bool fighterRejected = false;
+        try { CharacterAbilityActivation.Activate(fighter,
+            (JObject)fighter["combatAbilities"][0]); }
+        catch (FormatException) { fighterRejected = true; }
+        Check(fighterRejected && fighter.ToString() == fighterSaved,
+            "ability failure leaves all counters unchanged");
+        var hb = new JObject();
+        Check(CharacterAbilityActivation.ImportDefinitions(hb, new JArray(new JObject {
+            ["id"] = "hb.energy", ["max"] = 3, ["restoreOn"] = new JArray("short")
+        })) == 1, "HB resource imported");
+        Check(CharacterResourceEngine.TrySpend(hb, new Dictionary<string,int> {
+            ["hb.energy"] = 2 }), "HB resource spent");
+        Check(CharacterAbilityActivation.ImportDefinitions(hb, new JArray(new JObject {
+            ["id"] = "hb.energy", ["max"] = 3
+        })) == 0, "HB import idempotent");
+        Check((int)hb["resourceState"]["hb.energy"]["current"] == 1,
+            "HB reimport preserves spent charges");
         return checks;
     }
 }
