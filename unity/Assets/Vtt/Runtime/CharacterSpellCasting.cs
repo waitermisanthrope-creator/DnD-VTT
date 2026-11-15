@@ -24,6 +24,7 @@ namespace DndVtt.UnityPrototype
             if (hero == null || hero["concentratingOn"] == null ||
                 hero["concentratingOn"].Type == JTokenType.Null) return false;
             hero.Remove("concentratingOn");
+            CharacterTimedEffects.ClearConcentrationEffects(hero);
             return true;
         }
 
