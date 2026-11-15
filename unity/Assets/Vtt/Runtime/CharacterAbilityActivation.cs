@@ -12,6 +12,8 @@ namespace DndVtt.UnityPrototype
             if (hero == null || ability == null) throw new FormatException("Приём не выбран");
             string id = (string)ability["id"];
             if (string.IsNullOrWhiteSpace(id)) throw new FormatException("Приём без идентификатора");
+            if ((string)hero["turnPhase"] == "ended")
+                throw new FormatException("Ход завершён. Начните следующий ход");
             var copy = (JObject)hero.DeepClone();
             CharacterResourceEngine.EnsureTurnResources(copy);
             string action = ((string)(ability["actionType"] ?? ability["activation"] ??
