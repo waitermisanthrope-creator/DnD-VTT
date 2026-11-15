@@ -36,6 +36,7 @@
     <Compile Include="ResourceEngineChecks.cs" />
     <Compile Include="../../Assets/Vtt/Runtime/CharacterResourceEngine.cs" />
     <Compile Include="../../Assets/Vtt/Runtime/CharacterSpellCasting.cs" />
+    <Compile Include="../../Assets/Vtt/Runtime/CharacterAbilityActivation.cs" />
     <Compile Include="../../Assets/Vtt/Runtime/CharacterSheetRules.Actions.cs" />
     <Compile Include="AdvancementChecks.cs" />
     <Compile Include="../../Assets/Vtt/Runtime/CharacterAdvancement.cs" />
