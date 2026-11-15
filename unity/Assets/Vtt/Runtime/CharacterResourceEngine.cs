@@ -173,9 +173,11 @@ namespace DndVtt.UnityPrototype
                 var entry = (copy[StateKey] as JObject)?[id] as JObject;
                 if (entry != null) entry["current"] = Maximum(definition);
             }
+            copy["turnSpellcasting"] = new JObject();
             copy["turnPhase"] = "active";
             hero[DefinitionsKey] = copy[DefinitionsKey].DeepClone();
             hero[StateKey] = copy[StateKey].DeepClone();
+            hero["turnSpellcasting"] = copy["turnSpellcasting"].DeepClone();
             hero["turnPhase"] = "active";
             return true;
         }
