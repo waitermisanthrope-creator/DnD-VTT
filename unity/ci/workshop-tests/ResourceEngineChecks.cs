@@ -67,6 +67,20 @@ internal static class ResourceEngineChecks
         try { CharacterSpellCasting.Cast(walker, spell, 1); }
         catch (FormatException) { spellRejected = true; }
         Check(spellRejected && walker.ToString() == saved, "spell failure atomic");
+        var extraHero = new JObject();
+        CharacterResourceEngine.EnsureTurnResources(extraHero);
+        Check(CharacterResourceEngine.GrantExtraAction(extraHero, 1), "extra action granted");
+        Check((int)extraHero["resourceState"]["turn.extra_action"]["current"] == 1, "extra action available");
+        Check(CharacterResourceEngine.TrySpend(extraHero, new Dictionary<string,int> {
+            ["turn.extra_action"] = 1 }), "extra action consumed");
+        Check((int)extraHero["resourceState"]["turn.action"]["current"] == 1,
+            "normal action not consumed");
+        Check(CharacterResourceEngine.GrantExtraAction(extraHero, 1), "extra action granted again");
+        Check(CharacterResourceEngine.EndTurn(extraHero), "extra action turn transition");
+        Check((int)extraHero["resourceState"]["turn.extra_action"]["current"] == 0,
+            "extra action expires");
+        Check(!CharacterResourceEngine.TrySpend(extraHero, new Dictionary<string,int> {
+            ["turn.extra_action"] = 1 }), "expired action cannot be used");
         return checks;
     }
 }
