@@ -123,6 +123,7 @@ namespace DndVtt.UnityPrototype
             AddDefault(definitions, "turn.action", "Действие", 1);
             AddDefault(definitions, "turn.bonus", "Бонусное действие", 1);
             AddDefault(definitions, "turn.reaction", "Реакция", 1);
+            AddDefault(definitions, "turn.extra_action", "Дополнительное действие", 0);
             AddMovement(definitions, hero);
             Synchronize(hero);
         }
@@ -157,12 +158,41 @@ namespace DndVtt.UnityPrototype
             var copy = (JObject)hero.DeepClone();
             EnsureTurnResources(copy);
             Restore(copy, "turn");
+            // Temporary extra actions expire when transitioning to the next turn.
+            var extra = (copy[StateKey] as JObject)?["turn.extra_action"] as JObject;
+            if (extra != null) extra["current"] = 0;
+            foreach (var token in (JArray)copy[DefinitionsKey])
+                if ((string)(token as JObject)?["id"] == "turn.extra_action")
+                    ((JObject)token)["max"] = 0;
             int turn = (int?)copy["turnNumber"] ?? 0;
             if (turn == int.MaxValue) throw new FormatException("Счётчик ходов переполнен");
             copy["turnNumber"] = turn + 1;
             hero[DefinitionsKey] = copy[DefinitionsKey].DeepClone();
             hero[StateKey] = copy[StateKey].DeepClone();
             hero["turnNumber"] = copy["turnNumber"].DeepClone();
+            return true;
+        }
+
+        // Temporary additional actions are separate from the normal action.
+        // The caller must enforce restrictions (e.g. Haste).
+        public static bool GrantExtraAction(JObject hero, int amount)
+        {
+            if (hero == null || amount <= 0 || amount > 10) return false;
+            var copy = (JObject)hero.DeepClone();
+            EnsureTurnResources(copy);
+            var definitions = (JArray)copy[DefinitionsKey];
+            JObject definition = null;
+            foreach (var token in definitions)
+                if ((string)(token as JObject)?["id"] == "turn.extra_action")
+                { definition = (JObject)token; break; }
+            if (definition == null) return false;
+            var entry = (JObject)((JObject)copy[StateKey])["turn.extra_action"];
+            int current = Current(entry);
+            if (current > 10 - amount) return false;
+            definition["max"] = Math.Max(Maximum(definition), current + amount);
+            entry["current"] = current + amount;
+            hero[DefinitionsKey] = copy[DefinitionsKey].DeepClone();
+            hero[StateKey] = copy[StateKey].DeepClone();
             return true;
         }
 
