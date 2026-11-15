@@ -500,20 +500,37 @@ namespace DndVtt.UnityPrototype
                     GUILayout.Label(desc, uiStyles.AbilityDescription);
                     if (level >= 0 && CharacterSpellCasting.ActionResource(spell) != null)
                     {
-                        bool canCast = level == 0;
-                        if (level > 0 && (hero["spellSlotsData"] as JObject)?[level.ToString()] is JObject availableSlot &&
-                            CharacterSheetRules.TrySheetCount(availableSlot["max"], out int slotMax) &&
-                            CharacterSheetRules.TrySheetCount(availableSlot["used"], out int slotUsed))
-                            canCast = slotUsed < slotMax;
-                        bool previousEnabled = GUI.enabled;
-                        GUI.enabled = previousEnabled && canCast;
-                        if (MeasuredMenuButton(level == 0 ? "Применить заговор" :
-                            "Применить (ячейка " + AbilityRoman[level] + ")",
-                            uiStyles.AbilityGold, GUILayout.MinHeight(42)))
-                            SheetAction(() => CharacterSpellCasting.Cast(hero, spell, level), ref changed);
-                        GUI.enabled = previousEnabled;
+                        if (level == 0)
+                        {
+                            if (MeasuredMenuButton("Применить заговор", uiStyles.AbilityGold, GUILayout.MinHeight(42)))
+                                SheetAction(() => CharacterSpellCasting.Cast(hero, spell, 0), ref changed);
+                        }
+                        else
+                        {
+                            for (int circle = level; circle <= 9; circle++)
+                            {
+                                if ((hero["spellSlotsData"] as JObject)?[circle.ToString()] is not JObject slot ||
+                                    !CharacterSheetRules.TrySheetCount(slot["max"], out int max) ||
+                                    !CharacterSheetRules.TrySheetCount(slot["used"], out int used) ||
+                                    max <= used) continue;
+                                int selectedCircle = circle;
+                                if (MeasuredMenuButton("Применить: ячейка " + AbilityRoman[circle],
+                                    uiStyles.AbilityGold, GUILayout.MinHeight(42)))
+                                    SheetAction(() => CharacterSpellCasting.Cast(hero, spell, selectedCircle), ref changed);
+                            }
+                            var pact = hero["pactMagicData"] as JObject ?? hero["pactMagic"] as JObject;
+                            if (pact != null &&
+                                CharacterSheetRules.TrySheetCount(pact["slotLevel"], out int pactLevel) &&
+                                CharacterSheetRules.TrySheetCount(pact["max"], out int pactMax) &&
+                                CharacterSheetRules.TrySheetCount(pact["used"], out int pactUsed) &&
+                                pactLevel >= level && pactLevel <= 9 && pactUsed < pactMax)
+                            {
+                                if (MeasuredMenuButton("Применить: магия договора " + AbilityRoman[pactLevel],
+                                    uiStyles.AbilityGold, GUILayout.MinHeight(42)))
+                                    SheetAction(() => CharacterSpellCasting.Cast(hero, spell, pactLevel, true), ref changed);
+                            }
+                        }
                     }
-
                     if (MeasuredMenuButton("Удалить заклинание…", uiStyles.AbilityChip,
                         GUILayout.MinHeight(42)))
                         RequestDelete(spell, name);
