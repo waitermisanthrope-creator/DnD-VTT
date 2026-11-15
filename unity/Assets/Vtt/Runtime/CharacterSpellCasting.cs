@@ -59,7 +59,18 @@ namespace DndVtt.UnityPrototype
                 new Dictionary<string, int> { [action] = 1 }))
                 throw new FormatException("Нет доступного действия для заклинания");
 
+            // Starting a new concentration spell replaces the previous one.
+            // The actual duration and concentration saving throws are handled
+            // by the future effect/combat engine.
+            bool concentration = (bool?)spell["concentration"] == true;
+            if (concentration)
+                copy["concentratingOn"] = new JObject {
+                    ["id"] = spell["id"]?.DeepClone() ?? JValue.CreateNull(),
+                    ["name"] = spell["name"]?.DeepClone() ?? JValue.CreateNull()
+                };
+
             // Commit only after all validations pass.
+            if (concentration) hero["concentratingOn"] = copy["concentratingOn"].DeepClone();
             hero[CharacterResourceEngine.StateKey] = copy[CharacterResourceEngine.StateKey].DeepClone();
             hero[CharacterResourceEngine.DefinitionsKey] = copy[CharacterResourceEngine.DefinitionsKey].DeepClone();
             if (level > 0 && !pactMagic) hero["spellSlotsData"] = copy["spellSlotsData"].DeepClone();
