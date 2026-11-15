@@ -19,6 +19,22 @@ namespace DndVtt.UnityPrototype
             return null;
         }
 
+        public static bool EndConcentration(JObject hero)
+        {
+            if (hero == null || hero["concentratingOn"] == null ||
+                hero["concentratingOn"].Type == JTokenType.Null) return false;
+            hero.Remove("concentratingOn");
+            return true;
+        }
+
+        // Concentration save DC after taking damage: max(10, half damage).
+        // Saving throw itself is performed by the combat engine.
+        public static int ConcentrationDifficulty(int damage)
+        {
+            if (damage < 0) throw new FormatException("Урон не может быть отрицательным");
+            return Math.Max(10, damage / 2);
+        }
+
         public static void Cast(JObject hero, JObject spell, int slotLevel)
         {
             Cast(hero, spell, slotLevel, false);
