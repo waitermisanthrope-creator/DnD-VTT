@@ -97,6 +97,7 @@ namespace DndVtt.UnityPrototype
                 foreach(var p in (copy["spellSlotsData"] as JObject??new JObject()).Properties())if(p.Value is JObject slot&&int.TryParse(p.Name,out int level)&&level>=1&&level<=9){ActionCount(slot["max"]);ActionCount(slot["used"]);slot["used"]=0;}
                 SetDeathTrack(copy,0,0);
             }
+            if(full)CharacterResourceEngine.Restore(copy,"short");
             CharacterResourceEngine.Restore(copy,full?"long":"short");
             copy["lastRest"]=new JObject{["type"]=full?"long":"short",["at"]=DateTime.UtcNow.ToString("o"),["id"]=Guid.NewGuid().ToString()};
             // All work above is detached: unsupported data cannot leave a partial rest.
