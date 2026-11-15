@@ -42,6 +42,14 @@ namespace DndVtt.UnityPrototype
         private void CommitSheetView()
         {
             if (Event.current.type != EventType.Layout || screen != FrontScreen.Sheet) return;
+            // The dock is drawn before the sheet body. Defer screen changes
+            // until the next Layout so the current sheet can persist edits.
+            if (requestedAbilitySettings)
+            {
+                requestedAbilitySettings = false;
+                OpenSettings();
+                return;
+            }
             if (requestedGrimoireMore.HasValue)
             { grimoireMoreOpen = requestedGrimoireMore.Value; requestedGrimoireMore = null; frontScroll = Vector2.zero; }
             int previousTab = sheetTab;
@@ -123,7 +131,7 @@ namespace DndVtt.UnityPrototype
                 });
                 GUILayout.EndHorizontal(); return;
             }
-            bool legacySurface=showSpellCatalog || sheetTab>=5;
+            bool legacySurface=(showSpellCatalog && sheetTab!=2) || sheetTab>=5;
             if(legacySurface)GUILayout.BeginVertical(ClassicLegacySurface);
             if (showSpellCatalog) SpellCatalog(hero, ref changed);
             else switch (sheetTab)
@@ -176,15 +184,25 @@ namespace DndVtt.UnityPrototype
         private void Roll(string label, int sides, int modifier) { int die = UnityEngine.Random.Range(1, sides + 1); rollResult = label + ": " + die + " " + Signed(modifier) + " = " + (die + modifier); }
         private void SpellCatalog(JObject hero, ref bool changed)
         {
-            if (GUILayout.Button("Закрыть выбор заклинаний", GUILayout.Height(48))) CloseSpellCatalog();
+            // Style only when opened from the redesigned abilities page.
+            // The available-spell rules, data and pagination are unchanged.
+            bool themed = sheetTab == 2;
+            if (themed) PrepareGrimoireAbilityStyles();
+            GUIStyle catalogButton = themed ? uiStyles.AbilityChip : GUI.skin.button;
+            GUIStyle catalogCard = themed ? uiStyles.AbilityCard : GUI.skin.box;
+            GUIStyle catalogTitle = themed ? uiStyles.AbilityTitle : GUI.skin.label;
+            GUIStyle catalogText = themed ? uiStyles.AbilityDescription : GUI.skin.label;
+            if (GUILayout.Button(themed ? "‹ Назад к магии" : "Закрыть выбор заклинаний",
+                catalogButton, GUILayout.Height(44))) CloseSpellCatalog();
             if (spellCatalog == null)
             {
                 var asset = Resources.Load<TextAsset>("CharacterSheet/catalog");
                 if (!asset) { GUILayout.Label("Справочник заклинаний не найден"); return; }
                 spellCatalog = (JArray)JObject.Parse(asset.text)["spells"];
             }
-            GUILayout.BeginVertical(GUI.skin.box);
-            GUILayout.Label("Добавить фокус или заклинание");
+            GUILayout.BeginVertical(themed ? uiStyles.AbilityPanel : GUI.skin.box);
+            GUILayout.Label("Добавить фокус или заклинание", catalogTitle);
+            if (themed) DrawGrimoireAbilityRule();
             if(Event.current.type==EventType.Layout)
             {
                 if(requestedSpellCircles.HasValue){showSpellCircles=requestedSpellCircles.Value;requestedSpellCircles=null;}
@@ -201,33 +219,48 @@ namespace DndVtt.UnityPrototype
                     ||((string)(x["description"]??x["desc"])??"").IndexOf(search,StringComparison.OrdinalIgnoreCase)>=0)).ToArray();
                 spellPage=Math.Min(spellPage,Math.Max(0,(spellMatches.Length-1)/SpellsPerPage));
             }
-            if (GUILayout.Button((spellCircle < 0 ? "Все доступные круги" : spellCircle == 0 ? "Фокусы" : spellCircle + " круг") + "  ▾", GUILayout.Height(48))) requestedSpellCircles = !showSpellCircles;
+            if (GUILayout.Button((spellCircle < 0 ? "Все доступные круги" : spellCircle == 0 ? "Фокусы" : spellCircle + " круг") + "  ▾",
+                catalogButton, GUILayout.Height(44))) requestedSpellCircles = !showSpellCircles;
             if (showSpellCircles)
             {
-                if (GUILayout.Button("Все доступные круги", GUILayout.Height(44))) SetSpellCircle(-1);
+                if (GUILayout.Button("Все доступные круги", catalogButton, GUILayout.Height(42))) SetSpellCircle(-1);
                 foreach (int circle in spellCircles)
-                    if (GUILayout.Button((circle == spellCircle ? "✓ " : "") + (circle == 0 ? "Фокусы" : circle + " круг"), GUILayout.Height(44))) SetSpellCircle(circle);
+                    if (GUILayout.Button((circle == spellCircle ? "✓ " : "") + (circle == 0 ? "Фокусы" : circle + " круг"),
+                        catalogButton, GUILayout.Height(42))) SetSpellCircle(circle);
             }
-            GUILayout.Label("Поиск по названию или описанию (необязательно)");
-            string query = MenuTextField("spellSearch", spellSearch, GUILayout.Height(48));
+            GUILayout.Label("Поиск по названию или описанию (необязательно)", catalogText);
+            string query = themed
+                ? MenuTextField("spellSearch", spellSearch, uiStyles.AbilityInput, GUILayout.Height(45))
+                : MenuTextField("spellSearch", spellSearch, GUILayout.Height(48));
             if (query != spellSearch) { spellSearch = query; requestedSpellPage = 0; }
             int pages = Math.Max(1, (spellMatches.Length + SpellsPerPage - 1) / SpellsPerPage);
             spellPage = Math.Min(spellPage, pages - 1);
-            GUILayout.Label("Доступно: " + spellMatches.Length + " · страница " + (spellPage + 1) + " / " + pages);
-            if (spellAvailableCount == 0) GUILayout.Label("Нет доступных заклинаний для класса и уровня этого персонажа.");
-            else if (spellMatches.Length == 0) GUILayout.Label("По выбранным фильтрам ничего не найдено.");
+            GUILayout.Label("Доступно: " + spellMatches.Length + " · страница " + (spellPage + 1) + " / " + pages,
+                catalogText);
+            if (spellAvailableCount == 0) GUILayout.Label("Нет доступных заклинаний для класса и уровня этого персонажа.", catalogText);
+            else if (spellMatches.Length == 0) GUILayout.Label("По выбранным фильтрам ничего не найдено.", catalogText);
             spellCatalogScroll = GUILayout.BeginScrollView(SwipePosition("spell-picker", spellCatalogScroll), GUILayout.Height(Mathf.Max(220, UiHeight * .45f)));
             foreach (var spell in spellMatches.Skip(spellPage * SpellsPerPage).Take(SpellsPerPage))
             {
-                GUILayout.BeginVertical(GUI.skin.box);
+                GUILayout.BeginVertical(catalogCard);
                 int circle = (int)spell["level"];
-                GUILayout.Label(spell["name"] + " · " + (circle == 0 ? "Фокус" : circle + " круг") + " · " + spell["school"]);
-                if (spell["source"] != null) GUILayout.Label("Источник: " + spell["source"]);
-                GUILayout.Label((string)(spell["description"] ?? spell["desc"]) ?? "");
+                if (themed)
+                {
+                    GUILayout.BeginHorizontal();
+                    DrawGrimoireQuestionIcon(43);
+                    GUILayout.Space(7);
+                    GUILayout.BeginVertical(GUILayout.ExpandWidth(true));
+                }
+                GUILayout.Label(spell["name"] + " · " + (circle == 0 ? "Фокус" : circle + " круг") +
+                    " · " + spell["school"], themed ? uiStyles.AbilityName : GUI.skin.label);
+                if (spell["source"] != null) GUILayout.Label("Источник: " + spell["source"], catalogText);
+                if (themed) { GUILayout.EndVertical(); GUILayout.EndHorizontal(); }
+                GUILayout.Label((string)(spell["description"] ?? spell["desc"]) ?? "", catalogText);
                 bool added = (hero["spellsData"] as JArray)?.OfType<JObject>().Any(s =>
                     (string)s["name"] == (string)spell["name"] && (int?)s["level"] == circle) == true;
                 bool enabled = GUI.enabled; GUI.enabled = enabled && !added;
-                if (GUILayout.Button(added ? "Уже добавлено" : "Добавить", GUILayout.Height(48)))
+                if (GUILayout.Button(added ? "Уже добавлено" : "Добавить",
+                    themed ? uiStyles.AbilityGold : GUI.skin.button, GUILayout.Height(44)))
                 {
                     var entry = (JObject)spell.DeepClone(); entry["id"] = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
                     entry["desc"] = spell["description"] ?? spell["desc"] ?? ""; entry["prepared"] = false;
@@ -238,10 +271,10 @@ namespace DndVtt.UnityPrototype
             }
             GUILayout.EndScrollView(); RegisterSwipe("spell-picker", GUILayoutUtility.GetLastRect());
             GUILayout.BeginHorizontal();
-            if (spellPage > 0 && GUILayout.Button("← Назад", GUILayout.Height(48))) { requestedSpellPage=spellPage-1; }
-            if (spellPage + 1 < pages && GUILayout.Button("Далее →", GUILayout.Height(48))) { requestedSpellPage=spellPage+1; }
+            if (spellPage > 0 && GUILayout.Button("← Назад", catalogButton, GUILayout.Height(44))) { requestedSpellPage=spellPage-1; }
+            if (spellPage + 1 < pages && GUILayout.Button("Далее →", catalogButton, GUILayout.Height(44))) { requestedSpellPage=spellPage+1; }
             GUILayout.EndHorizontal();
-            if (GUILayout.Button("Закрыть", GUILayout.Height(48))) CloseSpellCatalog();
+            if (GUILayout.Button("Закрыть", catalogButton, GUILayout.Height(44))) CloseSpellCatalog();
             GUILayout.EndVertical();
         }
         private void OpenSpellCatalog()

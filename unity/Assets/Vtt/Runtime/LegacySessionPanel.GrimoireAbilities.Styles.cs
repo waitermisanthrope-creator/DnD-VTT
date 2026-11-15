@@ -68,6 +68,11 @@ namespace DndVtt.UnityPrototype
                 margin = new RectOffset(0, 0, 2, 5),
                 normal = { textColor = gold }
             };
+            uiStyles.AbilityDescription = new GUIStyle(uiStyles.AbilitySub)
+            {
+                fontSize = 13, font = sheetSerif, wordWrap = true,
+                margin = new RectOffset(2, 2, 4, 4)
+            };
             uiStyles.AbilitySpellMeta = new GUIStyle(uiStyles.AbilitySub)
             {
                 font = sheetSerif, fontSize = 11, wordWrap = false,
@@ -301,8 +306,13 @@ namespace DndVtt.UnityPrototype
                 DrawGrimoireAbilityFrame(new Rect(10, 3, UiWidth - 20, 54));
             }
             Rect back = new Rect(13, 8, 46, 43);
-            if (GUI.Button(back, "‹", uiStyles.AbilityBack)) ReturnToHero();
-            DesktopUiSmoke.RecordButton("‹ К герою", uiStyles.AbilityBack, back);
+            if (GUI.Button(back, "‹", uiStyles.AbilityBack))
+            {
+                if (showSpellCatalog) CloseSpellCatalog();
+                else ReturnToHero();
+            }
+            DesktopUiSmoke.RecordButton(showSpellCatalog ? "‹ К магии" : "‹ К герою",
+                uiStyles.AbilityBack, back);
             Rect title = new Rect(64, 12, Mathf.Max(180, UiWidth - 77), 38);
             GUI.Label(title, "СПОСОБНОСТИ И МАГИЯ", uiStyles.AbilityTitle);
         }
@@ -324,7 +334,7 @@ namespace DndVtt.UnityPrototype
                     cell - 3, dock.height - 8);
                 if (GUI.Button(button, GUIContent.none, active ? uiStyles.AbilityGold : uiStyles.AbilityTab))
                 {
-                    if (i == 4) OpenSettings();
+                    if (i == 4) requestedAbilitySettings = true;
                     else requestedSheetTab = targets[i];
                     CompleteNumericKeyboard();
                 }

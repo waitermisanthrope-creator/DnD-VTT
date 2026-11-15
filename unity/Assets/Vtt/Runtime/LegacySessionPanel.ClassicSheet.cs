@@ -66,7 +66,7 @@ namespace DndVtt.UnityPrototype
         }
         private void DrawGrimoirePhoneHeader()
         {
-            if (sheetTab == 2 && !showSpellCatalog)
+            if (sheetTab == 2)
             {
                 DrawGrimoireAbilityPhoneHeader();
                 return;
@@ -97,7 +97,7 @@ namespace DndVtt.UnityPrototype
         }
         private void DrawGrimoirePhoneDock()
         {
-            if (sheetTab == 2 && !showSpellCatalog)
+            if (sheetTab == 2)
             {
                 DrawGrimoireAbilityPhoneDock();
                 return;

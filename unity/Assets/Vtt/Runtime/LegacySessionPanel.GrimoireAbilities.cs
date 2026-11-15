@@ -16,6 +16,7 @@ namespace DndVtt.UnityPrototype
         private bool abilitySpellFiltersOpen;
         private bool abilityMoreFeaturesOpen;
         private bool abilityEditorOpen;
+        private bool requestedAbilitySettings;
         private string abilitySpellQuery = "";
         private Vector2 abilitySlotsScroll, abilitySpellFiltersScroll;
         private int? pendingAbilityViewMode, pendingAbilityActionFilter, pendingAbilitySpellCircle;
@@ -31,6 +32,7 @@ namespace DndVtt.UnityPrototype
             abilitySpellFiltersOpen = false;
             abilityMoreFeaturesOpen = false;
             abilityEditorOpen = false;
+            requestedAbilitySettings = false;
             abilitySpellQuery = "";
             abilitySlotsScroll = abilitySpellFiltersScroll = Vector2.zero;
             pendingAbilityViewMode = pendingAbilityActionFilter = pendingAbilitySpellCircle = null;
@@ -180,11 +182,11 @@ namespace DndVtt.UnityPrototype
                     if (data != null && !GrimoireAbilityMatches(data, abilityActionFilter)) continue;
                     if (data == null && abilityActionFilter != 0) continue;
                     string title = data != null
-                        ? (string)(data["name"] ?? data["title"] ?? data["id"])
+                        ? GrimoireAbilityScalar(data["name"] ?? data["title"] ?? data["id"])
                         : feature.Type == JTokenType.String ? feature.ToString() : null;
                     if (string.IsNullOrWhiteSpace(title) || !shown.Add(title)) continue;
                     string desc = data != null
-                        ? (string)(data["description"] ?? data["desc"] ?? data["text"]) ?? ""
+                        ? GrimoireAbilityScalar(data["description"] ?? data["desc"] ?? data["text"]) ?? ""
                         : "";
                     additional.Add((title, desc));
                 }
@@ -280,7 +282,7 @@ namespace DndVtt.UnityPrototype
                 if (open)
                     GUILayout.Label(string.IsNullOrWhiteSpace(feature.desc)
                         ? "Описание отсутствует. Полные данные доступны в «Особенности класса»."
-                        : feature.desc, uiStyles.AbilitySub);
+                        : feature.desc, uiStyles.AbilityDescription);
                 GUILayout.EndVertical();
             }
 
@@ -291,23 +293,28 @@ namespace DndVtt.UnityPrototype
                     GUILayout.MinHeight(36)))
                     pendingAbilityMoreFeatures = !abilityMoreFeaturesOpen;
             }
-            if (abilityEditorOpen)
-            {
-                GUILayout.BeginVertical(uiStyles.AbilityPanel);
-                if (MeasuredMenuButton("+ Свой приём", uiStyles.AbilityTab,
-                    GUILayout.MinHeight(42)))
-                    SheetAction(() => CharacterSheetRules.Array(hero, "combatAbilities").Add(new JObject {
-                        ["id"] = Guid.NewGuid().ToString(), ["name"] = "Новый приём", ["description"] = "",
-                        ["rechargeOn"] = "none", ["maxUses"] = 0, ["usedCount"] = 0
-                    }), ref changed);
-                GUILayout.EndVertical();
-            }
         }
 
         private void ToggleAbilityFold(string key)
         {
             // IMGUI layout must only change at the next Layout event.
             pendingAbilityFold = key;
+        }
+
+        private bool GrimoireAbilityFold(string key, string label)
+        {
+            bool open = expanded.Contains(key);
+            if (MeasuredMenuButton((open ? "▾ " : "▸ ") + label,
+                uiStyles.AbilityChip, GUILayout.MinHeight(39)))
+                ToggleAbilityFold(key);
+            return open;
+        }
+
+        // Imported and homebrew JSON may contain objects instead of plain
+        // strings. Only scalar values are useful for a compact card heading.
+        private static string GrimoireAbilityScalar(JToken token)
+        {
+            return token is JValue value ? value.ToString() : null;
         }
 
         private void DrawAbilitySlotPanel(JObject hero, ref bool changed)
@@ -488,7 +495,7 @@ namespace DndVtt.UnityPrototype
                 {
                     GUILayout.Label(prepared ? "★ Подготовлено" : "☆ Не подготовлено", uiStyles.AbilitySub);
                     string desc = (string)(spell["desc"] ?? spell["description"]) ?? "Описание отсутствует";
-                    GUILayout.Label(desc, uiStyles.AbilitySub);
+                    GUILayout.Label(desc, uiStyles.AbilityDescription);
                     if (MeasuredMenuButton("Удалить заклинание…", uiStyles.AbilityChip,
                         GUILayout.MinHeight(42)))
                         RequestDelete(spell, name);
@@ -548,14 +555,21 @@ namespace DndVtt.UnityPrototype
         {
             GUILayout.Space(5);
             GUILayout.BeginVertical(uiStyles.AbilityPanel);
-            if (SheetFold("class-features", "Особенности класса"))
+            if (GrimoireAbilityFold("class-features", "Особенности класса"))
                 ReadOnlyToken(hero["features"] ?? new JArray(), "features", 0);
-            if (SheetFold("grimoire-slot-settings", "⚙ Настроить ячейки"))
+            if (GrimoireAbilityFold("grimoire-slot-settings", "⚙ Настроить ячейки"))
                 Tree(hero, "spellSlotsData", "Максимум / использовано", ref changed);
-            if (MeasuredMenuButton(abilityEditorOpen ? "▴ Скрыть инструменты" :
+            if (MeasuredMenuButton(abilityEditorOpen ? "▴ Скрыть создание приёма" :
                 "＋ Добавить свой приём", uiStyles.AbilityChip, GUILayout.MinHeight(39)))
                 pendingAbilityEditor = !abilityEditorOpen;
-            if (SheetFold("grimoire-ability-stats", "⚙ Параметры приёмов и магии"))
+            if (abilityEditorOpen &&
+                MeasuredMenuButton("+ Свой приём", uiStyles.AbilityGold, GUILayout.MinHeight(42)))
+                SheetAction(() => CharacterSheetRules.Array(hero, "combatAbilities").Add(new JObject {
+                    ["id"] = Guid.NewGuid().ToString(),
+                    ["name"] = "Новый приём", ["description"] = "",
+                    ["rechargeOn"] = "none", ["maxUses"] = 0, ["usedCount"] = 0
+                }), ref changed);
+            if (GrimoireAbilityFold("grimoire-ability-stats", "⚙ Параметры приёмов и магии"))
             {
                 GUILayout.Label("Характеристика приёмов", uiStyles.AbilitySub);
                 ClassicAbilityStat(hero, "combatAbilityStat", "str", ref changed);
@@ -569,7 +583,7 @@ namespace DndVtt.UnityPrototype
                 GUILayout.Label("Атака " + Signed(spellAtk) + " · СЛ " + (8 + spellAtk), uiStyles.AbilitySub);
             }
             GUILayout.Label("Расход счётчика не выполняет атаку, выбор цели или особый классовый эффект. Эти действия пока учитываются за столом.",
-                uiStyles.AbilitySub);
+                uiStyles.AbilityDescription);
             GUILayout.EndVertical();
         }
     }

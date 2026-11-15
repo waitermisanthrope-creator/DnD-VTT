@@ -13,7 +13,7 @@ namespace DndVtt.UnityPrototype
             public GUIStyle HeroPanel, HeroMetric, HeroName, HeroSubtitle, HeroSection, HeroValue, HeroSmall;
             public Texture2D HeroIcon, HeroHealthTrack, HeroHealthFill, HeroXpTrack, HeroXpFill;
             // Scoped to the abilities page; allocated once per sheet skin, not per OnGUI.
-            public GUIStyle AbilityPanel, AbilityCard, AbilityName, AbilitySub, AbilityTitle,
+            public GUIStyle AbilityPanel, AbilityCard, AbilityName, AbilitySub, AbilityDescription, AbilityTitle,
                 AbilitySpellMeta, AbilityCounter, AbilityCircleTitle, AbilityGlyph,
                 AbilityGold, AbilityTab, AbilityChip, AbilitySelectedChip, AbilityStar,
                 AbilitySearchPanel, AbilityInput, AbilitySearchGlyph, AbilitySearchHint,
