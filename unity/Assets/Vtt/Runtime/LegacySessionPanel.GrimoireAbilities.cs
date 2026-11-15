@@ -498,6 +498,22 @@ namespace DndVtt.UnityPrototype
                     GUILayout.Label(prepared ? "★ Подготовлено" : "☆ Не подготовлено", uiStyles.AbilitySub);
                     string desc = (string)(spell["desc"] ?? spell["description"]) ?? "Описание отсутствует";
                     GUILayout.Label(desc, uiStyles.AbilityDescription);
+                    if (level >= 0 && CharacterSpellCasting.ActionResource(spell) != null)
+                    {
+                        bool canCast = level == 0;
+                        if (level > 0 && (hero["spellSlotsData"] as JObject)?[level.ToString()] is JObject availableSlot &&
+                            CharacterSheetRules.TrySheetCount(availableSlot["max"], out int slotMax) &&
+                            CharacterSheetRules.TrySheetCount(availableSlot["used"], out int slotUsed))
+                            canCast = slotUsed < slotMax;
+                        bool previousEnabled = GUI.enabled;
+                        GUI.enabled = previousEnabled && canCast;
+                        if (MeasuredMenuButton(level == 0 ? "Применить заговор" :
+                            "Применить (ячейка " + AbilityRoman[level] + ")",
+                            uiStyles.AbilityGold, GUILayout.MinHeight(42)))
+                            SheetAction(() => CharacterSpellCasting.Cast(hero, spell, level), ref changed);
+                        GUI.enabled = previousEnabled;
+                    }
+
                     if (MeasuredMenuButton("Удалить заклинание…", uiStyles.AbilityChip,
                         GUILayout.MinHeight(42)))
                         RequestDelete(spell, name);
