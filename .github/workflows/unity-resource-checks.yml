@@ -1,0 +1,30 @@
+name: Unity resource engine regression checks
+
+on:
+  push:
+    branches:
+      - experiment/unity-vtt
+    paths:
+      - 'unity/Assets/Vtt/Runtime/CharacterResourceEngine.cs'
+      - 'unity/Assets/Vtt/Runtime/CharacterSpellCasting.cs'
+      - 'unity/Assets/Vtt/Runtime/CharacterAbilityActivation.cs'
+      - 'unity/Assets/Vtt/Runtime/CharacterTimedEffects.cs'
+      - 'unity/Assets/Vtt/Runtime/CharacterSheetRules.Actions.cs'
+      - 'unity/ci/workshop-tests/**'
+      - '.github/workflows/unity-resource-checks.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  resources:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Compile and run resource engine regression tests
+        run: dotnet run --project unity/ci/workshop-tests/WorkshopTests.csproj -- --resources
