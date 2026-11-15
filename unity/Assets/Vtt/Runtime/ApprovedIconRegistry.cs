@@ -12,13 +12,13 @@ namespace DndVtt
     /// </summary>
     internal static class ApprovedIconRegistry
     {
-        private static readonly Dictionary<int, Texture2D> Textures = new Dictionary<int, Texture2D>();
+        private static readonly Dictionary<int, Sprite> Sprites = new Dictionary<int, Sprite>();
         private static readonly HashSet<int> Missing = new HashSet<int>();
 
-        public static Texture2D GetTexture(int id)
+        public static Sprite GetSprite(int id)
         {
             if (id < 1 || id > 160) return null;
-            if (Textures.TryGetValue(id, out var texture)) return texture;
+            if (Sprites.TryGetValue(id, out var sprite)) return sprite;
             if (Missing.Contains(id)) return null;
 
             // Unity Resources.Load<Sprite> requires Sprite (2D and UI) import settings.
@@ -28,21 +28,21 @@ namespace DndVtt
                 Missing.Add(id);
                 return null;
             }
-            Textures[id] = sprite.texture;
-            return sprite.texture;
+            Sprites[id] = sprite;
+            return sprite;
         }
 
         public static bool DrawButton(Rect bounds, int id, GUIStyle style, string tooltip = "")
         {
-            var icon = GetTexture(id);
+            var icon = GetSprite(id);
             if (icon == null)
                 return GUI.Button(bounds, new GUIContent(string.Empty, tooltip), style);
-            return GUI.Button(bounds, new GUIContent(icon, tooltip), style);
+            // Draw the actual sprite rectangle, not the entire underlying texture atlas.\n            bool clicked = GUI.Button(bounds, new GUIContent(string.Empty, tooltip), style);\n            var tex = icon.texture;\n            var rect = icon.textureRect;\n            float side = Mathf.Min(bounds.width, bounds.height) * 0.67f;\n            var destination = new Rect(bounds.center.x - side / 2f, bounds.center.y - side / 2f, side, side);\n            GUI.DrawTextureWithTexCoords(destination, tex, new Rect(rect.x / tex.width, rect.y / tex.height, rect.width / tex.width, rect.height / tex.height), true);\n            return clicked;
         }
 
         public static void ClearCache()
         {
-            Textures.Clear();
+            Sprites.Clear();
             Missing.Clear();
         }
     }
