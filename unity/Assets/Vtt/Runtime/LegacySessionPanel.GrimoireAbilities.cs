@@ -157,14 +157,25 @@ namespace DndVtt.UnityPrototype
                 var tex = sprite.texture;
                 var source = sprite.textureRect;
                 float side = Mathf.Min(rect.height * .55f, 27f);
-                float labelWidth = Mathf.Max(0f, rect.width - side - 10f);
-                var iconRect = new Rect(rect.x + Mathf.Max(4f, (rect.width - side - labelWidth) / 2f),
-                    rect.y + (rect.height - side) / 2f, side, side);
+                bool iconOnly = rect.width < 85f;
+                float labelWidth = iconOnly ? 0f : Mathf.Max(0f, rect.width - side - 14f);
+                float left = iconOnly ? rect.center.x - side / 2f : rect.x + 6f;
+                var iconRect = new Rect(left, rect.y + (rect.height - side) / 2f, side, side);
                 GUI.DrawTextureWithTexCoords(iconRect, tex,
                     new Rect(source.x / tex.width, source.y / tex.height,
                         source.width / tex.width, source.height / tex.height), true);
-                if (!string.IsNullOrEmpty(label))
-                    GUI.Label(new Rect(iconRect.xMax + 4f, rect.y, labelWidth, rect.height), label, style);
+                if (!iconOnly && !string.IsNullOrEmpty(label))
+                {
+                    // Labels must not inherit the button background (or draw a second frame).
+                    var labelStyle = new GUIStyle(style);
+                    labelStyle.normal.background = null;
+                    labelStyle.hover.background = null;
+                    labelStyle.active.background = null;
+                    labelStyle.focused.background = null;
+                    labelStyle.alignment = TextAnchor.MiddleCenter;
+                    GUI.Label(new Rect(iconRect.xMax + 2f, rect.y, labelWidth, rect.height),
+                        label, labelStyle);
+                }
             }
             return clicked;
         }
