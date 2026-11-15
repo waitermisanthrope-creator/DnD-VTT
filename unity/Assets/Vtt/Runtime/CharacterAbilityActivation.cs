@@ -35,9 +35,21 @@ namespace DndVtt.UnityPrototype
             }
             if (ability["maxUses"] != null)
                 CharacterSheetRules.ChangeAbilityUse(copy, id, 1);
+            // Legacy class counters are authoritative; never spend a shadow copy.
+            if (!string.IsNullOrWhiteSpace(resourceId) &&
+                (copy["resources"] as JObject)?[resourceId] is JObject legacy)
+            {
+                if (legacy["max"] == null || legacy["current"] == null ||
+                    !CharacterSheetRules.TrySheetCount(legacy["max"], out int max) ||
+                    !CharacterSheetRules.TrySheetCount(legacy["current"], out int current) ||
+                    current > max || current < costs[resourceId])
+                    throw new FormatException("Недостаточно классового ресурса");
+                legacy["current"] = current - costs[resourceId];
+                costs.Remove(resourceId);
+            }
             if (!CharacterResourceEngine.TrySpend(copy, costs))
                 throw new FormatException("Недостаточно действий или ресурсов");
-            foreach (string key in new[] { "combatAbilities", CharacterResourceEngine.StateKey,
+            foreach (string key in new[] { "resources", "combatAbilities", CharacterResourceEngine.StateKey,
                 CharacterResourceEngine.DefinitionsKey })
                 if (copy[key] != null) hero[key] = copy[key].DeepClone();
         }
