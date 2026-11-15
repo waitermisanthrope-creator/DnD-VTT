@@ -169,6 +169,32 @@ internal static class ResourceEngineChecks
         })) == 0, "HB import idempotent");
         Check((int)hb["resourceState"]["hb.energy"]["current"] == 1,
             "HB reimport preserves spent charges");
+        var legacyHero = new JObject {
+            ["resources"] = new JObject {
+                ["ki"] = new JObject { ["max"] = 3, ["current"] = 2 }
+            },
+            ["combatAbilities"] = new JArray(new JObject {
+                ["id"] = "flurry", ["actionType"] = "bonus",
+                ["resourceId"] = "ki", ["resourceCost"] = 1,
+                ["maxUses"] = 2, ["usedCount"] = 0
+            })
+        };
+        CharacterResourceEngine.EnsureTurnResources(legacyHero);
+        CharacterAbilityActivation.Activate(legacyHero,
+            (JObject)legacyHero["combatAbilities"][0]);
+        Check((int)legacyHero["resources"]["ki"]["current"] == 1,
+            "legacy resource charged exactly once");
+        Check(legacyHero["resourceState"]["ki"] == null,
+            "no shadow resource counter");
+        Check((int)legacyHero["resourceState"]["turn.bonus"]["current"] == 0,
+            "legacy ability consumes bonus action");
+        string legacySnapshot = legacyHero.ToString();
+        bool legacyRejected = false;
+        try { CharacterAbilityActivation.Activate(legacyHero,
+            (JObject)legacyHero["combatAbilities"][0]); }
+        catch (FormatException) { legacyRejected = true; }
+        Check(legacyRejected && legacyHero.ToString() == legacySnapshot,
+            "failed legacy activation atomic");
         return checks;
     }
 }
