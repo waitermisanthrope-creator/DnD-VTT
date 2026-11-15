@@ -123,7 +123,22 @@ namespace DndVtt.UnityPrototype
             AddDefault(definitions, "turn.action", "Действие", 1);
             AddDefault(definitions, "turn.bonus", "Бонусное действие", 1);
             AddDefault(definitions, "turn.reaction", "Реакция", 1);
+            AddMovement(definitions, hero);
             Synchronize(hero);
+        }
+
+        // Register movement only for unambiguous speeds measured in feet.
+        private static void AddMovement(JArray definitions, JObject hero)
+        {
+            string raw = hero["speed"]?.ToString() ?? "";
+            var match = System.Text.RegularExpressions.Regex.Match(raw,
+                @"^\s*(\d+)\s*(?:футов|фута|футы|фут|фт|feet|ft)?\s*$",
+                System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+            if (!match.Success || !int.TryParse(match.Groups[1].Value, out int feet) ||
+                feet > 1000) return;
+            foreach (var token in definitions)
+                if ((string)(token as JObject)?["id"] == "turn.movement") return;
+            AddDefault(definitions, "turn.movement", "Передвижение (фт)", feet);
         }
 
         private static void AddDefault(JArray definitions, string id, string name, int maximum)
@@ -139,10 +154,16 @@ namespace DndVtt.UnityPrototype
 
         public static bool EndTurn(JObject hero)
         {
-            EnsureTurnResources(hero);
-            bool changed = Restore(hero, "turn");
-            hero["turnNumber"] = Math.Max(0, (int?)hero["turnNumber"] ?? 0) + 1;
-            return changed;
+            var copy = (JObject)hero.DeepClone();
+            EnsureTurnResources(copy);
+            Restore(copy, "turn");
+            int turn = (int?)copy["turnNumber"] ?? 0;
+            if (turn == int.MaxValue) throw new FormatException("Счётчик ходов переполнен");
+            copy["turnNumber"] = turn + 1;
+            hero[DefinitionsKey] = copy[DefinitionsKey].DeepClone();
+            hero[StateKey] = copy[StateKey].DeepClone();
+            hero["turnNumber"] = copy["turnNumber"].DeepClone();
+            return true;
         }
 
         public static bool Grant(JObject hero, string id, int amount)
