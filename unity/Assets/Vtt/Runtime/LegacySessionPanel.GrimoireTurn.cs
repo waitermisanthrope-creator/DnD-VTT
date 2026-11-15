@@ -60,7 +60,12 @@ namespace DndVtt.UnityPrototype
                     GUILayout.EndHorizontal();
                 }
             }
-            if (MeasuredMenuButton("Завершить ход", uiStyles.AbilityGold,
+            if ((string)hero["turnPhase"] == "ended" &&
+                MeasuredMenuButton("Начать ход", uiStyles.AbilityGold,
+                    GUILayout.ExpandWidth(true), GUILayout.Height(42)))
+                SheetAction(() => CharacterResourceEngine.StartTurn(hero), ref changed);
+            if ((string)hero["turnPhase"] != "ended" &&
+                MeasuredMenuButton("Завершить ход", uiStyles.AbilityGold,
                 GUILayout.ExpandWidth(true), GUILayout.Height(42)))
                 SheetAction(() => CharacterResourceEngine.EndTurn(hero), ref changed);
             GUILayout.EndVertical();
