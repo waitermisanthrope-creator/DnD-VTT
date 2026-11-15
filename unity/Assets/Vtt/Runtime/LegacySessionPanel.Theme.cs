@@ -17,7 +17,8 @@ namespace DndVtt.UnityPrototype
                 AbilityCounter, AbilityCircleTitle, AbilityGlyph, AbilityGold, AbilityTab,
                 AbilityChip, AbilitySelectedChip, AbilityStar, AbilitySearchPanel,
                 AbilityInput, AbilitySearchGlyph, AbilityOrnament;
-            public Texture2D AbilityResourceTrack;
+            public Texture2D AbilityResourceTrack, AbilityPlaceholder, AbilityDivider,
+                AbilityOrbFilled, AbilityOrbEmpty;
             public Texture2D[] AbilityDockIcons;
         }
         private UiStyleRoles uiStyles;

@@ -1,0 +1,97 @@
+{
+  "title": "DnD-VTT Ability Grimoire — approved reference resource pack",
+  "version": "0.2.0-draft",
+  "source": "Right-hand phone in user-approved 2026-11-15 reference (layout/ornament; placeholders are intentional)",
+  "scope": "LegacySessionPanel.GrimoireAbilities only",
+  "runtime": "Resources.Load<Texture2D>(UI/Grimoire/abilities/<asset without extension>)",
+  "assets": [
+    {
+      "filename": "panel_ornate_9s.png",
+      "type": "GUIStyle nine-slice",
+      "sourcePixels": [
+        128,
+        128
+      ],
+      "borderPixels": 28
+    },
+    {
+      "filename": "card_ornate_9s.png",
+      "type": "GUIStyle nine-slice",
+      "sourcePixels": [
+        128,
+        128
+      ],
+      "borderPixels": 28
+    },
+    {
+      "filename": "tab_gold_9s.png",
+      "type": "GUIStyle nine-slice",
+      "sourcePixels": [
+        128,
+        128
+      ],
+      "borderPixels": 28
+    },
+    {
+      "filename": "tab_idle_9s.png",
+      "type": "GUIStyle nine-slice",
+      "sourcePixels": [
+        128,
+        128
+      ],
+      "borderPixels": 28
+    },
+    {
+      "filename": "frame_corners_9s.png",
+      "type": "GUIStyle nine-slice",
+      "sourcePixels": [
+        128,
+        128
+      ],
+      "borderPixels": 28
+    },
+    {
+      "filename": "placeholder_question_96.png",
+      "type": "Texture2D",
+      "sourcePixels": [
+        96,
+        96
+      ],
+      "borderPixels": null,
+      "notes": "One generic ? for every ability/spell, no per-record images yet"
+    },
+    {
+      "filename": "divider_filigrane_512.png",
+      "type": "Texture2D",
+      "sourcePixels": [
+        512,
+        24
+      ],
+      "borderPixels": null
+    },
+    {
+      "filename": "orb_filled_48.png",
+      "type": "Texture2D",
+      "sourcePixels": [
+        48,
+        48
+      ],
+      "borderPixels": null
+    },
+    {
+      "filename": "orb_empty_48.png",
+      "type": "Texture2D",
+      "sourcePixels": [
+        48,
+        48
+      ],
+      "borderPixels": null
+    }
+  ],
+  "principles": [
+    "No baked interface screenshot",
+    "No hard-coded characters or resource values",
+    "No change to other tabs",
+    "Use cached Resources textures, not runtime texture creation per repaint"
+  ]
+}

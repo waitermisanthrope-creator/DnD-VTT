@@ -10,8 +10,15 @@ namespace DndVtt.UnityPrototype
             PrepareGrimoireHeroStyles();
             if (uiStyles.AbilityCard != null) return;
 
-            var panel = Resources.Load<Texture2D>("UI/Grimoire/panels/panel_primary_9s");
-            var inset = Resources.Load<Texture2D>("UI/Grimoire/panels/panel_secondary_9s");
+            // Scoped art for the approved gold-grimoire reference. Each texture is
+            // Resources-owned and cached with the sheet skin (no per-frame loads).
+            const string art = "UI/Grimoire/abilities/";
+            var panel = Resources.Load<Texture2D>(art + "panel_ornate_9s")
+                ?? Resources.Load<Texture2D>("UI/Grimoire/panels/panel_primary_9s");
+            var inset = Resources.Load<Texture2D>(art + "card_ornate_9s")
+                ?? Resources.Load<Texture2D>("UI/Grimoire/panels/panel_secondary_9s");
+            var activeTexture = Resources.Load<Texture2D>(art + "tab_gold_9s");
+            var idleTexture = Resources.Load<Texture2D>(art + "tab_idle_9s");
             var gold = ThemeHeadingAccent;
             var text = new Color(.98f, .94f, .85f);
 
@@ -23,7 +30,7 @@ namespace DndVtt.UnityPrototype
             if (panel)
             {
                 uiStyles.AbilityPanel.normal.background = panel;
-                uiStyles.AbilityPanel.border = new RectOffset(16, 16, 16, 16);
+                uiStyles.AbilityPanel.border = new RectOffset(28, 28, 28, 28);
             }
 
             uiStyles.AbilityCard = new GUIStyle(uiStyles.AbilityPanel)
@@ -34,7 +41,7 @@ namespace DndVtt.UnityPrototype
             if (inset)
             {
                 uiStyles.AbilityCard.normal.background = inset;
-                uiStyles.AbilityCard.border = new RectOffset(16, 16, 16, 16);
+                uiStyles.AbilityCard.border = new RectOffset(28, 28, 28, 28);
             }
 
             uiStyles.AbilityName = new GUIStyle(uiStyles.HeroSection)
@@ -73,9 +80,30 @@ namespace DndVtt.UnityPrototype
                 alignment = TextAnchor.MiddleCenter,
                 normal = { textColor = gold }
             };
-            uiStyles.AbilityGold = Button(sheetSkin.button,
-                Color.Lerp(gold, new Color(.18f, .11f, .02f), .43f),
-                new Color(1f, .95f, .81f));
+            // The border and gold glow live in the 9-slice PNG rather than
+            // being recreated by Rounded() for each style rebuild.
+            uiStyles.AbilityGold = new GUIStyle(sheetSkin.button)
+            {
+                alignment = TextAnchor.MiddleCenter,
+                fontStyle = FontStyle.Bold,
+                border = new RectOffset(28, 28, 28, 28)
+            };
+            if (activeTexture)
+            {
+                uiStyles.AbilityGold.normal.background = activeTexture;
+                uiStyles.AbilityGold.hover.background = activeTexture;
+                uiStyles.AbilityGold.active.background = activeTexture;
+                uiStyles.AbilityGold.focused.background = activeTexture;
+                uiStyles.AbilityGold.onNormal.background = activeTexture;
+                uiStyles.AbilityGold.onHover.background = activeTexture;
+                uiStyles.AbilityGold.onActive.background = activeTexture;
+                uiStyles.AbilityGold.onFocused.background = activeTexture;
+            }
+            var goldText = new Color(1f, .95f, .81f);
+            uiStyles.AbilityGold.normal.textColor = goldText;
+            uiStyles.AbilityGold.hover.textColor = goldText;
+            uiStyles.AbilityGold.active.textColor = goldText;
+            uiStyles.AbilityGold.focused.textColor = goldText;
             uiStyles.AbilityGold.font = sheetSerif;
             uiStyles.AbilityGold.fontSize = 13;
             uiStyles.AbilityGold.wordWrap = false;
@@ -83,7 +111,8 @@ namespace DndVtt.UnityPrototype
             uiStyles.AbilityGold.margin = new RectOffset(1, 1, 1, 1);
 
             uiStyles.AbilityTab = new GUIStyle(uiStyles.AbilityGold);
-            var navIdle = Resources.Load<Texture2D>("UI/Grimoire/navigation/nav_tab_idle_9s");
+            var navIdle = idleTexture
+                ?? Resources.Load<Texture2D>("UI/Grimoire/navigation/nav_tab_idle_9s");
             if (navIdle)
             {
                 uiStyles.AbilityTab.normal.background = navIdle;
@@ -110,8 +139,8 @@ namespace DndVtt.UnityPrototype
                 uiStyles.AbilityChip.focused.background = ghost;
             }
             uiStyles.AbilitySelectedChip = new GUIStyle(uiStyles.AbilityChip);
-            uiStyles.AbilitySelectedChip.normal.background = Rounded(
-                new Color(.37f, .22f, .06f, .98f), gold, 7);
+            uiStyles.AbilitySelectedChip.normal.background = activeTexture
+                ? activeTexture : uiStyles.AbilityGold.normal.background;
             uiStyles.AbilitySelectedChip.hover.background = uiStyles.AbilitySelectedChip.normal.background;
             uiStyles.AbilitySelectedChip.active.background = uiStyles.AbilitySelectedChip.normal.background;
             uiStyles.AbilitySelectedChip.focused.background = uiStyles.AbilitySelectedChip.normal.background;
@@ -140,24 +169,40 @@ namespace DndVtt.UnityPrototype
                 fontSize = 26, normal = { textColor = gold }
             };
             uiStyles.AbilityOrnament = GrimoireNineSlice(
-                Resources.Load<Texture2D>("UI/Grimoire/frames/frame_ornate_mask_9s"), 16, 16);
-            uiStyles.AbilityResourceTrack = Resources.Load<Texture2D>("UI/Grimoire/bars/bar_resource_track_9s");
+                Resources.Load<Texture2D>(art + "frame_corners_9s"), 28, 28)
+                ?? GrimoireNineSlice(
+                    Resources.Load<Texture2D>("UI/Grimoire/frames/frame_ornate_mask_9s"), 16, 16);
+            uiStyles.AbilityPlaceholder = Resources.Load<Texture2D>(art + "placeholder_question_96");
+            uiStyles.AbilityDivider = Resources.Load<Texture2D>(art + "divider_filigrane_512");
+            uiStyles.AbilityOrbFilled = Resources.Load<Texture2D>(art + "orb_filled_48");
+            uiStyles.AbilityOrbEmpty = Resources.Load<Texture2D>(art + "orb_empty_48");
+            uiStyles.AbilityResourceTrack = Resources.Load<Texture2D>(
+                "UI/Grimoire/bars/bar_resource_track_9s");
             uiStyles.AbilityDockIcons = new[] { "hero", "inventory", "abilities", "lore", "settings" }
                 .Select(key => Resources.Load<Texture2D>("UI/Grimoire/icons/icon_" + key + "_96")).ToArray();
         }
 
         private void DrawGrimoireAbilityRule()
         {
-            Rect rule = GUILayoutUtility.GetRect(1, 2, GUILayout.ExpandWidth(true));
+            Rect rule = GUILayoutUtility.GetRect(1, 14, GUILayout.ExpandWidth(true));
             if (Event.current.type != EventType.Repaint) return;
-            GUI.DrawTexture(rule, Texture2D.whiteTexture, ScaleMode.StretchToFill, false, 0,
-                new Color(ThemeHeadingAccent.r, ThemeHeadingAccent.g, ThemeHeadingAccent.b, .63f), 0, 0);
+            if (uiStyles.AbilityDivider)
+                GUI.DrawTexture(rule, uiStyles.AbilityDivider, ScaleMode.StretchToFill, true);
+            else
+                GUI.DrawTexture(new Rect(rule.x, rule.center.y, rule.width, 1),
+                    Texture2D.whiteTexture, ScaleMode.StretchToFill, false, 0,
+                    new Color(ThemeHeadingAccent.r, ThemeHeadingAccent.g, ThemeHeadingAccent.b, .63f), 0, 0);
         }
 
         private void DrawGrimoireQuestionIcon(int size)
         {
             Rect frame = GUILayoutUtility.GetRect(size, size, GUILayout.Width(size), GUILayout.Height(size));
             if (Event.current.type != EventType.Repaint) return;
+            if (uiStyles.AbilityPlaceholder)
+            {
+                GUI.DrawTexture(frame, uiStyles.AbilityPlaceholder, ScaleMode.ScaleToFit, true);
+                return;
+            }
             GUI.DrawTexture(frame, Texture2D.whiteTexture, ScaleMode.StretchToFill, true, 0,
                 new Color(.45f, .29f, .075f, .9f), 0, 8);
             GUI.DrawTexture(new Rect(frame.x + 2, frame.y + 2, frame.width - 4, frame.height - 4),
@@ -170,30 +215,28 @@ namespace DndVtt.UnityPrototype
         {
             if (Event.current.type != EventType.Repaint || uiStyles.AbilityOrnament == null) return;
             var prev = GUI.color;
-            GUI.color = new Color(ThemeHeadingAccent.r, ThemeHeadingAccent.g, ThemeHeadingAccent.b, .85f);
+            // Authored art is already gold; do not recolor the full texture.
+            GUI.color = Color.white;
             uiStyles.AbilityOrnament.Draw(rect, false, false, false, false);
             GUI.color = prev;
         }
 
         private void DrawGrimoireAbilityOrb(Rect rect, bool filled, int level)
         {
-            Color tint = level == 1 ? new Color(.22f, .69f, 1f) :
-                level == 2 ? new Color(.43f, .81f, 1f) :
-                level == 3 ? new Color(.79f, .36f, .98f) : ThemeHeadingAccent;
-            GUI.DrawTexture(new Rect(rect.x - 1, rect.y - 1, rect.width + 2, rect.height + 2),
-                Texture2D.whiteTexture, ScaleMode.StretchToFill, true, 0,
-                new Color(tint.r, tint.g, tint.b, filled ? .47f : .23f), 0, 9);
-            GUI.DrawTexture(rect, Texture2D.whiteTexture, ScaleMode.StretchToFill, true, 0,
-                new Color(.07f, .08f, .12f), 0, 8);
-            Rect inner = new Rect(rect.x + 3, rect.y + 3, rect.width - 6, rect.height - 6);
-            GUI.DrawTexture(inner, Texture2D.whiteTexture, ScaleMode.StretchToFill, true, 0,
-                filled ? tint : new Color(.08f, .085f, .12f), 0, 7);
-            if (filled)
+            Color tint = level == 1 ? new Color(.18f, .66f, 1f) :
+                level == 2 ? new Color(.43f, .79f, 1f) :
+                level == 3 ? new Color(.76f, .33f, .98f) :
+                new Color(.96f, .64f, .28f);
+            Texture2D orb = filled ? uiStyles.AbilityOrbFilled : uiStyles.AbilityOrbEmpty;
+            if (orb)
             {
-                GUI.DrawTexture(new Rect(rect.x + 4, rect.y + 3, 5, 4),
-                    Texture2D.whiteTexture, ScaleMode.StretchToFill, true, 0,
-                    new Color(1, 1, 1, .58f), 0, 3);
+                // One textured draw per slot, color by spell circle.
+                GUI.DrawTexture(rect, orb, ScaleMode.ScaleToFit, true, 0,
+                    filled ? tint : Color.Lerp(tint, Color.gray, .55f), 0, 0);
+                return;
             }
+            GUI.DrawTexture(rect, Texture2D.whiteTexture, ScaleMode.StretchToFill,
+                true, 0, filled ? tint : new Color(.09f, .09f, .13f), 0, 8);
         }
 
         private void DrawGrimoireAbilityBar(Rect rect, float fraction)
