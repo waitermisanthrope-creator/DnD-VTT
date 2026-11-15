@@ -66,6 +66,11 @@ namespace DndVtt.UnityPrototype
         }
         private void DrawGrimoirePhoneHeader()
         {
+            if (sheetTab == 2 && !showSpellCatalog)
+            {
+                DrawGrimoireAbilityPhoneHeader();
+                return;
+            }
             // Fixed geometry, like the dock: scrolling a long details editor must
             // never move or paint over the app header.
             bool canReturn = (sheetTab == 2 || sheetTab == 5) && !advancementOpen && !classicPortraitOpen && raceView == 0;
@@ -92,6 +97,11 @@ namespace DndVtt.UnityPrototype
         }
         private void DrawGrimoirePhoneDock()
         {
+            if (sheetTab == 2 && !showSpellCatalog)
+            {
+                DrawGrimoireAbilityPhoneDock();
+                return;
+            }
             PrepareGrimoireNavigation();
             Rect dock = new Rect(10, UiHeight - 76, UiWidth - 20, 66);
             if (Event.current.type == EventType.Repaint) grimoireDockPanel.Draw(dock, false, false, false, false);

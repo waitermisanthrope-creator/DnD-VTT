@@ -31,7 +31,7 @@ namespace DndVtt.UnityPrototype
         private bool showItemCatalog;
         private string deletePath, deleteSignature, deleteCharacter, deleteLabel;
         private readonly string[] tabs = { "Герой", "Навыки", "Способности", "Инвентарь", "Заметки", "Дайсы", "Данные", "Кошелёк", "Паспорт", "Лор / Бестиарий", "Ремёсла" };
-        private void ClearSheetInputs() { heroQuickReturnActive=false;requestedSheetReturnScroll=null; grimoireMoreOpen=false; requestedGrimoireMore=null; ResetFormInput(); requestedSpellCatalog = null; showSpellCatalog = false; spellSearch = ""; spellCircle = -1; spellPage = 0; raceView=0;requestedRaceView=null;pendingRace=null; CloseAdvancement();requestedPortraitVisibility=null;cloneSkillDropdown=null;classicPortraitOpen=classicProfileEdit=false;healthAmount="1";pendingBaseRest=null;technicalDataOpen=false; heroArt3D=false; edits.Clear(); expanded.Clear(); deletePath = deleteSignature = deleteCharacter = deleteLabel = null; }
+        private void ClearSheetInputs() { heroQuickReturnActive=false;requestedSheetReturnScroll=null; grimoireMoreOpen=false; requestedGrimoireMore=null; ResetFormInput(); requestedSpellCatalog = null; showSpellCatalog = false; spellSearch = ""; spellCircle = -1; spellPage = 0; raceView=0;requestedRaceView=null;pendingRace=null; CloseAdvancement();requestedPortraitVisibility=null;cloneSkillDropdown=null;classicPortraitOpen=classicProfileEdit=false;healthAmount="1";pendingBaseRest=null;technicalDataOpen=false; heroArt3D=false; edits.Clear(); expanded.Clear(); ResetGrimoireAbilityView(); deletePath = deleteSignature = deleteCharacter = deleteLabel = null; }
         private void Attempt(Action action)
         {
             try { action(); } catch (Exception error) { status = error.Message; }
@@ -130,7 +130,7 @@ namespace DndVtt.UnityPrototype
             {
                 case 0: GrimoireHero(hero, ref changed); break;
                 case 1: ClassicSkills(hero, ref changed); if(SheetFold("edit-feats","Черты и владения"))DrawCharacterFeats(hero, ref changed); break;
-                case 2: ClassicAbilities(hero,ref changed);break;
+                case 2: DrawGrimoireAbilities(hero,ref changed);break;
                 case 3: Wallet(hero,ref changed,ref persistWallet);DrawMarketEntry(hero,ref changed,ref persistCommerce);DrawCommerceInventory(hero, ref changed, ref persistCommerce); break;
                 case 10: DrawCrafts(hero,ref changed,ref persistCommerce);break;
                 case 4:

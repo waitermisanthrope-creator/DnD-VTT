@@ -14,6 +14,7 @@ public static class CharacterSheetValidation
     {
         var golden = JObject.Parse(File.ReadAllText("Assets/Vtt/Tests/sheet-contract.json")); int cases = 0;
         ValidateWalletAndSettings(golden);
+        GrimoireAbilityPresentationValidation.Validate();
         ValidateUpdater();
         var nullable = new LegacyCharacterArchive("{\"id\":\"nullable\",\"stats\":null,\"skillsData\":null}").Snapshot(0);
         Check(CharacterSheetRules.Modifier(nullable, "str") == 0 && CharacterSheetRules.Skill(nullable, 0) == 0, "legacy null collections");
