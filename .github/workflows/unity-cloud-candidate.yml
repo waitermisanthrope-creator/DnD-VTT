@@ -16,7 +16,7 @@ on:
       version:
         description: 'Unpublished Android candidate, newer than public version'
         required: true
-        default: '1.00.59'
+        default: '1.00.60'
         type: string
 
 permissions:
@@ -40,7 +40,7 @@ jobs:
           persist-credentials: false
       - name: Reject candidate version already present in update channel
         env:
-          CANDIDATE_VERSION: ${{ inputs.version || '1.00.59' }}
+          CANDIDATE_VERSION: ${{ inputs.version || '1.00.60' }}
         run: |
           python3 - <<'PYCODE'
           import json, os
