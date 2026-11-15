@@ -144,12 +144,15 @@ namespace DndVtt.UnityPrototype
         private void DrawAbilityModeTabs()
         {
             GUILayout.BeginHorizontal();
-            if (MeasuredMenuButton("⚔  Умения", abilityViewMode == 0 ? uiStyles.AbilityGold : uiStyles.AbilityTab,
+            if (MeasuredMenuButton("Умения", abilityViewMode == 0 ? uiStyles.AbilityGold : uiStyles.AbilityTab,
                 GUILayout.ExpandWidth(true), GUILayout.Height(47)))
                 pendingAbilityViewMode = 0;
-            if (MeasuredMenuButton("▣  Заклинания", abilityViewMode == 1 ? uiStyles.AbilityGold : uiStyles.AbilityTab,
+            if (MeasuredMenuButton("Заклинания", abilityViewMode == 1 ? uiStyles.AbilityGold : uiStyles.AbilityTab,
                 GUILayout.ExpandWidth(true), GUILayout.Height(47)))
                 pendingAbilityViewMode = 1;
+            // Approved art is drawn over the existing buttons, without changing their click handlers.
+            // Keep text labels until the actual PNG assets are imported into Resources/VttIcons.
+            // Asset IDs: 19 = abilities, 20 = spells.
             GUILayout.EndHorizontal();
             GUILayout.Space(8);
         }
