@@ -39,19 +39,24 @@ namespace DndVtt.UnityPrototype
                 {
                     var definition = token as JObject;
                     string id = (string)definition?["id"];
-                    if (string.IsNullOrEmpty(id) || !(state[id] is JObject value)) continue;
+                    if (string.IsNullOrEmpty(id) || !id.StartsWith("turn.", System.StringComparison.Ordinal) || !(state[id] is JObject value)) continue;
                     GUILayout.BeginHorizontal();
                     GUILayout.Label(((string)definition["name"] ?? id) + ": " +
                         ((int?)value["current"] ?? 0) + "/" + ((int?)definition["max"] ?? 0));
-                    if (GUILayout.Button("Использовать", GUILayout.Width(110)))
+                    int spend = id == "turn.movement" ? 5 : 1;
+                    bool wasEnabled = GUI.enabled;
+                    GUI.enabled = wasEnabled && ((int?)value["current"] ?? 0) >= spend;
+                    if (MeasuredMenuButton(id == "turn.movement" ? "−5 фт" : "Использовать",
+                        uiStyles.AbilityChip, GUILayout.Width(110), GUILayout.Height(35)))
                     {
                         string resourceId = id;
                         SheetAction(() => {
                             if (!CharacterResourceEngine.TrySpend(hero,
-                                new System.Collections.Generic.Dictionary<string, int> { [resourceId] = 1 }))
+                                new System.Collections.Generic.Dictionary<string, int> { [resourceId] = spend }))
                                 throw new System.FormatException("Недостаточно ресурса");
                         }, ref changed);
                     }
+                    GUI.enabled = wasEnabled;
                     GUILayout.EndHorizontal();
                 }
             }
