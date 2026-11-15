@@ -149,16 +149,43 @@ namespace DndVtt.UnityPrototype
                     return;
             definitions.Add(new JObject {
                 ["id"] = id, ["name"] = name, ["max"] = maximum,
-                ["restoreOn"] = new JArray("turn")
+                ["restoreOn"] = new JArray("start")
             });
+        }
+
+        // A reaction refreshes at the START of the creature's next turn,
+        // not when its previous turn ends. Other turn budgets follow suit.
+        public static bool StartTurn(JObject hero)
+        {
+            if (hero == null) return false;
+            var copy = (JObject)hero.DeepClone();
+            EnsureTurnResources(copy);
+            if ((string)copy["turnPhase"] == "active") return false;
+            Restore(copy, "start");
+            // Migrate older turn definitions without resetting custom resources.
+            var definitions = (JArray)copy[DefinitionsKey];
+            foreach (var token in definitions)
+            {
+                var definition = token as JObject;
+                string id = (string)definition?["id"];
+                if (id == null || !id.StartsWith("turn.", StringComparison.Ordinal) ||
+                    id == "turn.extra_action") continue;
+                var entry = (copy[StateKey] as JObject)?[id] as JObject;
+                if (entry != null) entry["current"] = Maximum(definition);
+            }
+            copy["turnPhase"] = "active";
+            hero[DefinitionsKey] = copy[DefinitionsKey].DeepClone();
+            hero[StateKey] = copy[StateKey].DeepClone();
+            hero["turnPhase"] = "active";
+            return true;
         }
 
         public static bool EndTurn(JObject hero)
         {
+            if (hero == null) return false;
             var copy = (JObject)hero.DeepClone();
             EnsureTurnResources(copy);
-            Restore(copy, "turn");
-            // Temporary extra actions expire when transitioning to the next turn.
+            if ((string)copy["turnPhase"] == "ended") return false;
             var extra = (copy[StateKey] as JObject)?["turn.extra_action"] as JObject;
             if (extra != null) extra["current"] = 0;
             foreach (var token in (JArray)copy[DefinitionsKey])
@@ -167,9 +194,11 @@ namespace DndVtt.UnityPrototype
             int turn = (int?)copy["turnNumber"] ?? 0;
             if (turn == int.MaxValue) throw new FormatException("Счётчик ходов переполнен");
             copy["turnNumber"] = turn + 1;
+            copy["turnPhase"] = "ended";
             hero[DefinitionsKey] = copy[DefinitionsKey].DeepClone();
             hero[StateKey] = copy[StateKey].DeepClone();
             hero["turnNumber"] = copy["turnNumber"].DeepClone();
+            hero["turnPhase"] = "ended";
             return true;
         }
 
