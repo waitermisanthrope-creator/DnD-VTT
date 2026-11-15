@@ -204,8 +204,9 @@ namespace DndVtt.UnityPrototype
                 string name = (string)ability["name"] ?? "Приём";
                 string key = "ability:" + ability["id"];
                 bool open = expanded.Contains(key);
-                bool known = CharacterSheetRules.TrySheetCount(ability["maxUses"], out int max) &&
-                    CharacterSheetRules.TrySheetCount(ability["usedCount"], out int used);
+                int max = 0, used = 0;
+                bool known = CharacterSheetRules.TrySheetCount(ability["maxUses"], out max) &&
+                    CharacterSheetRules.TrySheetCount(ability["usedCount"], out used);
                 if (!known) { max = 0; used = 0; }
                 GUILayout.BeginVertical(uiStyles.AbilityCard, GUILayout.MinHeight(68));
                 GUILayout.BeginHorizontal(GUILayout.MinHeight(51));
@@ -364,9 +365,9 @@ namespace DndVtt.UnityPrototype
             foreach (var slot in slots)
             {
                 int level = slot.level, max = slot.max, used = slot.used;
-                bool pact = slot.pact;
+                bool isPactSlot = slot.pact;
                 GUILayout.BeginVertical(GUILayout.Width(117));
-                GUILayout.Label(pact ? "ПАКТ " + AbilityRoman[level] : AbilityRoman[level],
+                GUILayout.Label(isPactSlot ? "ПАКТ " + AbilityRoman[level] : AbilityRoman[level],
                     uiStyles.AbilityCircleTitle, GUILayout.Height(22));
                 int display = Math.Min(max, 20);
                 for (int start = 0; start < display; start += 5)
@@ -383,7 +384,7 @@ namespace DndVtt.UnityPrototype
                         Rect orb = new Rect(hit.x + 2, hit.y + 4, 18, 18);
                         if (GUI.Button(hit, GUIContent.none, GUIStyle.none))
                         {
-                            if (pact) SheetAction(() => CharacterSheetRules.ChangePactUse(hero, filled ? 1 : -1), ref changed);
+                            if (isPactSlot) SheetAction(() => CharacterSheetRules.ChangePactUse(hero, filled ? 1 : -1), ref changed);
                             else SheetAction(() => CharacterSheetRules.ChangeSpellUse(hero, level, filled ? 1 : -1), ref changed);
                         }
                         if (Event.current.type == EventType.Repaint)
