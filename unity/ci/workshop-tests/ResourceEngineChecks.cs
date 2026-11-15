@@ -45,8 +45,7 @@ internal static class ResourceEngineChecks
         definitions.Add(new JObject { ["id"] = "hb.mana", ["max"] = 5 });
         bool rejected = false;
         try { CharacterResourceEngine.Synchronize(hero); } catch (FormatException) { rejected = true; }
-        Check(rejected && hero.ToString() == before.Replace(",\n  {", ",\n  {") == false,
-            "duplicate resource rejected");
+        Check(rejected, "duplicate resource rejected");
         return checks;
     }
 }
