@@ -193,6 +193,7 @@ namespace DndVtt.UnityPrototype
             foreach (var token in (JArray)copy[DefinitionsKey])
                 if ((string)(token as JObject)?["id"] == "turn.extra_action")
                     ((JObject)token)["max"] = 0;
+            CharacterTimedEffects.Tick(copy);
             int turn = (int?)copy["turnNumber"] ?? 0;
             if (turn == int.MaxValue) throw new FormatException("Счётчик ходов переполнен");
             copy["turnNumber"] = turn + 1;
@@ -200,6 +201,7 @@ namespace DndVtt.UnityPrototype
             hero[DefinitionsKey] = copy[DefinitionsKey].DeepClone();
             hero[StateKey] = copy[StateKey].DeepClone();
             hero["turnNumber"] = copy["turnNumber"].DeepClone();
+            if (copy["timedEffects"] != null) hero["timedEffects"] = copy["timedEffects"].DeepClone();
             hero["turnPhase"] = "ended";
             return true;
         }
