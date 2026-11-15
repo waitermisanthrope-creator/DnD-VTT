@@ -245,7 +245,7 @@ namespace DndVtt.UnityPrototype
                 DrawGrimoireQuestionIcon(51);
                 GUILayout.Space(7);
                 GUILayout.BeginVertical(GUILayout.ExpandWidth(true));
-                if (MeasuredMenuButton(name + (open ? "  ▴" : "  ▾"),
+                if (MeasuredMenuButton(name + (open ? "  (свернуть)" : "  (раскрыть)"),
                     uiStyles.AbilityTab, GUILayout.MinHeight(44)))
                     ToggleAbilityFold(key);
                 string recharge = (string)ability["rechargeOn"] ?? "none";
@@ -279,7 +279,7 @@ namespace DndVtt.UnityPrototype
                 if (open)
                 {
                     if (known && max > 0 && used > 0 &&
-                        MeasuredMenuButton("↶ Вернуть использование", uiStyles.AbilityChip,
+                        ApprovedGrimoireButton("Вернуть использование", 12, uiStyles.AbilityChip,
                             GUILayout.MinHeight(40)))
                         SheetAction(() => CharacterSheetRules.ChangeAbilityUse(hero, ability["id"]?.ToString(), -1), ref changed);
                     GUILayout.Label("Параметры приёма", uiStyles.AbilitySub);
@@ -310,7 +310,7 @@ namespace DndVtt.UnityPrototype
                     GUILayout.MinHeight(44))) ToggleAbilityFold(key);
                 GUILayout.Label("Особенность класса", uiStyles.AbilitySub);
                 GUILayout.EndVertical();
-                if (MeasuredMenuButton(open ? "⌃" : "⌄", uiStyles.AbilityChip,
+                if (ApprovedGrimoireButton(open ? "Свернуть" : "Раскрыть", open ? 10 : 9, uiStyles.AbilityChip,
                     GUILayout.Width(40), GUILayout.Height(44)))
                     ToggleAbilityFold(key);
                 GUILayout.EndHorizontal();
@@ -323,8 +323,8 @@ namespace DndVtt.UnityPrototype
 
             if (additional.Count > 2)
             {
-                if (MeasuredMenuButton(abilityMoreFeaturesOpen ? "▴ Свернуть особенности" :
-                    "▾ Все особенности (" + additional.Count + ")", uiStyles.AbilityChip,
+                if (ApprovedGrimoireButton(abilityMoreFeaturesOpen ? "Свернуть особенности" :
+                    "Все особенности (" + additional.Count + ")", abilityMoreFeaturesOpen ? 10 : 9, uiStyles.AbilityChip,
                     GUILayout.MinHeight(36)))
                     pendingAbilityMoreFeatures = !abilityMoreFeaturesOpen;
             }
@@ -339,7 +339,7 @@ namespace DndVtt.UnityPrototype
         private bool GrimoireAbilityFold(string key, string label)
         {
             bool open = expanded.Contains(key);
-            if (MeasuredMenuButton((open ? "▾ " : "▸ ") + label,
+            if (ApprovedGrimoireButton(label, open ? 9 : 2,
                 uiStyles.AbilityChip, GUILayout.MinHeight(39)))
                 ToggleAbilityFold(key);
             return open;
@@ -465,7 +465,7 @@ namespace DndVtt.UnityPrototype
                     SwipePosition("grimoire-spell-filters", abilitySpellFiltersScroll), true, false,
                     GUI.skin.horizontalScrollbar, GUIStyle.none, GUILayout.Height(46));
                 GUILayout.BeginHorizontal();
-                if (MeasuredMenuButton(abilitySpellCircle == -1 ? "✓ Все круги" : "Все круги",
+                if (ApprovedGrimoireButton("Все круги", abilitySpellCircle == -1 ? 4 : 11,
                     uiStyles.AbilityChip, GUILayout.MinHeight(37)))
                     pendingAbilitySpellCircle = -1;
                 for (int i = 0; i <= 9; i++)
@@ -473,7 +473,7 @@ namespace DndVtt.UnityPrototype
                     int circle = i;
                     if ((hero["spellsData"] as JArray)?.OfType<JObject>()
                         .Any(s => SpellDisplayLevel(s) == i) != true) continue;
-                    if (MeasuredMenuButton((abilitySpellCircle == i ? "✓ " : "") + AbilityRoman[i],
+                    if (ApprovedGrimoireButton(AbilityRoman[i], abilitySpellCircle == i ? 4 : 11,
                         uiStyles.AbilityChip, GUILayout.MinHeight(37)))
                         pendingAbilitySpellCircle = circle;
                 }
@@ -512,25 +512,25 @@ namespace DndVtt.UnityPrototype
                 string time = (string)spell["castingTime"] ?? (string)spell["time"] ?? "—";
                 string range = (string)spell["range"] ?? "—";
                 string summary = (level < 0 ? "?" : AbilityRoman[level]) + "   " +
-                    CompactSpellAttribute(time, 14) + "  ◉ " +
+                    CompactSpellAttribute(time, 14) +  "  /  "  +
                     CompactSpellAttribute(range, 12) +
                     (spell["concentration"]?.Type == JTokenType.Boolean && (bool)spell["concentration"]
-                        ? "  ◇ Конц." : "");
+                        ? "  Конц." : "");
                 GUILayout.Label(summary, uiStyles.AbilitySpellMeta, GUILayout.MinHeight(17));
                 GUILayout.EndVertical();
-                if (MeasuredMenuButton(prepared ? "★" : "☆", uiStyles.AbilityStar,
+                if (ApprovedGrimoireButton(prepared ? "Готово" : "Выбрать", prepared ? 22 : 23, uiStyles.AbilityStar,
                     GUILayout.Width(33), GUILayout.Height(39)))
                 {
                     spell["prepared"] = !prepared;
                     changed = true;
                 }
-                if (MeasuredMenuButton(open ? "⌃" : "⌄", uiStyles.AbilityChip,
+                if (ApprovedGrimoireButton(open ? "Свернуть" : "Раскрыть", open ? 10 : 9, uiStyles.AbilityChip,
                     GUILayout.Width(30), GUILayout.Height(39)))
                     ToggleAbilityFold(key);
                 GUILayout.EndHorizontal();
                 if (open)
                 {
-                    GUILayout.Label(prepared ? "★ Подготовлено" : "☆ Не подготовлено", uiStyles.AbilitySub);
+                    GUILayout.Label(prepared ? "Подготовлено" : "Не подготовлено", uiStyles.AbilitySub);
                     string desc = (string)(spell["desc"] ?? spell["description"]) ?? "Описание отсутствует";
                     GUILayout.Label(desc, uiStyles.AbilityDescription);
                     if (level >= 0 && CharacterSpellCasting.ActionResource(spell) != null)
@@ -627,10 +627,10 @@ namespace DndVtt.UnityPrototype
             GUILayout.BeginVertical(uiStyles.AbilityPanel);
             if (GrimoireAbilityFold("class-features", "Особенности класса"))
                 ReadOnlyToken(hero["features"] ?? new JArray(), "features", 0);
-            if (GrimoireAbilityFold("grimoire-slot-settings", "⚙ Настроить ячейки"))
+            if (GrimoireAbilityFold("grimoire-slot-settings", "Настроить ячейки"))
                 Tree(hero, "spellSlotsData", "Максимум / использовано", ref changed);
-            if (MeasuredMenuButton(abilityEditorOpen ? "▴ Скрыть создание приёма" :
-                "＋ Добавить свой приём", uiStyles.AbilityChip, GUILayout.MinHeight(39)))
+            if (ApprovedGrimoireButton(abilityEditorOpen ? "Скрыть создание приёма" :
+                "Добавить свой приём", abilityEditorOpen ? 10 : 7, uiStyles.AbilityChip, GUILayout.MinHeight(39)))
                 pendingAbilityEditor = !abilityEditorOpen;
             if (abilityEditorOpen &&
                 MeasuredMenuButton("+ Свой приём", uiStyles.AbilityGold, GUILayout.MinHeight(42)))
