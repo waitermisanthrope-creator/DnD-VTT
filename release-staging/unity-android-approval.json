@@ -6,5 +6,5 @@
   "releaseType": "public-prerelease",
   "channel": "unity-experiment",
   "scope": "Android-only",
-  "note": "15.11.2026: владелец явно разрешил публикацию Android 1.00.60 через встроенный канал обновлений для личного тестирования. Использовать успешную подписанную Android job из candidate run 43741722620; проверять сертификат, package ID, SHA256 и версию; не затрагивать main, Windows и сохранения."
+  "note": "15.11.2026: владелец явно разрешил публикацию Android 1.00.60 через встроенный канал обновлений для личного тестирования. Использовать успешную подписанную Android job из candidate run 43741722620; проверять сертификат, package ID, SHA256 и версию; не затрагивать main, Windows и сохранения. Release history testing entry added; retry publication after first failure."
 }
