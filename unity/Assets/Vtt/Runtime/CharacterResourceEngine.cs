@@ -14,7 +14,7 @@ namespace DndVtt.UnityPrototype
         private static int Maximum(JObject definition)
         {
             int max;
-            if (!CharacterSheetRules.TrySheetCount(definition["max"], out max))
+            if (definition["max"] == null || !CharacterSheetRules.TrySheetCount(definition["max"], out max))
                 throw new FormatException("Максимум ресурса должен быть целым неотрицательным числом");
             return max;
         }
@@ -22,7 +22,7 @@ namespace DndVtt.UnityPrototype
         private static int Current(JObject entry)
         {
             int current;
-            if (!CharacterSheetRules.TrySheetCount(entry["current"], out current))
+            if (entry["current"] == null || !CharacterSheetRules.TrySheetCount(entry["current"], out current))
                 throw new FormatException("Остаток ресурса должен быть целым неотрицательным числом");
             return current;
         }
@@ -61,6 +61,10 @@ namespace DndVtt.UnityPrototype
         public static bool TrySpend(JObject hero, IDictionary<string, int> costs)
         {
             if (hero == null || costs == null) return false;
+            if ((string)hero["turnPhase"] == "ended")
+                foreach (var cost in costs)
+                    if (cost.Key != "turn.reaction" && cost.Value > 0)
+                        return false;
             var copy = (JObject)hero.DeepClone();
             Synchronize(copy);
             var state = (JObject)copy[StateKey];
