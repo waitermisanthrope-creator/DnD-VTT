@@ -102,6 +102,42 @@ internal static class ResourceEngineChecks
         CharacterSpellCasting.Cast(reactive, concentrationSpell, 0);
         Check((string)reactive["concentratingOn"]["id"] == "spell.focus",
             "concentration recorded");
+        var mage2014 = new JObject {
+            ["rulesVersion"] = "2014",
+            ["spellSlotsData"] = JObject.Parse("{'1':{'max':3,'used':0}}")
+        };
+        CharacterResourceEngine.EnsureTurnResources(mage2014);
+        var bonusSpell = new JObject { ["level"] = 1, ["castingTime"] = "1 bonus action" };
+        CharacterSpellCasting.Cast(mage2014, bonusSpell, 1);
+        string afterBonus = mage2014.ToString();
+        bool blocked = false;
+        try { CharacterSpellCasting.Cast(mage2014, new JObject {
+            ["level"] = 1, ["castingTime"] = "1 action"
+        }, 1); } catch (FormatException) { blocked = true; }
+        Check(blocked && mage2014.ToString() == afterBonus, "2014 bonus spell prevents action leveled spell");
+        CharacterSpellCasting.Cast(mage2014, new JObject {
+            ["level"] = 0, ["castingTime"] = "1 action"
+        }, 0);
+        Check((int)mage2014["resourceState"]["turn.action"]["current"] == 0,
+            "2014 one-action cantrip permitted after bonus spell");
+        var mage2024 = new JObject {
+            ["rulesVersion"] = "2024",
+            ["spellSlotsData"] = JObject.Parse("{'1':{'max':3,'used':0}}")
+        };
+        CharacterResourceEngine.EnsureTurnResources(mage2024);
+        CharacterSpellCasting.Cast(mage2024, new JObject {
+            ["level"] = 1, ["castingTime"] = "1 bonus action"
+        }, 1);
+        string after2024 = mage2024.ToString();
+        blocked = false;
+        try { CharacterSpellCasting.Cast(mage2024, new JObject {
+            ["level"] = 1, ["castingTime"] = "1 action"
+        }, 1); } catch (FormatException) { blocked = true; }
+        Check(blocked && mage2024.ToString() == after2024, "2024 second slot spell rejected atomically");
+        Check(CharacterResourceEngine.EndTurn(mage2024), "2024 turn ends");
+        Check(CharacterResourceEngine.StartTurn(mage2024), "2024 next turn starts");
+        Check(mage2024["turnSpellcasting"] is JObject &&
+            !((JObject)mage2024["turnSpellcasting"]).HasValues, "spell casting history resets");
         return checks;
     }
 }
