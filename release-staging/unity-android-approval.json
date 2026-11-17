@@ -1,10 +1,11 @@
 {
   "schema": 1,
-  "version": "1.00.60",
-  "candidateRunId": 43741722620,
+  "version": "1.00.61",
+  "candidateRunId": 44069007028,
   "approved": true,
   "releaseType": "public-prerelease",
   "channel": "unity-experiment",
   "scope": "Android-only",
-  "note": "15.11.2026: владелец явно разрешил публикацию Android 1.00.60 через встроенный канал обновлений для личного тестирования. Использовать успешную подписанную Android job из candidate run 43741722620; проверять сертификат, package ID, SHA256 и версию; не затрагивать main, Windows и сохранения. Release history testing entry added; retry publication after first failure."
+  "sourceCommit": "7773ed408402068c7c25050b67fa03b1b32c378f",
+  "note": "2026-11-17: владелец явно попросил выпустить Android 1.00.61 для обновления из установленного приложения и физической проверки новой библиотеки. Публиковать только если Android job candidate 44069007028 успешно завершилась; проверить package com.dndvtt.unity, исходную подпись, arm64, версию и SHA256. Не затрагивать main/Windows/сохранения."
 }
