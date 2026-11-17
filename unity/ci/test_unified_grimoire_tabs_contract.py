@@ -65,7 +65,8 @@ def main():
     assert 'case 3: Wallet(hero,ref changed,ref persistWallet)' in sheet
     assert 'case 7: Wallet(hero, ref changed, ref persistWallet)' in sheet
     assert "PrepareUnifiedGrimoireSkin" not in sheet
-    assert "PrepareGrimoireAbilityStyles" not in sheet
+    # DrawSheet intentionally prepares the existing ability styles for its own
+    # Grimoire tab. Only the new non-Sheet skin must stay out of this router.
     print("VTT_UNIFIED_GRIMOIRE_TABS_SOURCE_CONTRACT_PASS: 5 themed view groups, wallet routing unchanged")
 
 if __name__ == "__main__":
