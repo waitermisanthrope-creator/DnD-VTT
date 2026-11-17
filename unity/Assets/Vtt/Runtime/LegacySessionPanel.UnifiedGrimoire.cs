@@ -96,14 +96,16 @@ namespace DndVtt.UnityPrototype
                 unifiedGrimoireSkin.hideFlags = HideFlags.HideAndDontSave;
                 unifiedGrimoireSkin.box = new GUIStyle(uiStyles.AbilityPanel)
                 {
-                    padding = new RectOffset(14, 14, 10, 12),
+                    // Do not place text inside 28px decorative corners.
+                    padding = new RectOffset(29, 29, 29, 29),
                     margin = new RectOffset(0, 0, 2, 10)
                 };
                 unifiedGrimoireSkin.button = new GUIStyle(uiStyles.AbilityChip)
                 {
                     font = sheetSerif, fontSize = 14,
                     alignment = TextAnchor.MiddleCenter, wordWrap = false,
-                    padding = new RectOffset(7, 7, 8, 8),
+                    // AbilityChip uses an 18px border; reserve that inset.
+                    padding = new RectOffset(19, 19, 12, 12),
                     margin = new RectOffset(2, 2, 2, 2)
                 };
                 unifiedGrimoireSkin.label = new GUIStyle(sheetSkin.label)
