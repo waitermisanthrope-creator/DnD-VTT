@@ -25,3 +25,7 @@
 
 /Assets/Vtt/GeneratedMinimal/
 /Assets/Vtt/GeneratedMinimal.meta
+
+# Approved 160-icon PNGs are generated deterministically from the tracked ZIP.
+/Assets/Vtt/Resources/VttIcons/
+/Assets/Vtt/Resources/VttIcons.meta

@@ -36,8 +36,16 @@ namespace DndVtt
         {
             var icon = GetSprite(id);
             if (icon == null)
-                return GUI.Button(bounds, new GUIContent(string.Empty, tooltip), style);
-            // Draw the actual sprite rectangle, not the entire underlying texture atlas.\n            bool clicked = GUI.Button(bounds, new GUIContent(string.Empty, tooltip), style);\n            var tex = icon.texture;\n            var rect = icon.textureRect;\n            float side = Mathf.Min(bounds.width, bounds.height) * 0.67f;\n            var destination = new Rect(bounds.center.x - side / 2f, bounds.center.y - side / 2f, side, side);\n            GUI.DrawTextureWithTexCoords(destination, tex, new Rect(rect.x / tex.width, rect.y / tex.height, rect.width / tex.width, rect.height / tex.height), true);\n            return clicked;
+                return GUI.Button(bounds, new GUIContent("?", tooltip), style);
+            // Draw the actual sprite rectangle, not the entire underlying texture atlas.
+            bool clicked = GUI.Button(bounds, new GUIContent(string.Empty, tooltip), style);
+            if (Event.current.type != EventType.Repaint) return clicked;
+            var tex = icon.texture;
+            var rect = icon.textureRect;
+            float side = Mathf.Min(bounds.width, bounds.height) * 0.67f;
+            var destination = new Rect(bounds.center.x - side / 2f, bounds.center.y - side / 2f, side, side);
+            GUI.DrawTextureWithTexCoords(destination, tex, new Rect(rect.x / tex.width, rect.y / tex.height, rect.width / tex.width, rect.height / tex.height), true);
+            return clicked;
         }
 
         public static void ClearCache()

@@ -89,6 +89,9 @@ public static class UnityReleaseBuild
             PlayerSettings.defaultScreenWidth = 1280; PlayerSettings.defaultScreenHeight = 800;
             PlayerSettings.resizableWindow = true; PlayerSettings.allowFullscreenSwitch = true;
         }
+        // Source art is stored as a ZIP outside Assets; import every approved sprite
+        // before the player build so Android and Windows package the same IDs.
+        DndVtt.Editor.ApprovedIconImporter.EnsureImportedApprovedArchive();
         if (!Resources.Load<Font>("UI/DejaVuSans")) throw new Exception("Bundled Cyrillic UI font is missing");
         if (!Resources.Load<Font>("UI/PlayfairDisplay-Regular")) throw new Exception("Bundled WebView font is missing");
         foreach(string resource in new[]{"UI/Parchment","Branding/Wallpaper16","Branding/Splash19","Branding/Dragon20"})
