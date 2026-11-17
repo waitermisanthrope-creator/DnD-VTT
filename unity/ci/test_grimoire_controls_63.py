@@ -72,6 +72,19 @@ def main():
     assert "if (!expanded.Add(path)) expanded.Remove(path)" in sheet
     assert "case 3: Wallet(hero,ref changed,ref persistWallet)" in sheet
     assert "case 7: Wallet(hero, ref changed, ref persistWallet)" in sheet
+    # The legacy tabs are still reachable. Keep art, fold, race and
+    # spell-preparation controls functional while removing unsupported glyphs.
+    classic = src("ClassicSheet")
+    assert 'ApprovedGrimoireButton("Арт",137,cloneEye' in classic
+    assert 'requestedPortraitVisibility=!classicPortraitOpen' in classic
+    assert '(open?" (свернуть)":" (открыть)")' in classic
+    assert "if(open)expanded.Remove(key);else expanded.Add(key)" in classic
+    assert '+" (выбрать)",cloneReadOnly' in classic
+    assert "requestedRaceView=1" in classic
+    assert 'DrawGrimoireSectionHeading("Способности и приёмы",19)' in classic
+    assert 'prepared?GrimoireWrappedGold:GrimoireWrappedTab' in classic
+    assert 'spell["prepared"]=!prepared;changed=true;' in classic
+    assert all(ch not in classic for ch in ("◉", "▾", "▸", "✓"))
     print("VTT_GRIMOIRE_CONTROLS_63_SOURCE_PASS")
 
 if __name__ == "__main__":

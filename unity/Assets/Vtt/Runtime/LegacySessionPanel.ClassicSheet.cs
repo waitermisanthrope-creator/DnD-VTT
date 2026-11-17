@@ -60,7 +60,7 @@ namespace DndVtt.UnityPrototype
             GUILayout.EndHorizontal();GUILayout.EndScrollView();RegisterSwipe("sheet-tabs",GUILayoutUtility.GetLastRect(),true);
             cloneEye??=new GUIStyle(sheetTabStyle){font=Resources.Load<Font>("UI/DejaVuSans"),fontSize=20,padding=new RectOffset()};
             bool eyeEnabled=GUI.enabled;GUI.enabled=eyeEnabled&&!advancementOpen;
-            if(MeasuredMenuButton("◉",cloneEye,GUILayout.Width(43),GUILayout.Height(38)))requestedPortraitVisibility=!classicPortraitOpen;
+            if(ApprovedGrimoireButton("Арт",137,cloneEye,GUILayout.Width(43),GUILayout.Height(38)))requestedPortraitVisibility=!classicPortraitOpen;
             GUI.enabled=eyeEnabled;
             GUILayout.EndHorizontal();
         }
@@ -150,7 +150,7 @@ namespace DndVtt.UnityPrototype
         private void SheetAction(Action action,ref bool changed)
         {try{action();changed=true;}catch(Exception e){status=e.Message;}}
         private bool SheetFold(string key,string label)
-        {bool open=expanded.Contains(key);if(FitMenuButton((open?"▾ ":"▸ ")+label)){ResetFormInput();if(open)expanded.Remove(key);else expanded.Add(key);open=!open;}return open;}
+        {bool open=expanded.Contains(key);if(MeasuredMenuButton(label+(open?" (свернуть)":" (открыть)"),GrimoireWrappedTab,GUILayout.MinHeight(44))){ResetFormInput();if(open)expanded.Remove(key);else expanded.Add(key);open=!open;}return open;}
         private GUIStyle classicLegacySurface;
         private GUIStyle ClassicLegacySurface=>classicLegacySurface??=new GUIStyle{normal={background=brandCard.normal.background},border=new RectOffset(16,16,16,16),padding=new RectOffset(),margin=new RectOffset()};
         private void ClassicHint(string text)
@@ -209,7 +209,7 @@ namespace DndVtt.UnityPrototype
         {
             PrepareCompactControls();CloneFieldLabel("Раса персонажа");GUILayout.BeginHorizontal();
             bool enabled=GUI.enabled;GUI.enabled=enabled&&!RaceLocked(hero);
-            if(MeasuredMenuButton(((hero["raceName"]??hero["race"])?.ToString()??"— Выберите расу —")+" ▾",cloneReadOnly,GUILayout.Height(39),GUILayout.ExpandWidth(true)))requestedRaceView=1;
+            if(MeasuredMenuButton(((hero["raceName"]??hero["race"])?.ToString()??"— Выберите расу —")+" (выбрать)",cloneReadOnly,GUILayout.Height(39),GUILayout.ExpandWidth(true)))requestedRaceView=1;
             GUI.enabled=enabled;GUILayout.Space(8);
             if(MeasuredMenuButton("+ Своя",cloneBlue,GUILayout.Width(63),GUILayout.Height(37))){ResetFormInput();customRaceName=customRaceDescription="";customRaceSpeed="30";for(int i=0;i<6;i++)customRaceBonuses[i]="0";requestedRaceView=2;}
             GUILayout.EndHorizontal();
@@ -441,8 +441,8 @@ namespace DndVtt.UnityPrototype
         }
         private void ClassicAbilities(JObject hero,ref bool changed)
         {
-            DrawSheetHeroBack();
-            GUILayout.BeginVertical(GUI.skin.box);SheetSection("Способности и приёмы");
+            DrawSheetHeroBack();PrepareGrimoireAbilityStyles();
+            GUILayout.BeginVertical(uiStyles.AbilityPanel);DrawGrimoireSectionHeading("Способности и приёмы",19);
             GUILayout.Label("Характеристика приёмов",sheetQuiet);ClassicAbilityStat(hero,"combatAbilityStat","str",ref changed);string stat=(string)hero["combatAbilityStat"]??"str";int bonus=CharacterSheetRules.Modifier(hero,stat)+CharacterSheetRules.Proficiency(hero);
             GUILayout.Label("Атака "+Signed(bonus)+" · СЛ "+(8+bonus),sheetCharacterName);
             if(FitMenuButton("+ Свой приём"))SheetAction(()=>CharacterSheetRules.Array(hero,"combatAbilities").Add(new JObject{["id"]=Guid.NewGuid().ToString(),["name"]="Новый приём",["description"]="",["rechargeOn"]="none",["maxUses"]=0,["usedCount"]=0}),ref changed);
@@ -461,7 +461,7 @@ namespace DndVtt.UnityPrototype
             foreach(JObject spell in (hero["spellsData"] as JArray??new JArray()).OfType<JObject>().ToArray())
             {
                 GUILayout.BeginVertical(GUI.skin.box);bool detail=SheetFold("spell:"+spell["id"],(string)spell["name"]+" · "+spell["level"]);bool prepared=spell["prepared"]?.Type==JTokenType.Boolean&&(bool)spell["prepared"];
-                if(MeasuredMenuButton(prepared?"✓ Подготовлено":"Подготовить",prepared?brandBlue:GUI.skin.button,GUILayout.MinHeight(44))){spell["prepared"]=!prepared;changed=true;}
+                if(MeasuredMenuButton(prepared?"Подготовлено":"Подготовить",prepared?GrimoireWrappedGold:GrimoireWrappedTab,GUILayout.MinHeight(44))){spell["prepared"]=!prepared;changed=true;}
                 if(detail){GUILayout.Label((string)(spell["desc"]??spell["description"])??"Описание отсутствует",sheetQuiet);if(FitMenuButton("Удалить заклинание…"))RequestDelete(spell,(string)spell["name"]);}
                 GUILayout.EndVertical();
             }
@@ -472,7 +472,7 @@ namespace DndVtt.UnityPrototype
         private void ClassicAbilityStat(JObject hero,string key,string fallback,ref bool changed)
         {
             string old=(string)hero[key]??fallback;int active=Array.IndexOf(CharacterSheetRules.Stats,old);string[] labels={"СИЛ","ЛОВ","ТЕЛ","ИНТ","МУД","ХАР"};
-            if(FitMenuButton((active>=0?labels[active]:old)+" ▾",35)){if(!expanded.Add("select:"+key))expanded.Remove("select:"+key);}
+            if(FitMenuButton((active>=0?labels[active]:old)+" (сменить)",35)){if(!expanded.Add("select:"+key))expanded.Remove("select:"+key);}
             if(expanded.Contains("select:"+key))
             {
                 int next=MenuGrid(active,labels,3);if(next>=0&&next!=active){hero[key]=CharacterSheetRules.Stats[next];changed=true;expanded.Remove("select:"+key);}
