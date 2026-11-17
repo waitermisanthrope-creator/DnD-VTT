@@ -14,11 +14,12 @@ namespace DndVtt.UnityPrototype
         {
             string active=diceTable.ActiveTrayId;
             string name=Array.Find(diceTrays??Array.Empty<DiceTray>(),t=>t.Id==active)?.Name??"Классический лоток";
-            if(GUILayout.Button("Лоток / башня · "+name,GUILayout.MinHeight(56)))diceTrayPicker=!diceTrayPicker;
+            if(GUILayout.Button("Лоток / башня · "+name,GrimoireWrappedTab,GUILayout.MinHeight(56)))diceTrayPicker=!diceTrayPicker;
             if(!diceTrayPicker)return;
             for(int i=-1;i<(diceTrays?.Length??0);i++) {
                 var selected=i<0?null:diceTrays[i];
-                if(GUILayout.Button((active==(selected?.Id??"")?"✓ ":"")+(selected?.Name??"Классический лоток"),GUILayout.MinHeight(54))) {
+                if(GUILayout.Button(selected?.Name??"Классический лоток",
+                    active==(selected?.Id??"")?GrimoireWrappedGold:GrimoireWrappedTab,GUILayout.MinHeight(54))) {
                     diceTable.SetTray(selected);PlayerPrefs.SetString("dndvtt.dice.tray",selected?.Id??"");PlayerPrefs.Save();diceTrayPicker=false;
                 }
             }
@@ -28,7 +29,8 @@ namespace DndVtt.UnityPrototype
         {
             bool available=Accelerometer.current!=null,enabled=PlayerPrefs.GetInt("dndvtt.dice.shake",0)==1;
             bool previous=GUI.enabled;GUI.enabled=previous&&available;
-            if(GUILayout.Button(available?(enabled?"✓ Встряхивание телефона включено":"Включить встряхивание телефона"):"Датчик движения недоступен",GUILayout.MinHeight(54))) {
+            if(GUILayout.Button(available?(enabled?"Встряхивание телефона включено":"Включить встряхивание телефона"):"Датчик движения недоступен",
+                enabled?GrimoireWrappedGold:GrimoireWrappedTab,GUILayout.MinHeight(54))) {
                 PlayerPrefs.SetInt("dndvtt.dice.shake",enabled?0:1);PlayerPrefs.Save();diceMotion.Reset();if(enabled)StopDiceSensor();
             }
             GUI.enabled=previous;

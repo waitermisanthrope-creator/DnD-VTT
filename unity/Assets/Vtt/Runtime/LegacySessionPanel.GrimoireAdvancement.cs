@@ -13,11 +13,11 @@ namespace DndVtt.UnityPrototype
 
         private void GrimoireAdvancementOverview(JObject hero)
         {
-            PrepareGrimoireHeroStyles();
+            PrepareGrimoireAbilityStyles();
             int level = AdvancementTotal(hero);
             long xp = DisplayExperience(hero);
             GrimoireSection("РАЗВИТИЕ ПЕРСОНАЖА");
-            GUILayout.BeginVertical(uiStyles.HeroPanel);
+            GUILayout.BeginVertical(uiStyles.AbilityPanel);
             GUILayout.BeginHorizontal();
             GUILayout.Label("Уровень " + level, uiStyles.HeroName);
             GUILayout.FlexibleSpace();
@@ -43,14 +43,14 @@ namespace DndVtt.UnityPrototype
         {
             bool wasMulticlass = advancementNewClass;
             GrimoireSection("ВЫБОР КЛАССА");
-            GUILayout.BeginVertical(uiStyles.HeroPanel);
+            GUILayout.BeginVertical(uiStyles.AbilityPanel);
             GUILayout.BeginHorizontal();
             if (MeasuredMenuButton("Мои классы", advancementNewClass
-                    ? uiStyles.SecondaryButton : uiStyles.ActiveTab,
+                    ? GrimoireWrappedTab : GrimoireWrappedGold,
                 GUILayout.ExpandWidth(true), GUILayout.MinHeight(UiTheme.TouchHeight)))
                 advancementNewClass = false;
             if (MeasuredMenuButton("Мультикласс", advancementNewClass
-                    ? uiStyles.ActiveTab : uiStyles.SecondaryButton,
+                    ? GrimoireWrappedGold : GrimoireWrappedTab,
                 GUILayout.ExpandWidth(true), GUILayout.MinHeight(UiTheme.TouchHeight)))
                 advancementNewClass = true;
             GUILayout.EndHorizontal();
@@ -64,7 +64,7 @@ namespace DndVtt.UnityPrototype
             {
                 GUILayout.Label("Поиск класса", uiStyles.HeroSubtitle);
                 string search = MenuTextField("advancementSearch", advancementSearch,
-                    cloneInput, GUILayout.MinHeight(44));
+                    GrimoireWrappedInput, GUILayout.MinHeight(44));
                 if (search != advancementSearch)
                 {
                     advancementSearch = search;
@@ -92,7 +92,7 @@ namespace DndVtt.UnityPrototype
                 string label = name;
                 if (problem == null)
                     label += " · " + CharacterAdvancement.NextClassLevel(AdvancementCatalog, hero, name) + " ур.";
-                if (MeasuredMenuButton(label, uiStyles.SecondaryButton,
+                if (MeasuredMenuButton(label, GrimoireWrappedTab,
                     GUILayout.MinHeight(UiTheme.TouchHeight)))
                     Attempt(() => SelectAdvancementClass(hero, name));
                 GUI.enabled = enabled;
@@ -105,8 +105,8 @@ namespace DndVtt.UnityPrototype
             {
                 GUILayout.BeginHorizontal();
                 bool enabled = GUI.enabled; GUI.enabled = enabled && advancementClassPage > 0;
-                if (MeasuredMenuButton("←", uiStyles.SecondaryButton,
-                    GUILayout.Width(54), GUILayout.MinHeight(UiTheme.TouchHeight)))
+                if (MeasuredMenuButton("Назад", GrimoireWrappedTab,
+                    GUILayout.Width(80), GUILayout.MinHeight(UiTheme.TouchHeight)))
                     advancementClassPage--;
                 GUI.enabled = enabled;
                 GUILayout.FlexibleSpace();
@@ -114,8 +114,8 @@ namespace DndVtt.UnityPrototype
                     uiStyles.HeroSubtitle, GUILayout.MinHeight(44));
                 GUILayout.FlexibleSpace();
                 GUI.enabled = enabled && advancementClassPage + 1 < pages;
-                if (MeasuredMenuButton("→", uiStyles.SecondaryButton,
-                    GUILayout.Width(54), GUILayout.MinHeight(UiTheme.TouchHeight)))
+                if (MeasuredMenuButton("Далее", GrimoireWrappedTab,
+                    GUILayout.Width(80), GUILayout.MinHeight(UiTheme.TouchHeight)))
                     advancementClassPage++;
                 GUI.enabled = enabled;
                 GUILayout.EndHorizontal();
@@ -129,7 +129,7 @@ namespace DndVtt.UnityPrototype
             GrimoireSection("ЧЕРТА");
             GUILayout.Label("Поиск черты", uiStyles.HeroSubtitle);
             string search = MenuTextField("advancementFeatSearch", advancementFeatSearch,
-                cloneInput, GUILayout.MinHeight(UiTheme.TouchHeight));
+                GrimoireWrappedInput, GUILayout.MinHeight(UiTheme.TouchHeight));
             if (search != advancementFeatSearch) { advancementFeatSearch = search; advancementFeatPage = 0; }
             var matches = all.Where(f => ((string)f["name"] ?? (string)f["id"] ?? "")
                 .IndexOf(advancementFeatSearch, StringComparison.CurrentCultureIgnoreCase) >= 0).ToArray();
@@ -139,8 +139,8 @@ namespace DndVtt.UnityPrototype
             foreach (JObject feat in matches.Skip(advancementFeatPage * pageSize).Take(pageSize))
             {
                 string id = (string)feat["id"];
-                if (MeasuredMenuButton((advancementFeat == id ? "✓ " : "") +
-                    ((string)feat["name"] ?? id), uiStyles.SecondaryButton,
+                if (MeasuredMenuButton((string)feat["name"] ?? id,
+                    advancementFeat == id ? GrimoireWrappedGold : GrimoireWrappedTab,
                     GUILayout.MinHeight(UiTheme.TouchHeight)))
                     advancementFeat = id;
                 if (advancementFeat == id)
@@ -158,14 +158,14 @@ namespace DndVtt.UnityPrototype
                 GUILayout.BeginHorizontal();
                 bool canPrev = GUI.enabled && advancementFeatPage > 0;
                 bool old = GUI.enabled; GUI.enabled = canPrev;
-                if (MeasuredMenuButton("←", uiStyles.SecondaryButton, GUILayout.Width(54),
+                if (MeasuredMenuButton("Назад", GrimoireWrappedTab, GUILayout.Width(80),
                     GUILayout.MinHeight(UiTheme.TouchHeight))) advancementFeatPage--;
                 GUI.enabled = old;
                 GUILayout.FlexibleSpace();
                 GUILayout.Label((advancementFeatPage + 1) + " / " + pages, uiStyles.HeroSubtitle);
                 GUILayout.FlexibleSpace();
                 GUI.enabled = old && advancementFeatPage + 1 < pages;
-                if (MeasuredMenuButton("→", uiStyles.SecondaryButton, GUILayout.Width(54),
+                if (MeasuredMenuButton("Далее", GrimoireWrappedTab, GUILayout.Width(80),
                     GUILayout.MinHeight(UiTheme.TouchHeight))) advancementFeatPage++;
                 GUI.enabled = old;
                 GUILayout.EndHorizontal();

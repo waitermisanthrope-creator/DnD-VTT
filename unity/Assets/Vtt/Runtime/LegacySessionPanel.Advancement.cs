@@ -46,8 +46,8 @@ namespace DndVtt.UnityPrototype
         private void DrawAdvancement(JObject hero)
         {
             if((string)hero["id"]!=advancementHero){CloseAdvancement();return;}
-            PrepareGrimoireHeroStyles();
-            if(MeasuredMenuButton("← Вернуться к герою",uiStyles.SecondaryButton,GUILayout.MinHeight(UiTheme.TouchHeight))){CloseAdvancement();return;}
+            PrepareGrimoireAbilityStyles();
+            if(MeasuredMenuButton("Вернуться к герою",GrimoireWrappedTab,GUILayout.MinHeight(UiTheme.TouchHeight))){CloseAdvancement();return;}
             if(HeroSignature(hero)!=advancementSignature){GUILayout.Label("Лист изменился. Откройте развитие заново. Ничего не применено.");return;}
             if(experienceOpen){DrawExperience(hero);return;}
             GrimoireAdvancementOverview(hero);
@@ -56,7 +56,7 @@ namespace DndVtt.UnityPrototype
             GUILayout.Label("Уровень "+total+" → "+(total+1),uiStyles.HeroSubtitle);
             bool enough=CharacterAdvancement.LevelByExperience(AdvancementCatalog,DisplayExperience(hero))>total;
             if(!enough)GUILayout.Label("По опыту повышение пока недоступно. Для игры по вехам можно подтвердить решение мастера.",sheetQuiet);
-            if(MeasuredMenuButton(advancementMilestone?"✓ По решению мастера":"По опыту · изменить на решение мастера",uiStyles.SecondaryButton,GUILayout.MinHeight(UiTheme.TouchHeight)))advancementMilestone=!advancementMilestone;
+            if(MeasuredMenuButton(advancementMilestone?"По решению мастера":"По опыту · изменить на решение мастера",advancementMilestone?GrimoireWrappedGold:GrimoireWrappedTab,GUILayout.MinHeight(UiTheme.TouchHeight)))advancementMilestone=!advancementMilestone;
             JArray ownedClasses=null;string classProblem=null;
             try{ownedClasses=CharacterAdvancement.Classes(hero,AdvancementCatalog);}catch(FormatException e){classProblem=e.Message;}
             if(classProblem!=null){GUILayout.Label(classProblem,sheetQuiet);return;}
@@ -67,27 +67,27 @@ namespace DndVtt.UnityPrototype
             }
             var cls=CharacterAdvancement.ClassData(AdvancementCatalog,advancementClass);var row=CharacterAdvancement.LevelData(AdvancementCatalog,hero,advancementClass);
             int next=CharacterAdvancement.NextClassLevel(AdvancementCatalog,hero,advancementClass),die=(int)cls["hitDie"];
-            GUILayout.BeginVertical(uiStyles.HeroPanel);GUILayout.Label(advancementClass+" · "+next+" ур.",sheetCharacterName);
+            GUILayout.BeginVertical(uiStyles.AbilityPanel);GUILayout.Label(advancementClass+" · "+next+" ур.",sheetCharacterName);
             if(FitMenuButton("Выбрать другой класс")){ResetFormInput();advancementClass=null;GUILayout.EndVertical();return;}
             GUILayout.Label("Кость хитов d"+die+" · результат "+advancementHp+" + Телосложение",sheetQuiet);
             GUILayout.BeginHorizontal();
-            if(MeasuredMenuButton("Среднее: "+(die/2+1),uiStyles.SecondaryButton,GUILayout.ExpandWidth(true),GUILayout.MinHeight(UiTheme.TouchHeight)))advancementHp=die/2+1;
-            if(MeasuredMenuButton("Бросить d"+die,uiStyles.SecondaryButton,GUILayout.ExpandWidth(true),GUILayout.MinHeight(UiTheme.TouchHeight)))advancementHp=UnityEngine.Random.Range(1,die+1);
-            if(MeasuredMenuButton("Максимум: "+die,uiStyles.SecondaryButton,GUILayout.ExpandWidth(true),GUILayout.MinHeight(UiTheme.TouchHeight)))advancementHp=die;
+            if(MeasuredMenuButton("Среднее: "+(die/2+1),GrimoireWrappedTab,GUILayout.ExpandWidth(true),GUILayout.MinHeight(UiTheme.TouchHeight)))advancementHp=die/2+1;
+            if(MeasuredMenuButton("Бросить d"+die,GrimoireWrappedTab,GUILayout.ExpandWidth(true),GUILayout.MinHeight(UiTheme.TouchHeight)))advancementHp=UnityEngine.Random.Range(1,die+1);
+            if(MeasuredMenuButton("Максимум: "+die,GrimoireWrappedTab,GUILayout.ExpandWidth(true),GUILayout.MinHeight(UiTheme.TouchHeight)))advancementHp=die;
             GUILayout.EndHorizontal();
-            if(FitMenuButton(advancementRestore?"✓ Восстановить HP до максимума":"Сохранить полученный урон · изменить"))advancementRestore=!advancementRestore;GUILayout.EndVertical();
+            if(MeasuredMenuButton(advancementRestore?"Восстановить HP до максимума":"Сохранить полученный урон · изменить",advancementRestore?GrimoireWrappedGold:GrimoireWrappedTab,GUILayout.MinHeight(UiTheme.TouchHeight)))advancementRestore=!advancementRestore;GUILayout.EndVertical();
             var entry=CharacterAdvancement.Classes(hero,AdvancementCatalog).OfType<JObject>().FirstOrDefault(c=>string.Equals((string)c["name"],advancementClass,StringComparison.OrdinalIgnoreCase));
             var subclasses=cls["subclasses"] as JObject??new JObject();
             if(string.IsNullOrEmpty((string)entry?["subclass"])&&((bool?)row["subclassLevel"]==true||subclasses.Properties().Any(p=>(int?)p.Value["pickLevel"]<=next)))
             {
-                GUILayout.BeginVertical(uiStyles.HeroPanel);SheetSection("Подкласс");
+                GUILayout.BeginVertical(uiStyles.AbilityPanel);SheetSection("Подкласс");
                 foreach(var p in subclasses.Properties().Where(p=>(int?)p.Value["pickLevel"]<=next))
-                {if(FitMenuButton((advancementSubclass==p.Name?"✓ ":"")+p.Name))advancementSubclass=p.Name;if(advancementSubclass==p.Name)GUILayout.Label((string)p.Value["description"]??"",sheetQuiet);}
+                {if(MeasuredMenuButton(p.Name,advancementSubclass==p.Name?GrimoireWrappedGold:GrimoireWrappedTab,GUILayout.MinHeight(UiTheme.TouchHeight)))advancementSubclass=p.Name;if(advancementSubclass==p.Name)GUILayout.Label((string)p.Value["description"]??"",sheetQuiet);}
                 GUILayout.EndVertical();
             }
             if((bool?)row["asi"]==true)DrawAdvancementAsi(hero);
             if(entry==null)DrawAdvancementProficiencies(hero,cls);
-            GUILayout.BeginVertical(uiStyles.HeroPanel);
+            GUILayout.BeginVertical(uiStyles.AbilityPanel);
             int featureCount=(row["features"] as JArray)?.Count??0;
             if(SheetFold("adv-features:"+hero["id"],"Новые особенности ("+featureCount+")"))
             {
@@ -125,8 +125,8 @@ namespace DndVtt.UnityPrototype
             {
                 if(i%2==0)GUILayout.BeginHorizontal();
                 string stat=CharacterSheetRules.Stats[i];
-                if(MeasuredMenuButton((selected==stat?"✓ ":"")+CharacterSheetRules.StatNames[i],
-                    selected==stat?uiStyles.ActiveTab:uiStyles.SecondaryButton,
+                if(MeasuredMenuButton(CharacterSheetRules.StatNames[i],
+                    selected==stat?GrimoireWrappedGold:GrimoireWrappedTab,
                     GUILayout.ExpandWidth(true),GUILayout.MinHeight(UiTheme.TouchHeight)))selected=stat;
                 if(i%2==1)GUILayout.EndHorizontal();
             }
@@ -134,11 +134,11 @@ namespace DndVtt.UnityPrototype
         }
         private void DrawAdvancementAsi(JObject hero)
         {
-            GUILayout.BeginVertical(uiStyles.HeroPanel);SheetSection("Характеристики или черта");
+            GUILayout.BeginVertical(uiStyles.AbilityPanel);SheetSection("Характеристики или черта");
             GUILayout.BeginHorizontal();
             foreach(var option in new[]{("+2 одной",0),("+1 двум",1),("Черта",2)})
-                if(MeasuredMenuButton((advancementAsiMode==option.Item2?"✓ ":"")+option.Item1,
-                    advancementAsiMode==option.Item2?uiStyles.ActiveTab:uiStyles.SecondaryButton,
+                if(MeasuredMenuButton(option.Item1,
+                    advancementAsiMode==option.Item2?GrimoireWrappedGold:GrimoireWrappedTab,
                     GUILayout.ExpandWidth(true),GUILayout.MinHeight(UiTheme.TouchHeight)))advancementAsiMode=option.Item2;
             GUILayout.EndHorizontal();
             if(advancementAsiMode<2){advancementAsi1=AdvancementStat(advancementAsi1,"Первая характеристика");if(advancementAsiMode==1)advancementAsi2=AdvancementStat(advancementAsi2,"Вторая, отличная от первой");}
@@ -149,10 +149,10 @@ namespace DndVtt.UnityPrototype
         {
             int i=0;foreach(JObject choice in cls["multiclass"]?["choices"] as JArray??new JArray())
             {
-                string key=(i++).ToString();advancementProficiencies.TryGetValue(key,out string selected);GUILayout.BeginVertical(uiStyles.HeroPanel);SheetSection((string)choice["label"]??"Новое владение");
+                string key=(i++).ToString();advancementProficiencies.TryGetValue(key,out string selected);GUILayout.BeginVertical(uiStyles.AbilityPanel);SheetSection((string)choice["label"]??"Новое владение");
                 if((string)choice["type"]=="skill")for(int s=0;s<CharacterSheetRules.SkillIds.Length;s++)
-                {string id=CharacterSheetRules.SkillIds[s];if(LegacyJson.Number(hero["skillsData"]?[id])==0&&FitMenuButton((selected==id?"✓ ":"")+CharacterSheetRules.SkillNames[s]))advancementProficiencies[key]=id;}
-                else foreach(JObject p in ((JArray)AdvancementCatalog["proficiencies"]).OfType<JObject>().Where(p=>(string)p["category"]=="Музыкальные инструменты"))if(FitMenuButton((selected==(string)p["id"]?"✓ ":"")+p["name"]))advancementProficiencies[key]=(string)p["id"];
+                {string id=CharacterSheetRules.SkillIds[s];if(LegacyJson.Number(hero["skillsData"]?[id])==0&&MeasuredMenuButton(CharacterSheetRules.SkillNames[s],selected==id?GrimoireWrappedGold:GrimoireWrappedTab,GUILayout.MinHeight(UiTheme.TouchHeight)))advancementProficiencies[key]=id;}
+                else foreach(JObject p in ((JArray)AdvancementCatalog["proficiencies"]).OfType<JObject>().Where(p=>(string)p["category"]=="Музыкальные инструменты"))if(MeasuredMenuButton((string)p["name"],selected==(string)p["id"]?GrimoireWrappedGold:GrimoireWrappedTab,GUILayout.MinHeight(UiTheme.TouchHeight)))advancementProficiencies[key]=(string)p["id"];
                 GUILayout.EndVertical();
             }
         }
@@ -160,10 +160,10 @@ namespace DndVtt.UnityPrototype
         {
             GrimoireAdvancementOverview(hero);
             int level = AdvancementTotal(hero);
-            GUILayout.BeginVertical(uiStyles.HeroPanel);
+            GUILayout.BeginVertical(uiStyles.AbilityPanel);
             GUILayout.Label("Опыт не повышает класс автоматически: каждое повышение подтверждается отдельно.",
                 uiStyles.HeroSubtitle);
-            if (level < 20 && MeasuredMenuButton("↑ Повысить уровень…", uiStyles.PrimaryButton,
+            if (level < 20 && MeasuredMenuButton("Повысить уровень", GrimoireWrappedGold,
                 GUILayout.MinHeight(UiTheme.TouchHeight)))
             {
                 ResetFormInput(); experienceOpen = false; advancementMilestone = false;
@@ -173,7 +173,7 @@ namespace DndVtt.UnityPrototype
 
             if (SheetFold("adv-xp-set:" + hero["id"], "Изменить общий опыт"))
             {
-                GUILayout.BeginVertical(uiStyles.HeroPanel);
+                GUILayout.BeginVertical(uiStyles.AbilityPanel);
                 GUILayout.Label("Всего опыта", uiStyles.HeroSubtitle);
                 experienceTotal = IntegerField("advancement-xp-total", experienceTotal,
                     GUILayout.MinHeight(UiTheme.TouchHeight));
@@ -186,7 +186,7 @@ namespace DndVtt.UnityPrototype
             }
             if (SheetFold("adv-xp-delta:" + hero["id"], "Начислить или списать опыт"))
             {
-                GUILayout.BeginVertical(uiStyles.HeroPanel);
+                GUILayout.BeginVertical(uiStyles.AbilityPanel);
                 GUILayout.Label("Количество опыта", uiStyles.HeroSubtitle);
                 experienceAmount = IntegerField("advancement-xp-amount", experienceAmount,
                     GUILayout.MinHeight(UiTheme.TouchHeight));

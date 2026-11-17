@@ -219,14 +219,16 @@ namespace DndVtt.UnityPrototype
                     ||((string)(x["description"]??x["desc"])??"").IndexOf(search,StringComparison.OrdinalIgnoreCase)>=0)).ToArray();
                 spellPage=Math.Min(spellPage,Math.Max(0,(spellMatches.Length-1)/SpellsPerPage));
             }
-            if (GUILayout.Button((spellCircle < 0 ? "Все доступные круги" : spellCircle == 0 ? "Фокусы" : spellCircle + " круг") + "  ▾",
+            if (GUILayout.Button((spellCircle < 0 ? "Все доступные круги" : spellCircle == 0 ? "Фокусы" : spellCircle + " круг") + " (выбрать)",
                 catalogButton, GUILayout.Height(44))) requestedSpellCircles = !showSpellCircles;
             if (showSpellCircles)
             {
                 if (GUILayout.Button("Все доступные круги", catalogButton, GUILayout.Height(42))) SetSpellCircle(-1);
                 foreach (int circle in spellCircles)
-                    if (GUILayout.Button((circle == spellCircle ? "✓ " : "") + (circle == 0 ? "Фокусы" : circle + " круг"),
-                        catalogButton, GUILayout.Height(42))) SetSpellCircle(circle);
+                    if (GUILayout.Button((circle == 0 ? "Фокусы" : circle + " круг") +
+                        (!themed && circle == spellCircle ? " (выбран)" : ""),
+                        themed && circle == spellCircle ? uiStyles.AbilityGold : catalogButton,
+                        GUILayout.Height(42))) SetSpellCircle(circle);
             }
             GUILayout.Label("Поиск по названию или описанию (необязательно)", catalogText);
             string query = themed
@@ -355,7 +357,7 @@ namespace DndVtt.UnityPrototype
             {
                 string title = (rows[i] as JObject)?["name"]?.ToString() ?? (rows[i] as JObject)?["title"]?.ToString() ?? (i + 1).ToString();
                 string path = hero.Path + "/" + key + "/" + i;
-                if (GUILayout.Button((expanded.Contains(path) ? "▼ " : "▶ ") + title, GUILayout.Height(52)))
+                if (GUILayout.Button(title + (expanded.Contains(path) ? " (свернуть)" : " (открыть)"), GUILayout.Height(52)))
                 {
                     if (!expanded.Add(path)) expanded.Remove(path);
                     if (key == "folders" && rows[i] is JObject folder) { hero["activeFolderId"] = folder["id"]?.DeepClone(); changed = true; }
@@ -376,7 +378,7 @@ namespace DndVtt.UnityPrototype
         {
             if (hero[key] == null) return;
             string path = hero.Path + "/" + key;
-            if (GUILayout.Button((expanded.Contains(path) ? "▼ " : "▶ ") + label, GUILayout.Height(52))) { if (!expanded.Add(path)) expanded.Remove(path); }
+            if (GUILayout.Button(label + (expanded.Contains(path) ? " (свернуть)" : " (открыть)"), GUILayout.Height(52))) { if (!expanded.Add(path)) expanded.Remove(path); }
             if (expanded.Contains(path)) EditToken(hero[key], path, 0, ref changed);
         }
         private void EditToken(JToken token, string path, int depth, ref bool changed)

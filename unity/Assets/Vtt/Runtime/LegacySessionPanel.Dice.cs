@@ -129,20 +129,21 @@ namespace DndVtt.UnityPrototype
             if(GUILayout.Button(diceThemePicker?"Свернуть наборы":"Мои наборы · "+(diceThemes?.Length??0),GrimoireWrappedTab,GUILayout.MinHeight(56)))diceThemePicker=!diceThemePicker;
             if(!diceThemePicker)return;
             bool follow=PlayerPrefs.GetInt("dndvtt.dice.followIcon",PlayerPrefs.HasKey("dndvtt.dice.theme")?0:1)==1;
-            if(GUILayout.Button((follow?"✓ ":"")+"Как выбранная иконка приложения",GrimoireWrappedTab,GUILayout.MinHeight(56))) {
+            if(GUILayout.Button("Как выбранная иконка приложения",
+                follow?GrimoireWrappedGold:GrimoireWrappedTab,GUILayout.MinHeight(56))) {
                 PlayerPrefs.SetInt("dndvtt.dice.followIcon",1);PlayerPrefs.Save();diceIconSelection=null;SyncDiceIcon();
             }
             int count=(diceThemes?.Length??0)+1,start=diceThemePage*6,end=Math.Min(count,start+6);
             for(int i=start;i<end;i++) {
                 string name=i==0?"Классический":diceThemes[i-1].Name;
-                if(GUILayout.Button((i==diceThemeSelection?"✓ ":"")+name,i==diceThemeSelection?GrimoireWrappedGold:GrimoireWrappedTab,GUILayout.MinHeight(56))) {
+                if(GUILayout.Button(name,i==diceThemeSelection&&!follow?GrimoireWrappedGold:GrimoireWrappedTab,GUILayout.MinHeight(56))) {
                     PlayerPrefs.SetString("dndvtt.dice.theme",i==0?"":diceThemes[i-1].Id);
                     PlayerPrefs.SetInt("dndvtt.dice.followIcon",0);PlayerPrefs.Save();diceIconSelection=null;SyncDiceIcon();diceThemePicker=false;
                 }
             }
             GUILayout.BeginHorizontal();
-            if(diceThemePage>0&&GUILayout.Button("← Наборы",GrimoireWrappedTab,GUILayout.MinHeight(52)))diceThemePage--;
-            if(end<count&&GUILayout.Button("Наборы →",GrimoireWrappedTab,GUILayout.MinHeight(52)))diceThemePage++;
+            if(diceThemePage>0&&GUILayout.Button("Предыдущие наборы",GrimoireWrappedTab,GUILayout.MinHeight(52)))diceThemePage--;
+            if(end<count&&GUILayout.Button("Следующие наборы",GrimoireWrappedTab,GUILayout.MinHeight(52)))diceThemePage++;
             GUILayout.EndHorizontal();
             if((diceThemes?.Length??0)==0)GUILayout.Label("Пока нет установленных 3D-наборов. Иконки и 3D-наборы — разные загрузки: Мастерская → Оформление → 3D Дайсы.",muted);
         }
@@ -186,7 +187,7 @@ namespace DndVtt.UnityPrototype
                 GUILayout.BeginVertical(uiStyles.AbilityCard);
                 GUILayout.Label("Количество d"+diceGroups[diceEditGroup].Key+": "+diceQuantity);
                 // In-app keypad never opens the OS keyboard or hides the dice list.
-                int digit=MenuGrid(-1,new[]{"1","2","3","4","5","6","7","8","9","Очистить","0","⌫"},3);
+                int digit=MenuGrid(-1,new[]{"1","2","3","4","5","6","7","8","9","Очистить","0","Удалить"},3);
                 if(digit>=0&&diceReplaceQuantity) { diceQuantity="";diceReplaceQuantity=false; }
                 if(digit>=0&&digit<9)diceQuantity=(diceQuantity=="0"?"":diceQuantity)+(digit+1).ToString();
                 if(digit==9)diceQuantity="";

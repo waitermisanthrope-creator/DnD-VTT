@@ -63,6 +63,10 @@ jobs:
           python3 unity/ci/test_unified_grimoire_tabs_contract.py
           python3 unity/ci/test_grimoire_overflow_layout_contract.py
           python3 unity/ci/test_unified_grimoire_system_contract.py
+          python3 unity/ci/test_grimoire_ui_cleanup_63.py
+          python3 unity/ci/test_grimoire_hero_gold_63.py
+          python3 unity/ci/test_grimoire_glyph_cleanup_63.py
+          python3 unity/ci/test_grimoire_controls_63.py
           python3 unity/ci/test_update_settings_contract.py
           python3 unity/ci/test_brand_visual_contract.py
           python3 unity/ci/test_grimoire_details_contract.py

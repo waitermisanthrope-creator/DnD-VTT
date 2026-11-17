@@ -73,10 +73,19 @@ namespace DndVtt.UnityPrototype
         private JObject MarketItemSelection(JObject item,string category,int index)=>new JObject{["category"]=category,["index"]=index,["signature"]=item.ToString(Formatting.None)};
         private void DrawMarketModal()
         {
-            PrepareSheetSkin();PrepareCompactControls();
-            marketSurface??=new GUIStyle(GUI.skin.box){padding=new RectOffset(12,12,12,12),normal={background=Rounded(new Color(24/255f,24/255f,24/255f),new Color(128/255f,107/255f,60/255f),12)}};
-            marketHeading??=new GUIStyle(sheetHeading){fontSize=18,normal={textColor=new Color(232/255f,189/255f,100/255f)}};
-            marketSelected??=CloneAction(new Color(115/255f,93/255f,43/255f),Color.white);
+            PrepareSheetSkin();PrepareCompactControls();PrepareGrimoireAbilityStyles();
+            // The market is an overlay on the Sheet and must not replace its
+            // GUI.skin or Wallet. Scope the approved 9-slice art to this modal.
+            marketSurface??=new GUIStyle(uiStyles.AbilityPanel)
+            {
+                padding=new RectOffset(22,22,22,22),
+                margin=new RectOffset(0,0,0,0)
+            };
+            marketHeading??=new GUIStyle(uiStyles.AbilityTitle)
+            {
+                fontSize=18,alignment=TextAnchor.MiddleLeft,wordWrap=true
+            };
+            marketSelected??=new GUIStyle(GrimoireWrappedGold);
             PrepareInventoryCatalog();
             JObject hero=archive.Snapshot(selected),state=null;JArray definitions=null,stock=null;string loadError=null;
             try
@@ -99,14 +108,14 @@ namespace DndVtt.UnityPrototype
             GUILayout.BeginVertical(marketSurface);marketScroll=GUILayout.BeginScrollView(SwipePosition("market-modal",marketScroll));
             GUILayout.BeginHorizontal();GUILayout.Label("Торговля",marketHeading);GUILayout.FlexibleSpace();
             try{GUILayout.Label("Баланс: "+MarketMoney((long)CharacterSheetRules.CoinTotal(hero["coins"] as JObject,null)),sheetQuiet);}catch(Exception error){GUILayout.Label(error.Message,sheetQuiet);}
-            if(MeasuredMenuButton("×",cloneBlue,GUILayout.Width(35),GUILayout.Height(35)))requestedMarketOpen=false;GUILayout.EndHorizontal();GUILayout.Space(10);
+            if(MeasuredMenuButton("Закрыть",GrimoireWrappedTab,GUILayout.Width(82),GUILayout.MinHeight(42)))requestedMarketOpen=false;GUILayout.EndHorizontal();GUILayout.Space(10);
             if(loadError!=null)
             {
                 if(CommerceCatalog==null)DrawInventoryCatalogLoading();else GUILayout.Label(loadError,sheetQuiet);GUILayout.EndScrollView();GUILayout.EndVertical();GUILayout.EndArea();
                 if(Event.current.type==EventType.KeyDown&&Event.current.keyCode==KeyCode.Escape){requestedMarketOpen=false;Event.current.Use();}return;
             }
 
-            // Inline collapsible tree: section ▾ -> vendor ▾ -> product rows.
+            // Inline collapsible tree: category -> vendor -> product rows.
             // Only the selected branch is rendered, not every item in the catalog.
             JArray departments=MarketCatalog["departments"] as JArray;
             if(departments==null||departments.Count==0)
@@ -119,7 +128,10 @@ namespace DndVtt.UnityPrototype
             {
                 string sectionId=(string)section["id"];
                 bool open=marketDepartment==sectionId;
-                if(MeasuredMenuButton((open?"▾ ":"▸ ")+section["name"]+" · "+((JArray)section["traders"]).Count,open?marketSelected:cloneBlue,GUILayout.ExpandWidth(true),GUILayout.Height(42)))
+                if(MeasuredMenuButton((string)section["name"]+" · "+((JArray)section["traders"]).Count+
+                    (open ? " (свернуть)" : " (открыть)"),
+                    open?marketSelected:GrimoireWrappedTab,
+                    GUILayout.ExpandWidth(true),GUILayout.MinHeight(48)))
                     pendingMarketAction=()=>{
                         marketDepartment=open?"":sectionId;marketTrader="";
                         marketOffers.Clear();marketWanted=null;marketQuery="";
@@ -132,7 +144,9 @@ namespace DndVtt.UnityPrototype
                     JObject trader=MarketCatalog["traders"]?[traderId] as JObject;
                     if(trader==null)continue;
                     bool traderOpen=marketTrader==traderId;
-                    if(MeasuredMenuButton((traderOpen?"▾ ":"▸ ")+trader["name"],traderOpen?marketSelected:cloneBlue,GUILayout.ExpandWidth(true),GUILayout.Height(38)))
+                    if(MeasuredMenuButton((string)trader["name"]+(traderOpen ? " (свернуть)" : " (открыть)"),
+                        traderOpen?marketSelected:GrimoireWrappedTab,
+                        GUILayout.ExpandWidth(true),GUILayout.MinHeight(45)))
                         pendingMarketAction=()=>{
                             marketTrader=traderOpen?"":traderId;
                             marketOffers.Clear();marketWanted=null;marketQuery="";
@@ -142,10 +156,12 @@ namespace DndVtt.UnityPrototype
                     GUILayout.BeginHorizontal();GUILayout.Space(12);GUILayout.BeginVertical();
                     GUILayout.BeginHorizontal();
                     foreach(var entry in new[]{("buy","Купить"),("sell","Продать"),("barter","Обмен")})
-                        if(MeasuredMenuButton(entry.Item2,cloneBlue,GUILayout.ExpandWidth(true),GUILayout.Height(35)))
+                        if(MeasuredMenuButton(entry.Item2,marketMode==entry.Item1?marketSelected:GrimoireWrappedTab,
+                            GUILayout.ExpandWidth(true),GUILayout.MinHeight(44)))
                         {string mode=entry.Item1;pendingMarketAction=()=>{marketMode=mode;marketOffers.Clear();marketWanted=null;};}
                     GUILayout.EndHorizontal();GUILayout.Space(6);
-                    marketQuery=MenuTextField("marketQuery",marketQuery,cloneInput,GUILayout.ExpandWidth(true),GUILayout.Height(35));GUILayout.Space(8);
+                    marketQuery=MenuTextField("marketQuery",marketQuery,GrimoireWrappedInput,
+                        GUILayout.ExpandWidth(true),GUILayout.MinHeight(43));GUILayout.Space(8);
                     GUILayout.Label("Склад: "+stock.Sum(i=>(long)i["qty"])+" · принимает только подходящие товары",sheetQuiet);GUILayout.Space(8);
                     if(stock.OfType<JObject>().Any(i=>i["marketInvalid"]!=null))
                         GUILayout.Label("Некоторые товары скрыты из-за некорректного остатка. Другие сделки доступны; исходные данные не изменены.",sheetQuiet);
