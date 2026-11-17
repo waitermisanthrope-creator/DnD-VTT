@@ -40,6 +40,7 @@ namespace DndVtt.UnityPrototype
             foreach (var texture in brandStyleTextures)
                 if (texture) { if (Application.isPlaying) Destroy(texture); else DestroyImmediate(texture); }
             brandStyleTextures.Clear();
+            if (unifiedGrimoireSkin) { if (Application.isPlaying) Destroy(unifiedGrimoireSkin); else DestroyImmediate(unifiedGrimoireSkin); unifiedGrimoireSkin = null; }
             if (sheetSkin) { if (Application.isPlaying) Destroy(sheetSkin); else DestroyImmediate(sheetSkin); sheetSkin = null; }
             heading = muted = bigButton = null;
             settingsHeader = settingsDescription = settingsInset = null;
@@ -127,7 +128,7 @@ namespace DndVtt.UnityPrototype
             // GUI.skin is only legal inside OnGUI. Keep the builder usable by
             // native resource validation with explicit style prototypes too.
             if(!brandTemplateSkin){brandTemplateSkin=Instantiate(GUI.skin);brandTemplateSkin.hideFlags=HideFlags.HideAndDontSave;}
-            if(BrandStylesNeedRebuild&&GUI.skin==sheetSkin)GUI.skin=brandTemplateSkin;
+            if(BrandStylesNeedRebuild&&(GUI.skin==sheetSkin||GUI.skin==unifiedGrimoireSkin))GUI.skin=brandTemplateSkin;
             EnsureBrandStyles(GUI.skin.button, GUI.skin.label, GUI.skin.box);
         }
         private void EnsureBrandStyles(GUIStyle button, GUIStyle label, GUIStyle box)

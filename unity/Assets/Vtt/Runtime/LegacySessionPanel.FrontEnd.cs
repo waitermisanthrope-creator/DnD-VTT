@@ -86,6 +86,7 @@ namespace DndVtt.UnityPrototype
                 return;
             }
             PrepareSheetSkin();
+            if (screen != FrontScreen.Sheet) PrepareUnifiedGrimoireSkin();
             heading ??= new GUIStyle(GUI.skin.label) { fontSize = 32, fontStyle = FontStyle.Bold, wordWrap = true };
             muted ??= new GUIStyle(GUI.skin.label) { fontSize = 15, wordWrap = true, normal = { textColor = new Color(.65f, .73f, .83f) } };
             bigButton ??= new GUIStyle(GUI.skin.button) { fontSize = 18, padding = new RectOffset(20, 20, 16, 16), alignment = TextAnchor.MiddleLeft };
@@ -100,14 +101,14 @@ namespace DndVtt.UnityPrototype
             if(screen==FrontScreen.Sheet)DrawClassicSheetNavigation();
             else
             {
-                GUILayout.BeginHorizontal();GUILayout.Label("DnD VTT",heading);GUILayout.FlexibleSpace();if(UiWidth>=700)GUILayout.Label("Unity · "+UnityRelease.Version,muted);GUILayout.EndHorizontal();
+                GUILayout.BeginHorizontal();GUILayout.Label("DnD VTT",uiStyles.AbilityTitle);GUILayout.FlexibleSpace();if(UiWidth>=700)GUILayout.Label("Unity · "+UnityRelease.Version,muted);GUILayout.EndHorizontal();
             string[] labels = portraitLayout ? new[] { "← Главная", screen == FrontScreen.Characters ? "Создать" : "Персонажи" } : new[] { "Главная", "Персонажи", "Создать", "Файлы", "3D-карта", "Настройки" };
             var destinations = portraitLayout ? new[] { FrontScreen.Home, screen == FrontScreen.Characters ? FrontScreen.Create : FrontScreen.Characters } : new[] { FrontScreen.Home, FrontScreen.Characters, FrontScreen.Create, FrontScreen.Import, FrontScreen.Map, FrontScreen.Settings };
             int columns = portraitLayout ? 2 : 6;
             float cellWidth = Mathf.Max(80, (UiWidth - inset * 2 - 24) / columns - 8);
             var navStyle = NavigationStyle(labels, cellWidth);
-            var activeNavStyle = new GUIStyle(navStyle) { normal = brandBlue.normal, hover = brandBlue.hover, active = brandBlue.active, focused = brandBlue.focused };
-            float navHeight = Mathf.Max(54, labels.Max(label => navStyle.CalcHeight(new GUIContent(label), cellWidth)));
+            var activeNavStyle = new GUIStyle(uiStyles.AbilityGold) { font = navStyle.font, fontSize = navStyle.fontSize, padding = navStyle.padding, margin = navStyle.margin };
+            float navHeight = Mathf.Max(48, labels.Max(label => navStyle.CalcHeight(new GUIContent(label), cellWidth)));
             GUILayout.BeginHorizontal();
             for (int i = 0; i < labels.Length; i++)
             {
@@ -117,7 +118,7 @@ namespace DndVtt.UnityPrototype
                 DesktopUiSmoke.RecordButton(labels[i], destinationStyle, GUILayoutUtility.GetLastRect());
                 if (clicked) { if (destinations[i] == FrontScreen.Create) BeginCreation(); else if (destinations[i] == FrontScreen.Settings) OpenSettings(); else Navigate(destinations[i]); }
             }
-            GUILayout.EndHorizontal(); GUILayout.Space(18);
+            GUILayout.EndHorizontal(); GUILayout.Space(9);
             }
             if(screen==FrontScreen.Sheet)GUILayout.Space(PhoneSheet ? 0 : 15);
             frontScroll = GUILayout.BeginScrollView(SwipePosition("front",frontScroll),false,true,GUIStyle.none,GUI.skin.verticalScrollbar);
@@ -151,7 +152,8 @@ namespace DndVtt.UnityPrototype
                     break;
                 case FrontScreen.Settings: DrawSettings(); break;
                 case FrontScreen.Import:
-                    GUILayout.Label("Перенос персонажей", heading);
+                    GUILayout.Label("Перенос персонажей", uiStyles.AbilityTitle);
+                    GUILayout.BeginVertical(uiStyles.AbilityPanel);
                     GUILayout.Label("Вставьте JSON персонажа, массива или архива characters. Импорт добавит новых героев и сохранит архив. Если ID совпадает, другая версия существующего героя не заменяется.", muted);
                     DrawCharacterFiles();
                     GUILayout.Space(12); GUILayout.Label("Или вставьте JSON из буфера обмена", muted);
@@ -163,7 +165,8 @@ namespace DndVtt.UnityPrototype
                         if (GUILayout.Button("Сохранить архив на устройстве", GUILayout.Height(52))) Attempt(() => { SaveSheet(); status = "Архив сохранён"; });
                     }
                     DrawCharacterBackups(false);
-                    GUILayout.Label("Локальный файл: " + SavePath, muted); break;
+                    GUILayout.Label("Локальный файл: " + SavePath, muted);
+                    GUILayout.EndVertical(); break;
             }
             GUI.matrix=sheetBodyMatrix;GUI.enabled=sheetBodyEnabled;
             if(screen==FrontScreen.Sheet){if(showSheetNotice){GUILayout.Space(8);GUILayout.Label(status,sheetQuiet);}}else{GUILayout.Space(20);GUILayout.Label(status,muted);}GUILayout.EndVertical(); GUILayout.EndScrollView(); RegisterSwipe("front",GUILayoutUtility.GetLastRect());RegisterSheetPaging(GUILayoutUtility.GetLastRect()); GUILayout.EndArea();
@@ -214,30 +217,30 @@ namespace DndVtt.UnityPrototype
             ((string)hero["class"] ?? (string)hero["className"] ?? "Без класса") + " · " + CharacterSheetRules.Level(hero) + " ур. · " + (hero["raceName"] ?? hero["race"] ?? "Раса не указана");
         private void DrawRoster()
         {
-            GUILayout.Label("Мои персонажи", heading);
+            GUILayout.Label("Мои персонажи", uiStyles.AbilityTitle);
             if (archive == null || archive.Count == 0)
             {
-                GUILayout.BeginVertical(GUI.skin.box);
+                GUILayout.BeginVertical(uiStyles.AbilityCard);
                 GUILayout.Label("Здесь будут ваши герои", sheetHeading);
                 GUILayout.Label("Создайте персонажа или добавьте существующий JSON-файл.", muted);
-                if (GUILayout.Button("Создать персонажа", brandGreen, GUILayout.MinHeight(52))) BeginCreation();
-                if (GUILayout.Button("Импортировать персонажей", GUILayout.MinHeight(52))) Navigate(FrontScreen.Import);
+                if (GUILayout.Button("Создать персонажа", uiStyles.AbilityGold, GUILayout.MinHeight(52))) BeginCreation();
+                if (GUILayout.Button("Импортировать персонажей", uiStyles.AbilityTab, GUILayout.MinHeight(52))) Navigate(FrontScreen.Import);
                 GUILayout.EndVertical(); return;
             }
             if (pendingCharacterDeleteId != null)
             {
-                GUILayout.BeginVertical(GUI.skin.box);
+                GUILayout.BeginVertical(uiStyles.AbilityCard);
                 GUILayout.Label("Удаление персонажа", sheetHeading);
                 GUILayout.Label("Удалить «" + pendingCharacterDeleteName + "» с этого устройства?", GUI.skin.label);
                 GUILayout.Label("Облачная копия останется. Предыдущий локальный архив сохранится в резервной копии.", muted);
-                if (GUILayout.Button("Отмена", GUILayout.MinHeight(52))) pendingCharacterDeleteId = pendingCharacterDeleteName = null;
+                if (GUILayout.Button("Отмена", uiStyles.AbilityTab, GUILayout.MinHeight(52))) pendingCharacterDeleteId = pendingCharacterDeleteName = null;
                 if (GUILayout.Button("Подтвердить удаление", brandRed, GUILayout.MinHeight(52))) Attempt(ConfirmCharacterDeletion);
                 GUILayout.EndVertical(); return;
             }
             GUILayout.Label("Поиск по имени, расе или классу", muted);
             GUILayout.BeginHorizontal();
-            rosterSearch = MenuTextField("rosterSearch", rosterSearch, GUILayout.MinHeight(52));
-            if (rosterSearch.Length > 0 && MeasuredMenuButton("Сброс", GUI.skin.button, GUILayout.Width(112), GUILayout.MinHeight(52))) { rosterSearch = ""; GUI.FocusControl(null); }
+            rosterSearch = MenuTextField("rosterSearch", rosterSearch, uiStyles.AbilityInput, GUILayout.MinHeight(52));
+            if (rosterSearch.Length > 0 && MeasuredMenuButton("Сброс", uiStyles.AbilityChip, GUILayout.Width(112), GUILayout.MinHeight(52))) { rosterSearch = ""; GUI.FocusControl(null); }
             GUILayout.EndHorizontal();
             string query = rosterSearch.Trim();
             int[] visible = Enumerable.Range(0, archive.Count).Where(i =>
@@ -245,29 +248,30 @@ namespace DndVtt.UnityPrototype
             GUILayout.Label("Найдено: " + visible.Length + " из " + archive.Count, muted); GUILayout.Space(12);
             if (visible.Length == 0)
             {
-                GUILayout.BeginVertical(GUI.skin.box);
+                GUILayout.BeginVertical(uiStyles.AbilityCard);
                 GUILayout.Label("Ничего не найдено", sheetHeading);
                 GUILayout.Label("Проверьте имя, расу или класс. Персонажи остаются в вашем архиве.", muted);
-                if (GUILayout.Button("Показать всех персонажей", GUILayout.MinHeight(52))) { rosterSearch = ""; GUI.FocusControl(null); }
+                if (GUILayout.Button("Показать всех персонажей", uiStyles.AbilityGold, GUILayout.MinHeight(52))) { rosterSearch = ""; GUI.FocusControl(null); }
                 GUILayout.EndVertical();
             }
             foreach (int i in visible)
             {
                 var hero = archive.Snapshot(i);
-                GUILayout.BeginVertical(GUI.skin.box);
-                GUILayout.Label(archive.Name(i), brandName);
+                GUILayout.BeginVertical(uiStyles.AbilityCard);
+                GUILayout.Label(archive.Name(i), uiStyles.AbilityName);
                 if (i == selected) GUILayout.Label("Текущий герой", sheetQuiet);
-                GUILayout.Label(RosterDetails(hero), muted);
+                GUILayout.Label(RosterDetails(hero), uiStyles.AbilitySub);
                 GUILayout.Label("Здоровье " + archive.CurrentHp(i) + " / " + archive.MaximumHp(i) + "   ·   " + CharacterSheetRules.InventoryWeightKg(hero).ToString("0.##", CultureInfo.InvariantCulture) + " кг", sheetQuiet);
-                if (MeasuredMenuButton("Открыть лист  →", brandBlue, GUILayout.MinHeight(52))) { selected = i; Navigate(FrontScreen.Sheet); }
-                if (MeasuredMenuButton("Удалить персонажа…", brandPlain, GUILayout.MinHeight(48))) RequestCharacterDeletion(i);
+                if (MeasuredMenuButton("Открыть лист", uiStyles.AbilityGold, GUILayout.MinHeight(52))) { selected = i; Navigate(FrontScreen.Sheet); }
+                if (MeasuredMenuButton("Удалить персонажа…", uiStyles.AbilityTab, GUILayout.MinHeight(48))) RequestCharacterDeletion(i);
                 GUILayout.EndVertical(); GUILayout.Space(8);
             }
         }
         private void SetCreationStep(int step) { FlushCreationNumbers(); ResetFormInput(); creationStep=step; frontScroll=Vector2.zero; }
         private void DrawCreation()
         {
-            GUILayout.Label("Создание персонажа", heading);
+            GUILayout.Label("Создание персонажа", uiStyles.AbilityTitle);
+            GUILayout.BeginVertical(uiStyles.AbilityPanel);
             GUILayout.Label("Шаг " + (creationStep + 1) + " / 4 · " + new[] { "История героя", "Раса и класс", "Характеристики и выборы", "Подтверждение" }[creationStep], muted);
             var races = (JArray)CreationCatalog["races"]; var classes = AvailableClasses; var backgrounds = (JArray)CreationCatalog["backgrounds"];
             raceIndex = Mathf.Clamp(raceIndex, 0, races.Count - 1); classIndex = Mathf.Clamp(classIndex, 0, classes.Count - 1); backgroundIndex = Mathf.Clamp(backgroundIndex, 0, backgrounds.Count - 1);
@@ -335,6 +339,7 @@ namespace DndVtt.UnityPrototype
                 else { SetCreationStep(creationStep+1); }
             });
             if(stackActions)GUILayout.EndVertical();else GUILayout.EndHorizontal();
+            GUILayout.EndVertical();
         }
         private JObject BuildDraft(JObject race, JObject cls, JObject bg)
         {
