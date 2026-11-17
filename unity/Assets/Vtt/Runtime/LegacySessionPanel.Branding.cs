@@ -269,6 +269,7 @@ namespace DndVtt.UnityPrototype
         private void DrawBrandHome()
         {
             DrawBrandBackdrop(false);
+            PrepareGrimoireSystemStyles();
             float width = Mathf.Min(UiWidth - 28, BrandMaxWidth);
             float x = (UiWidth - width) / 2f;
             float bottom = Mathf.Min(420, UiHeight * .56f);
@@ -276,8 +277,8 @@ namespace DndVtt.UnityPrototype
             brandHomeScroll = GUILayout.BeginScrollView(SwipePosition("home",brandHomeScroll), false, true);
             if (archive == null || archive.Count == 0)
             {
-                GUILayout.Space(22); GUILayout.BeginVertical(brandCard);
-                GUILayout.Label("Твоя история начинается здесь", brandTitle);
+                GUILayout.Space(12); GUILayout.BeginVertical(uiStyles.AbilityPanel);
+                DrawGrimoireSectionHeading("Твоя история начинается здесь", 13);
                 GUILayout.Label("Создай персонажа или перенеси своего героя из старой версии.", brandSub);
                 GUILayout.EndVertical();
             }
@@ -286,13 +287,13 @@ namespace DndVtt.UnityPrototype
                 var hero = archive.Snapshot(i);
                 string details = ((string)hero["class"] ?? (string)hero["className"] ?? "Без класса")
                     + " • " + ((string)hero["raceName"] ?? (string)hero["race"] ?? "Раса не выбрана");
-                GUILayout.BeginHorizontal(brandCard, GUILayout.MinHeight(76));
+                GUILayout.BeginHorizontal(uiStyles.AbilityCard, GUILayout.MinHeight(76));
                 GUILayout.BeginVertical(GUILayout.ExpandWidth(true));
-                GUILayout.Label(archive.Name(i), brandName);
+                GUILayout.Label(archive.Name(i), uiStyles.AbilityName);
                 if (i == selected) GUILayout.Label("Текущий герой", brandSub);
                 GUILayout.Label(details, brandSub);
                 GUILayout.EndVertical();
-                if (MeasuredMenuButton("Лист", brandPrimary, GUILayout.Width(Mathf.Min(105, width*.24f)), GUILayout.Height(51)))
+                if (MeasuredMenuButton("Лист", GrimoireWrappedGold, GUILayout.Width(Mathf.Min(105, width*.24f)), GUILayout.Height(51)))
                 { selected = i; Navigate(FrontScreen.Sheet); }
                 GUILayout.EndHorizontal();
             }
@@ -302,24 +303,24 @@ namespace DndVtt.UnityPrototype
             brandHomeActionsScroll=GUILayout.BeginScrollView(SwipePosition("home-actions",brandHomeActionsScroll),false,true,GUIStyle.none,GUI.skin.verticalScrollbar);
             GUILayout.BeginVertical();
             GUILayout.BeginHorizontal();
-            if (GUILayout.Button("+ Новый персонаж", brandGreen, GUILayout.Height(51))) BeginCreation();
-            if (GUILayout.Button("Загрузить / импорт", brandBlue, GUILayout.Height(51))) Navigate(FrontScreen.Import);
+            if (GUILayout.Button("+ Новый персонаж", GrimoireWrappedGold, GUILayout.Height(51))) BeginCreation();
+            if (GUILayout.Button("Загрузить / импорт", GrimoireWrappedTab, GUILayout.Height(51))) Navigate(FrontScreen.Import);
             GUILayout.EndHorizontal();
-            if (GUILayout.Button("Мои персонажи · " + (archive?.Count ?? 0), brandPlain, GUILayout.Height(45)))
+            if (GUILayout.Button("Мои персонажи · " + (archive?.Count ?? 0), GrimoireWrappedTab, GUILayout.Height(45)))
                 Navigate(FrontScreen.Characters);
             GUILayout.BeginHorizontal();
-            if (GUILayout.Button("3D Персонаж", brandPlain, GUILayout.Height(53))) OpenCharacterStudio();
-            if (GUILayout.Button("3D Карты", brandPlain, GUILayout.Height(53))) Navigate(FrontScreen.Map);
+            if (GUILayout.Button("3D Персонаж", GrimoireWrappedTab, GUILayout.Height(53))) OpenCharacterStudio();
+            if (GUILayout.Button("3D Карты", GrimoireWrappedTab, GUILayout.Height(53))) Navigate(FrontScreen.Map);
             GUILayout.EndHorizontal();
             GUILayout.BeginHorizontal();
-            if(GUILayout.Button("Мастерская",brandPlain,GUILayout.MinHeight(54)))OpenContentManager();
-            if(MeasuredMenuButton("3D Дайсы",brandPlain,GUILayout.MinHeight(54)))Navigate(FrontScreen.Dice);
+            if(GUILayout.Button("Мастерская",GrimoireWrappedTab,GUILayout.MinHeight(54)))OpenContentManager();
+            if(MeasuredMenuButton("3D Дайсы",GrimoireWrappedTab,GUILayout.MinHeight(54)))Navigate(FrontScreen.Dice);
             GUILayout.EndHorizontal();
             LoadCloudSession();
-            if(cloudSession!=null&&GUILayout.Button("Глобальный чат",brandBlue,GUILayout.Height(51)))Navigate(FrontScreen.Chat);
+            if(cloudSession!=null&&GUILayout.Button("Глобальный чат",GrimoireWrappedTab,GUILayout.Height(51)))Navigate(FrontScreen.Chat);
             // One tap opens settings. Do not hide the essential updater behind
             // a floating popup that becomes unclickable on some Android devices.
-            if (GUILayout.Button("⚙ Настройки", brandBrown, GUILayout.Height(61)))
+            if (GUILayout.Button("Настройки", GrimoireWrappedGold, GUILayout.Height(61)))
                 { brandMoreOpen = false; OpenSettings(); }
             GUILayout.EndVertical();GUILayout.EndScrollView();RegisterSwipe("home-actions",GUILayoutUtility.GetLastRect()); GUILayout.EndArea();
             if (brandMoreOpen) DrawBrandMore();
@@ -330,10 +331,10 @@ namespace DndVtt.UnityPrototype
             Rect r = new Rect((UiWidth - width)/2, Mathf.Max(20,UiHeight*.34f), width, 260);
             Shade(r, new Color(.09f,.09f,.08f,.99f));
             GUILayout.BeginArea(new Rect(r.x+14,r.y+10,r.width-28,r.height-15));
-            GUILayout.Label("Дополнительно", brandTitle);
-            if (GUILayout.Button("⚙ Настройки приложения", brandGold, GUILayout.Height(51)))
+            GUILayout.Label("Дополнительно", uiStyles.AbilityTitle);
+            if (GUILayout.Button("Настройки приложения", GrimoireWrappedGold, GUILayout.Height(51)))
             { brandMoreOpen = false; OpenSettings(); }
-            if (GUILayout.Button("📜 История изменений", brandBrown, GUILayout.Height(51)))
+            if (GUILayout.Button("История изменений", GrimoireWrappedTab, GUILayout.Height(51)))
             { brandMoreOpen = false; OpenSettings(); showChangelog = true; StartCoroutine(FetchChangelog()); }
             if (GUILayout.Button("Закрыть", brandRed, GUILayout.Height(44))) brandMoreOpen = false;
             GUILayout.EndArea();

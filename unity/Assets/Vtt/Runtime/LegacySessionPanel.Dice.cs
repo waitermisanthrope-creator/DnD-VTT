@@ -126,23 +126,23 @@ namespace DndVtt.UnityPrototype
         private void DrawDiceThemePicker()
         {
             GUILayout.Label("Набор для броска: "+(diceThemeSelection==0?"Классический":diceThemes[diceThemeSelection-1].Name));
-            if(GUILayout.Button(diceThemePicker?"Свернуть наборы":"Мои наборы · "+(diceThemes?.Length??0),GUILayout.MinHeight(56)))diceThemePicker=!diceThemePicker;
+            if(GUILayout.Button(diceThemePicker?"Свернуть наборы":"Мои наборы · "+(diceThemes?.Length??0),GrimoireWrappedTab,GUILayout.MinHeight(56)))diceThemePicker=!diceThemePicker;
             if(!diceThemePicker)return;
             bool follow=PlayerPrefs.GetInt("dndvtt.dice.followIcon",PlayerPrefs.HasKey("dndvtt.dice.theme")?0:1)==1;
-            if(GUILayout.Button((follow?"✓ ":"")+"Как выбранная иконка приложения",GUILayout.MinHeight(56))) {
+            if(GUILayout.Button((follow?"✓ ":"")+"Как выбранная иконка приложения",GrimoireWrappedTab,GUILayout.MinHeight(56))) {
                 PlayerPrefs.SetInt("dndvtt.dice.followIcon",1);PlayerPrefs.Save();diceIconSelection=null;SyncDiceIcon();
             }
             int count=(diceThemes?.Length??0)+1,start=diceThemePage*6,end=Math.Min(count,start+6);
             for(int i=start;i<end;i++) {
                 string name=i==0?"Классический":diceThemes[i-1].Name;
-                if(GUILayout.Button((i==diceThemeSelection?"✓ ":"")+name,GUILayout.MinHeight(56))) {
+                if(GUILayout.Button((i==diceThemeSelection?"✓ ":"")+name,i==diceThemeSelection?GrimoireWrappedGold:GrimoireWrappedTab,GUILayout.MinHeight(56))) {
                     PlayerPrefs.SetString("dndvtt.dice.theme",i==0?"":diceThemes[i-1].Id);
                     PlayerPrefs.SetInt("dndvtt.dice.followIcon",0);PlayerPrefs.Save();diceIconSelection=null;SyncDiceIcon();diceThemePicker=false;
                 }
             }
             GUILayout.BeginHorizontal();
-            if(diceThemePage>0&&GUILayout.Button("← Наборы",GUILayout.MinHeight(52)))diceThemePage--;
-            if(end<count&&GUILayout.Button("Наборы →",GUILayout.MinHeight(52)))diceThemePage++;
+            if(diceThemePage>0&&GUILayout.Button("← Наборы",GrimoireWrappedTab,GUILayout.MinHeight(52)))diceThemePage--;
+            if(end<count&&GUILayout.Button("Наборы →",GrimoireWrappedTab,GUILayout.MinHeight(52)))diceThemePage++;
             GUILayout.EndHorizontal();
             if((diceThemes?.Length??0)==0)GUILayout.Label("Пока нет установленных 3D-наборов. Иконки и 3D-наборы — разные загрузки: Мастерская → Оформление → 3D Дайсы.",muted);
         }
@@ -166,24 +166,24 @@ namespace DndVtt.UnityPrototype
         {
             for(int i=0;i<diceGroups.Count;i++) {
                 var group=diceGroups[i];
-                GUILayout.BeginVertical(brandCard);
+                GUILayout.BeginVertical(uiStyles.AbilityCard);
                 GUILayout.Label("d"+group.Key+" · "+group.Value.ToString(CultureInfo.InvariantCulture)+" шт.");
                 GUILayout.BeginHorizontal();
-                if(GUILayout.Button("−",GUILayout.MinHeight(52))&&group.Value>1)diceGroups[i]=new KeyValuePair<int,BigInteger>(group.Key,group.Value-1);
-                if(GUILayout.Button("Количество",GUILayout.MinHeight(52))) { diceEditGroup=i;diceQuantity=group.Value.ToString(CultureInfo.InvariantCulture);diceReplaceQuantity=true;diceAddPicker=false; }
-                if(GUILayout.Button("+",GUILayout.MinHeight(52)))diceGroups[i]=new KeyValuePair<int,BigInteger>(group.Key,group.Value+1);
+                if(GUILayout.Button("−",GrimoireWrappedTab,GUILayout.MinHeight(52))&&group.Value>1)diceGroups[i]=new KeyValuePair<int,BigInteger>(group.Key,group.Value-1);
+                if(GUILayout.Button("Количество",GrimoireWrappedTab,GUILayout.MinHeight(52))) { diceEditGroup=i;diceQuantity=group.Value.ToString(CultureInfo.InvariantCulture);diceReplaceQuantity=true;diceAddPicker=false; }
+                if(GUILayout.Button("+",GrimoireWrappedTab,GUILayout.MinHeight(52)))diceGroups[i]=new KeyValuePair<int,BigInteger>(group.Key,group.Value+1);
                 GUILayout.EndHorizontal();
-                if(GUILayout.Button("Убрать d"+group.Key,GUILayout.MinHeight(48))) { diceGroups.RemoveAt(i);diceEditGroup=-1;GUILayout.EndVertical();break; }
+                if(GUILayout.Button("Убрать d"+group.Key,GrimoireWrappedTab,GUILayout.MinHeight(48))) { diceGroups.RemoveAt(i);diceEditGroup=-1;GUILayout.EndVertical();break; }
                 GUILayout.EndVertical();
             }
-            if(GUILayout.Button(diceAddPicker?"Закрыть выбор":"+ Добавить дайс",GUILayout.MinHeight(56))) { diceAddPicker=!diceAddPicker;diceEditGroup=-1; }
+            if(GUILayout.Button(diceAddPicker?"Закрыть выбор":"+ Добавить дайс",GrimoireWrappedGold,GUILayout.MinHeight(56))) { diceAddPicker=!diceAddPicker;diceEditGroup=-1; }
             if(diceAddPicker) {
                 GUILayout.Label("Выберите количество граней",muted);
                 int next=MenuGrid(-1,new[]{"d4","d6","d8","d10","d12","d20","d100"},UiHeight>UiWidth?3:7);
                 if(next>=0)AddDiceGroup(next);
             }
             if(diceEditGroup>=0&&diceEditGroup<diceGroups.Count) {
-                GUILayout.BeginVertical(brandCard);
+                GUILayout.BeginVertical(uiStyles.AbilityCard);
                 GUILayout.Label("Количество d"+diceGroups[diceEditGroup].Key+": "+diceQuantity);
                 // In-app keypad never opens the OS keyboard or hides the dice list.
                 int digit=MenuGrid(-1,new[]{"1","2","3","4","5","6","7","8","9","Очистить","0","⌫"},3);
@@ -192,16 +192,17 @@ namespace DndVtt.UnityPrototype
                 if(digit==9)diceQuantity="";
                 if(digit==10)diceQuantity=(diceQuantity=="0"?"":diceQuantity)+"0";
                 if(digit==11&&diceQuantity.Length>0)diceQuantity=diceQuantity.Substring(0,diceQuantity.Length-1);
-                if(GUILayout.Button("Применить количество",brandGreen,GUILayout.MinHeight(56)))ApplyDiceQuantity();
+                if(GUILayout.Button("Применить количество",GrimoireWrappedGold,GUILayout.MinHeight(56)))ApplyDiceQuantity();
                 GUILayout.EndVertical();
             }
         }
         private void DrawDiceTable()
         {
-            if (screen == FrontScreen.Dice && MeasuredMenuButton("← Главное меню", GUI.skin.button, GUILayout.MinHeight(UiTheme.TouchHeight)))
+            PrepareGrimoireAbilityStyles();
+            if (screen == FrontScreen.Dice && MeasuredMenuButton("← Главное меню", GrimoireWrappedTab, GUILayout.MinHeight(UiTheme.TouchHeight)))
             { Navigate(FrontScreen.Home); return; }
             DrawSheetHeroBack();
-            GUILayout.Label("Объёмные дайсы",heading);
+            DrawGrimoireSectionHeading("Объёмные дайсы",43);
             if(Event.current.type==EventType.Layout)
             {
                 StartDiceCatalog();SafePollDiceCatalog();
@@ -210,12 +211,13 @@ namespace DndVtt.UnityPrototype
             }
             if(diceTable==null) {
                 GUILayout.Label(diceError??"Подготовка 3D-стола…",muted);
-                if(diceError!=null&&GUILayout.Button("Повторить",GUILayout.MinHeight(54)))diceError=null;
+                if(diceError!=null&&GUILayout.Button("Повторить",GrimoireWrappedGold,GUILayout.MinHeight(54)))diceError=null;
                 // Keep the existing lightweight rolls accessible if the GPU cannot create a table.
-                foreach(int sides in DiceSides)if(GUILayout.Button("Бросить d"+sides,GUILayout.MinHeight(48)))Roll("d"+sides,sides,0);
+                foreach(int sides in DiceSides)if(GUILayout.Button("Бросить d"+sides,GrimoireWrappedTab,GUILayout.MinHeight(48)))Roll("d"+sides,sides,0);
                 GUILayout.Label(rollResult);return;
             }
             bool enabled=GUI.enabled;GUI.enabled=enabled&&!diceTable.Throwing;
+            GUILayout.BeginVertical(uiStyles.AbilityPanel);
             DrawDiceThemePicker();
             DrawDiceTrayPicker();
             DrawDiceShakeControl();
@@ -223,6 +225,7 @@ namespace DndVtt.UnityPrototype
                 : diceThemeSelection<=diceThemes.Length && diceThemes[diceThemeSelection-1].TextureSha256==null ? "Этот набор ещё версии без UV-текстур. Обновите его в мастерской до 1.1.0." : "";
             GUILayout.Label(themeHint,muted);
             DrawDiceGroups();
+            GUILayout.EndVertical();
             GUI.enabled=enabled;
             float height=Mathf.Clamp(UiHeight*.38f,200,440);
             Rect image=GUILayoutUtility.GetRect(1,height,GUILayout.ExpandWidth(true));
@@ -233,13 +236,13 @@ namespace DndVtt.UnityPrototype
             GUILayout.Label(diceGroups.Count==0?"Добавьте дайсы для броска":DiceGroupExpression(),muted);
             GUILayout.Label(diceCatalogTask!=null||diceThemeTask!=null?"Подготовка выбранного набора и лотка…":"",muted);
             GUI.enabled=GUI.enabled&&diceGroups.Count>0&&diceEditGroup<0&&diceThemeTask==null&&diceCatalogTask==null;
-            if(MeasuredMenuButton(diceTable.Throwing?"Бросок…":"Бросить",brandGreen,GUILayout.MinHeight(62))) {
+            if(MeasuredMenuButton(diceTable.Throwing?"Бросок…":"Бросить",GrimoireWrappedGold,GUILayout.MinHeight(62))) {
                 try { diceTable.Throw(DiceGroupExpression());diceInputError="";diceAddPicker=false;diceEditGroup=-1; }
                 catch(FormatException error) { diceInputError=error.Message; }
             }
             GUI.enabled=enabled;
             GUI.enabled=enabled&&diceTable.Throwing;
-            if(GUILayout.Button("Отменить бросок",GUILayout.MinHeight(54))) { diceMotion.Reset();diceTable.Cancel(); }
+            if(GUILayout.Button("Отменить бросок",GrimoireWrappedTab,GUILayout.MinHeight(54))) { diceMotion.Reset();diceTable.Cancel(); }
             GUI.enabled=enabled;
             GUILayout.Label(diceInputError,muted);
             GUILayout.Label("До 20 физических кубов одновременно (d100 занимает два места). Общее количество не ограничено: большие броски идут партиями. Результат читается после остановки; движения щупалец и прыжки слайма могут изменить его до фиксации. Фигурные наборы могут быть несбалансированными. Сетевого подтверждения результата нет.",muted);

@@ -99,10 +99,11 @@ namespace DndVtt.UnityPrototype
         private void DrawCharacterStudio()
         {
             DrawBrandBackdrop(true);
+            PrepareGrimoireSystemStyles();
             GUILayout.BeginArea(new Rect(12, 12, UiWidth - 24, 60));
             GUILayout.BeginHorizontal();
-            if (GUILayout.Button("← Главная", brandBlue, GUILayout.Height(48))) Navigate(FrontScreen.Home);
-            GUILayout.Label("3D Персонаж", brandName); GUILayout.EndHorizontal(); GUILayout.EndArea();
+            if (GUILayout.Button("← Главная", GrimoireWrappedTab, GUILayout.Height(48))) Navigate(FrontScreen.Home);
+            GUILayout.Label("3D Персонаж", uiStyles.AbilityTitle); GUILayout.EndHorizontal(); GUILayout.EndArea();
             bool portrait = UiHeight > UiWidth;
             float viewHeight = portrait ? Mathf.Max(180, UiHeight * .46f) : UiHeight - 92;
             float viewWidth = portrait ? UiWidth - 24 : Mathf.Max(180, UiWidth * .60f);
@@ -121,14 +122,14 @@ namespace DndVtt.UnityPrototype
             Vector2 controlsPoint = GUIUtility.GUIToScreenPoint(controls.position);
             var controlsPixels = new Rect(controlsPoint.x, Screen.height - controlsPoint.y - controls.height * MenuScale, controls.width * MenuScale, controls.height * MenuScale);
             if (Event.current.type == EventType.Repaint) characterSliders.Clear();
-            GUILayout.BeginArea(controls, brandCard);
+            GUILayout.BeginArea(controls, uiStyles.AbilityPanel);
             characterControlsScroll = GUILayout.BeginScrollView(SwipePosition("character-controls", characterControlsScroll), false, true);
             GUILayout.Label(characterNotice, brandSub);
             if (characterStudio != null)
             {
                 GUILayout.BeginHorizontal();
-                if (GUILayout.Button("Мужчина", brandBlue, GUILayout.Height(46))) { characterDraft.SetGender(false); characterDirty = true; }
-                if (GUILayout.Button("Женщина", brandPurple, GUILayout.Height(46))) { characterDraft.SetGender(true); characterDirty = true; }
+                if (GUILayout.Button("Мужчина", !characterDraft.Female?GrimoireWrappedGold:GrimoireWrappedTab, GUILayout.Height(46))) { characterDraft.SetGender(false); characterDirty = true; }
+                if (GUILayout.Button("Женщина", characterDraft.Female?GrimoireWrappedGold:GrimoireWrappedTab, GUILayout.Height(46))) { characterDraft.SetGender(true); characterDirty = true; }
                 GUILayout.EndHorizontal();
                 GUILayout.BeginHorizontal();
                 if (GUILayout.Button("Тело", GUILayout.Height(42))) characterStudio.Frame(false);
@@ -160,9 +161,9 @@ namespace DndVtt.UnityPrototype
                     if (Mathf.Abs(value - old) > .0001f) { characterDraft.Set(CharacterAxes[i], value); characterDirty = true; }
                 }
                 if (GUILayout.Button("Сбросить тело", GUILayout.Height(46))) { foreach (string axis in CharacterAxes) characterDraft.Set(axis, 0); characterDirty = true; }
-                if (GUILayout.Button("Сохранить черновик", brandGreen, GUILayout.Height(46)))
+                if (GUILayout.Button("Сохранить черновик", GrimoireWrappedGold, GUILayout.Height(46)))
                     CharacterAction(() => { File.WriteAllText(CharacterDraftPath, characterDraft.Serialize()); characterNotice = "Черновик сохранён отдельно от листов персонажей."; });
-                if (GUILayout.Button("Загрузить черновик", brandBlue, GUILayout.Height(46))) CharacterAction(() =>
+                if (GUILayout.Button("Загрузить черновик", GrimoireWrappedTab, GUILayout.Height(46))) CharacterAction(() =>
                 {
                     var candidate = new AppearanceDocument(File.ReadAllText(CharacterDraftPath));
                     characterStudio.Apply(candidate); characterDraft = candidate; characterNotice = "Черновик загружен.";

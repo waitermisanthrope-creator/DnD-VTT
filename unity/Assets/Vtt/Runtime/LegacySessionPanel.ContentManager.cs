@@ -66,14 +66,14 @@ namespace DndVtt.UnityPrototype
             GUILayout.Label(contentGroupPath==""?"Все категории":"Все / "+contentGroupPath,muted);
             if(contentGroupPath!=""||contentCategory>0) {
                 GUILayout.BeginHorizontal();
-                if(GUILayout.Button("Все категории",GUILayout.MinHeight(50))) { contentGroupPath="";contentCategory=0;frontScroll=Vector2.zero; }
-                if(contentGroupPath!=""&&GUILayout.Button("← На уровень выше",GUILayout.MinHeight(50))) { int slash=contentGroupPath.LastIndexOf('/');contentGroupPath=slash<0?"":contentGroupPath.Substring(0,slash);if(contentGroupPath=="")contentCategory=0;frontScroll=Vector2.zero; }
+                if(GUILayout.Button("Все категории",GrimoireWrappedTab,GUILayout.MinHeight(50))) { contentGroupPath="";contentCategory=0;frontScroll=Vector2.zero; }
+                if(contentGroupPath!=""&&GUILayout.Button("← На уровень выше",GrimoireWrappedTab,GUILayout.MinHeight(50))) { int slash=contentGroupPath.LastIndexOf('/');contentGroupPath=slash<0?"":contentGroupPath.Substring(0,slash);if(contentGroupPath=="")contentCategory=0;frontScroll=Vector2.zero; }
                 GUILayout.EndHorizontal();
             }
             for(int i=0;i<contentTreeChildren.Count;i+=2) {
                 GUILayout.BeginHorizontal();for(int j=i;j<Math.Min(i+2,contentTreeChildren.Count);j++) {
                     string group=contentTreeChildren[j];string label=group.Split('/').Last()+" · "+contentTreeCounts[group];
-                    if(GUILayout.Button(label,GUILayout.MinHeight(56))) { contentGroupPath=group;frontScroll=Vector2.zero; }
+                    if(GUILayout.Button(label,GrimoireWrappedTab,GUILayout.MinHeight(56))) { contentGroupPath=group;frontScroll=Vector2.zero; }
                 }GUILayout.EndHorizontal();
             }
         }
@@ -83,9 +83,9 @@ namespace DndVtt.UnityPrototype
             GUILayout.Label("Материалов: "+contentView.Count+" · Страница "+(contentPage+1)+" из "+pages,muted);
             if(pages==1)return;
             GUILayout.BeginHorizontal();bool enabled=GUI.enabled;GUI.enabled=enabled&&contentPage>0;
-            if(GUILayout.Button("← Назад",GUILayout.MinHeight(52))) { contentPage--;contentDetails=null;frontScroll=Vector2.zero; }
+            if(GUILayout.Button("← Назад",GrimoireWrappedTab,GUILayout.MinHeight(52))) { contentPage--;contentDetails=null;frontScroll=Vector2.zero; }
             GUI.enabled=enabled&&contentPage+1<pages;
-            if(GUILayout.Button("Далее →",GUILayout.MinHeight(52))) { contentPage++;contentDetails=null;frontScroll=Vector2.zero; }
+            if(GUILayout.Button("Далее →",GrimoireWrappedTab,GUILayout.MinHeight(52))) { contentPage++;contentDetails=null;frontScroll=Vector2.zero; }
             GUI.enabled=enabled;GUILayout.EndHorizontal();
         }
         private static readonly string[] ContentCategories = { "Все", "Игровые системы", "Расы", "Классы", "Черты", "Подклассы", "Заклинания", "Предметы", "Монстры", "3D-модели", "Окружение", "Текстуры", "Анимации", "Карты", "Оформление", "Коллекции", "Крафт и алхимия", "Торговцы" };
@@ -203,31 +203,34 @@ namespace DndVtt.UnityPrototype
         }
         private void DrawContentManager()
         {
-            InitializeWorkshop(); GUILayout.Label("Мастерская дополнений", heading);
-            if (!contentBusy && GUILayout.Button("↻ Обновить каталоги и проверить обновления", GUILayout.Height(45))) StartCoroutine(FetchContentCatalog());
-            if(!contentBusy&&GUILayout.Button("Импорт JSON дополнения из файла…",GUILayout.MinHeight(48)))Attempt(PickWorkshopDataFile);
+            InitializeWorkshop(); PrepareGrimoireAbilityStyles();
+            DrawGrimoireSectionHeading("Мастерская дополнений",40);
+            GUILayout.BeginVertical(uiStyles.AbilityPanel);
+            if (!contentBusy && GUILayout.Button("Обновить каталоги и проверить обновления", GrimoireWrappedGold, GUILayout.MinHeight(48))) StartCoroutine(FetchContentCatalog());
+            if(!contentBusy&&GUILayout.Button("Импорт JSON дополнения из файла…",GrimoireWrappedTab,GUILayout.MinHeight(48)))Attempt(PickWorkshopDataFile);
             GUILayout.Label(contentNotice, muted);
             if (contentBusy) GUILayout.HorizontalSlider(contentProgress, 0, 1);
             installedOnly = GUILayout.Toggle(installedOnly, "Только установленные (доступно без интернета)");
             GUILayout.BeginHorizontal();
-            if(GUILayout.Toggle(contentCollectionsPage,"Сборники модов",GUI.skin.button,GUILayout.MinHeight(54))&&!contentCollectionsPage)SwitchContentPage(true);
-            if(GUILayout.Toggle(!contentCollectionsPage,"Все дополнения",GUI.skin.button,GUILayout.MinHeight(54))&&contentCollectionsPage)SwitchContentPage(false);
+            if(GUILayout.Toggle(contentCollectionsPage,"Сборники модов",contentCollectionsPage?GrimoireWrappedGold:GrimoireWrappedTab,GUILayout.MinHeight(54))&&!contentCollectionsPage)SwitchContentPage(true);
+            if(GUILayout.Toggle(!contentCollectionsPage,"Все дополнения",contentCollectionsPage?GrimoireWrappedTab:GrimoireWrappedGold,GUILayout.MinHeight(54))&&contentCollectionsPage)SwitchContentPage(false);
             GUILayout.EndHorizontal();
             if(contentCollectionsPage)GUILayout.Label("Полные тематические сборники. Все входящие дополнения скачиваются одной кнопкой.",muted);
             else {
                 bool showParts=GUILayout.Toggle(contentShowParts,"Показать отдельные моды и части сборников");
                 if(showParts!=contentShowParts) {contentShowParts=showParts;contentViewDirty=true;}
             }
-            contentSearch = MenuTextField("contentSearch", contentSearch, GUILayout.MinHeight(40));
+            contentSearch = MenuTextField("contentSearch", contentSearch,uiStyles.AbilityInput, GUILayout.MinHeight(44));
+            GUILayout.EndVertical();
             EnsureContentView();if(!contentCollectionsPage)DrawContentTree();SyncWorkshopPreviewPage();
             DrawContentPagination();int shown=0;
             foreach (JObject item in VisibleContentPage())
             {
                 string id=(string)item["id"];contentInstalled.TryGetValue(id,out var local);
-                shown++; GUILayout.BeginVertical(GUI.skin.box); GUILayout.Label(item["name"] + " · " + item["version"], heading);
+                shown++; GUILayout.BeginVertical(uiStyles.AbilityCard); GUILayout.Label(item["name"] + " · " + item["version"], uiStyles.AbilityName);
                 DrawWorkshopPreview(item);
                 GUILayout.Label(local == null ? "Не установлено" : (string)local["sha256"] == (string)item["sha256"] ? "✓ Установлено" : "Доступна другая версия · установлена " + local["version"], muted);
-                if (GUILayout.Button("Подробнее", GUILayout.Height(52))) contentDetails = contentDetails == item ? null : item;
+                if (GUILayout.Button("Подробнее", contentDetails == item ? GrimoireWrappedGold : GrimoireWrappedTab, GUILayout.Height(52))) contentDetails = contentDetails == item ? null : item;
                 if (contentDetails == item)
                 {
                     GUILayout.Label((string)item["description"], muted);
@@ -239,9 +242,9 @@ namespace DndVtt.UnityPrototype
                 string unavailable;if(!contentAvailability.TryGetValue(id,out unavailable)) { unavailable=InstallAvailability(item);contentAvailability[id]=unavailable; } if (unavailable != null) GUILayout.Label(unavailable, muted);
                 bool enabled = GUI.enabled; GUI.enabled = enabled && !contentBusy && unavailable == null;
                 if((string)item["source"]=="local")GUILayout.Label("Обновление локального дополнения — через импорт файла",muted);
-                else if (GUILayout.Button(local == null ? "Скачать и установить" : (string)local["sha256"] == (string)item["sha256"] ? "Скачать повторно" : "Установить версию " + item["version"], GUILayout.Height(42))) StartCoroutine(DownloadContentPackage((JObject)item.DeepClone()));
+                else if (GUILayout.Button(local == null ? "Скачать и установить" : (string)local["sha256"] == (string)item["sha256"] ? "Скачать повторно" : "Установить версию " + item["version"], GrimoireWrappedGold, GUILayout.MinHeight(46))) StartCoroutine(DownloadContentPackage((JObject)item.DeepClone()));
                 GUI.enabled = enabled && !contentBusy && local != null;
-                if (GUILayout.Button((string)item["type"]=="collection"?"Удалить запись сборника (дополнения сохранятся)":"Удалить пакет (персонажи и карты сохранятся)", GUILayout.Height(52)))
+                if (GUILayout.Button((string)item["type"]=="collection"?"Удалить запись сборника (дополнения сохранятся)":"Удалить пакет (персонажи и карты сохранятся)", GrimoireWrappedTab, GUILayout.MinHeight(52)))
                 {
                     try { workshopStore.Remove(id); RefreshWorkshop(); contentNotice = "Пакет удалён. Ссылки сохранений сохранены; ресурсы можно установить повторно."; }
                     catch (Exception e) { contentNotice = e.Message; }
@@ -250,11 +253,11 @@ namespace DndVtt.UnityPrototype
             }
             if (shown == 0) GUILayout.Label("Материалы не найдены. Обновите каталог или измените фильтр.", muted);
             if(shown>0)DrawContentPagination();
-            if(!contentPreviewLoading&&VisibleContentPage().Any(m=>m["preview"] is JObject p&&contentPreviewAttempted.Contains((string)p["sha256"])&&!contentPreviewImages.ContainsKey((string)p["sha256"]))&&GUILayout.Button("Повторить загрузку предпросмотров",GUILayout.MinHeight(50))) {
+            if(!contentPreviewLoading&&VisibleContentPage().Any(m=>m["preview"] is JObject p&&contentPreviewAttempted.Contains((string)p["sha256"])&&!contentPreviewImages.ContainsKey((string)p["sha256"]))&&GUILayout.Button("Повторить загрузку предпросмотров",GrimoireWrappedTab,GUILayout.MinHeight(50))) {
                 foreach(var item in VisibleContentPage())if(item["preview"] is JObject p)contentPreviewAttempted.Remove((string)p["sha256"]);
             }
             if(Event.current.type==EventType.Repaint&&!contentBusy)QueueWorkshopPreview();
-            if (GUILayout.Button("← Настройки", GUILayout.Height(45))) OpenSettings();
+            if (GUILayout.Button("← Настройки", GrimoireWrappedTab, GUILayout.Height(45))) OpenSettings();
         }
     }
 }

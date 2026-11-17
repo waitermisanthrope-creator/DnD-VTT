@@ -24,13 +24,13 @@ namespace DndVtt.UnityPrototype
 
         private void DrawInterfaceColorSettings()
         {
-            GUILayout.BeginVertical(GUI.skin.box);
+            GUILayout.BeginVertical(uiStyles.AbilityPanel);
             SettingsSection("Цвет интерфейса");
             GUILayout.Label("Акцент сохраняется сразу. Фон и текст сохраняют читаемость.", settingsDescription);
             for (int i = 0; i < UiTheme.PresetCount; i++)
             {
                 string hex = UiTheme.PresetHex(i);
-                if (GUILayout.Button(UiTheme.PresetName(i) + (preferences.accentHex == hex ? " ✓" : ""), brandBrown, GUILayout.MinHeight(UiTheme.TouchHeight)))
+                if (GUILayout.Button(UiTheme.PresetName(i) + (preferences.accentHex == hex ? " ✓" : ""), GrimoireWrappedTab, GUILayout.MinHeight(UiTheme.TouchHeight)))
                     pendingAccentHex = hex;
             }
             GUILayout.Label("Свой цвет RGB: #RRGGBB", settingsDescription);
@@ -40,9 +40,9 @@ namespace DndVtt.UnityPrototype
                 GUILayout.Label("Введите шесть HEX-цифр, например #B89B52. Текущий цвет не изменён.", settingsDescription);
             bool enabled = GUI.enabled;
             GUI.enabled = enabled && valid;
-            if (GUILayout.Button("Применить HEX", uiStyles.PrimaryButton, GUILayout.MinHeight(UiTheme.TouchHeight))) pendingAccentHex = normalized;
+            if (GUILayout.Button("Применить HEX", GrimoireWrappedGold, GUILayout.MinHeight(UiTheme.TouchHeight))) pendingAccentHex = normalized;
             GUI.enabled = enabled;
-            if (GUILayout.Button("Сбросить акцент к цвету текущей темы", brandBrown, GUILayout.MinHeight(UiTheme.TouchHeight))) pendingAccentHex = "";
+            if (GUILayout.Button("Сбросить акцент к цвету текущей темы", GrimoireWrappedTab, GUILayout.MinHeight(UiTheme.TouchHeight))) pendingAccentHex = "";
             GUILayout.EndVertical();
         }
         private void SavePendingAccent()
@@ -69,9 +69,9 @@ namespace DndVtt.UnityPrototype
         }
         private void SettingsCategoryButton(string title,string description,string category, float cardWidth = 0)
         {
-            if (cardWidth > 0) GUILayout.BeginVertical(GUI.skin.box, GUILayout.Width(cardWidth));
-            else GUILayout.BeginVertical(GUI.skin.box);
-            if(GUILayout.Button(title+"  →",brandGold,GUILayout.MinHeight(60)))OpenSettingsCategory(category);
+            if (cardWidth > 0) GUILayout.BeginVertical(uiStyles.AbilityCard, GUILayout.Width(cardWidth));
+            else GUILayout.BeginVertical(uiStyles.AbilityCard);
+            if(GUILayout.Button(title+"  →",GrimoireWrappedTab,GUILayout.MinHeight(60)))OpenSettingsCategory(category);
             GUILayout.Label(description,settingsDescription);GUILayout.EndVertical();
         }
         private bool showModeratorPanel;
@@ -80,15 +80,15 @@ namespace DndVtt.UnityPrototype
 
         private void PrepareSettingsSkin()
         {
-            PrepareBrand();
+            PrepareGrimoireSystemStyles();
             // Embedded graphics/control/data panels also use these shared styles.
             // They can open directly from Home, before the sheet/technical page.
             heading ??= new GUIStyle(brandTitle) { font = MenuFont, fontSize = 24 };
             muted ??= new GUIStyle(brandSub) { font = MenuFont, fontSize = 17 };
             if (settingsHeader != null) return;
-            settingsHeader = new GUIStyle(brandTitle) { fontSize = 24, wordWrap = true, font = MenuFont };
-            settingsDescription = new GUIStyle(brandSub) { fontSize = 17, wordWrap = true };
-            settingsInset = new GUIStyle(brandCard) {
+            settingsHeader = new GUIStyle(uiStyles.AbilityTitle) { fontSize = 23, wordWrap = true, alignment = TextAnchor.MiddleLeft };
+            settingsDescription = new GUIStyle(uiStyles.AbilityDescription) { fontSize = 15, wordWrap = true };
+            settingsInset = new GUIStyle(uiStyles.AbilityPanel) {
                 padding = new RectOffset(14,14,12,12),
                 margin = new RectOffset(0,0,7,7)
             };
@@ -104,9 +104,9 @@ namespace DndVtt.UnityPrototype
             if(settingsDraft==null)settingsDraft=ClientPreferences.Parse(preferences.Export());
             DrawBrandBackdrop(true);
             float width=Mathf.Min(UiWidth-24,Application.isMobilePlatform ? 600 : 1040),x=(UiWidth-width)*.5f;
-            GUI.Box(new Rect(x,12,width,UiHeight-24),GUIContent.none,brandCard);
+            GUI.Box(new Rect(x,12,width,UiHeight-24),GUIContent.none,uiStyles.AbilityPanel);
             GUILayout.BeginArea(new Rect(x+16,24,width-32,UiHeight-48));
-            GUILayout.BeginHorizontal();GUILayout.Label(settingsCategory==""?"Настройки приложения":settingsCategory,settingsHeader);if(GUILayout.Button("×",brandRed,GUILayout.Width(46),GUILayout.Height(46)))Navigate(FrontScreen.Home);GUILayout.EndHorizontal();
+            GUILayout.BeginHorizontal();GUILayout.Label(settingsCategory==""?"Настройки приложения":settingsCategory,settingsHeader);if(GUILayout.Button("×",GrimoireWrappedTab,GUILayout.Width(46),GUILayout.Height(46)))Navigate(FrontScreen.Home);GUILayout.EndHorizontal();
             brandSettingsScroll=GUILayout.BeginScrollView(SwipePosition("settings",brandSettingsScroll),false,true,GUIStyle.none,GUI.skin.verticalScrollbar);
             GUILayout.BeginVertical(new GUIStyle { fixedWidth=width-54,stretchWidth=false });
             if(settingsCategory=="") {
@@ -124,15 +124,15 @@ namespace DndVtt.UnityPrototype
                 if(wide)GUILayout.EndHorizontal();
                 if(cloudSession!=null)SettingsCategoryButton("Обращения и управление","Жалобы, заявки и инструменты в рамках серверных прав.","Обращения и управление");
             } else {
-                if(GUILayout.Button("← Все настройки",brandBrown,GUILayout.MinHeight(54)))OpenSettingsCategory("");
+                if(GUILayout.Button("← Все настройки",GrimoireWrappedTab,GUILayout.MinHeight(54)))OpenSettingsCategory("");
                 switch(settingsCategory) {
                     case "Визуальные":
                         DrawInterfaceColorSettings();
-                        GUILayout.BeginVertical(GUI.skin.box);SettingsSection("Тема оформления");
+                        GUILayout.BeginVertical(uiStyles.AbilityPanel);SettingsSection("Тема оформления");
                         int accentIndex = Math.Max(0, Array.IndexOf(BrandAccentKeys, settingsDraft.theme));
                         settingsDraft.theme = BrandAccentKeys[MenuGrid(accentIndex, BrandAccentNames.Select((name, i) => name + (i == accentIndex ? " ✓" : "")).ToArray(), 2)];
                         GUILayout.EndVertical();
-                        GUILayout.BeginVertical(GUI.skin.box);SettingsSection("Оформление рамок");
+                        GUILayout.BeginVertical(uiStyles.AbilityPanel);SettingsSection("Оформление рамок");
                         int frameIndex = Math.Max(0, Array.IndexOf(BrandFrameKeys, settingsDraft.frameStyle));
                         settingsDraft.frameStyle = BrandFrameKeys[MenuGrid(frameIndex, BrandFrameNames.Select((name, i) => name + (i == frameIndex ? " ✓" : "")).ToArray(), 2)];
                         int colorIndex = Math.Max(0, Array.IndexOf(BrandFrameColors, settingsDraft.frameColor));
@@ -144,7 +144,7 @@ namespace DndVtt.UnityPrototype
                     case "Сеть и аккаунт":
                         SettingsSection("Аккаунт и облачные персонажи");
                         GUILayout.Label(cloudSession==null?"Гостевой режим. Локальные герои доступны без регистрации.":(string)cloudSession["email"],sheetQuiet);
-                        if(GUILayout.Button("Аккаунт и синхронизация",brandBlue,GUILayout.MinHeight(64)))Navigate(FrontScreen.Account);
+                        if(GUILayout.Button("Аккаунт и синхронизация",GrimoireWrappedGold,GUILayout.MinHeight(64)))Navigate(FrontScreen.Account);
                         DrawChatNicknameSettings();break;
                     case "Обращения и управление":DrawStaffSettingsPanels();break;
                     case "Графические":
@@ -166,14 +166,14 @@ namespace DndVtt.UnityPrototype
                         break;
                     case "Обновления":
                         SettingsSection("Обновления приложения");GUILayout.Label("Установлена Unity "+UnityRelease.Version,sheetQuiet);
-                        if(GUILayout.Button("Проверить и обновить",brandBlue,GUILayout.MinHeight(56))) { settingsSection=0;showChangelog=false;brandTechnicalScreen=true; }
-                        if(GUILayout.Button("История изменений",brandBrown,GUILayout.MinHeight(54))) { settingsSection=0;showChangelog=true;brandTechnicalScreen=true;StartCoroutine(FetchChangelog()); }
+                        if(GUILayout.Button("Проверить и обновить",GrimoireWrappedGold,GUILayout.MinHeight(56))) { settingsSection=0;showChangelog=false;brandTechnicalScreen=true; }
+                        if(GUILayout.Button("История изменений",GrimoireWrappedTab,GUILayout.MinHeight(54))) { settingsSection=0;showChangelog=true;brandTechnicalScreen=true;StartCoroutine(FetchChangelog()); }
                         break;
                 }
             }
             GUILayout.Label(brandNotice??"",sheetQuiet);GUILayout.Space(12);
             GUILayout.EndVertical();GUILayout.EndScrollView();RegisterSwipe("settings",GUILayoutUtility.GetLastRect());
-            if(settingsCategory!=""&&GUILayout.Button("Сохранить настройки",brandGreen,GUILayout.MinHeight(56)))BrandSaveAppearance();
+            if(settingsCategory!=""&&GUILayout.Button("Сохранить настройки",GrimoireWrappedGold,GUILayout.MinHeight(56)))BrandSaveAppearance();
             GUILayout.EndArea();
             SavePendingAccent();
         }
@@ -209,12 +209,12 @@ namespace DndVtt.UnityPrototype
             float width = Mathf.Min(UiWidth-20,BrandMaxWidth);
             float x=(UiWidth-width)*.5f;
             Rect outer=new Rect(x,10,width,UiHeight-20);
-            GUI.Box(outer,GUIContent.none,brandCard);
+            GUI.Box(outer,GUIContent.none,uiStyles.AbilityPanel);
             var backText = new GUIContent("← К настройкам");
-            float backWidth = Mathf.Min(width-48, Mathf.Max(230, brandBrown.CalcSize(backText).x+12));
-            var back = new Rect(x+12,16,backWidth,Mathf.Max(54,brandBrown.CalcHeight(backText,backWidth)));
-            if (GUI.Button(back,backText,brandBrown)) { brandTechnicalScreen=false; return; }
-            DesktopUiSmoke.RecordButton(backText.text, brandBrown, back);
+            float backWidth = Mathf.Min(width-48, Mathf.Max(230, GrimoireWrappedTab.CalcSize(backText).x+12));
+            var back = new Rect(x+12,16,backWidth,Mathf.Max(54,GrimoireWrappedTab.CalcHeight(backText,backWidth)));
+            if (GUI.Button(back,backText,GrimoireWrappedTab)) { brandTechnicalScreen=false; return; }
+            DesktopUiSmoke.RecordButton(backText.text, GrimoireWrappedTab, back);
             GUILayout.BeginArea(new Rect(x+13,back.yMax+12,width-26,UiHeight-back.yMax-32));
             frontScroll=GUILayout.BeginScrollView(SwipePosition("technical-settings",frontScroll),false,true,GUIStyle.none,GUI.skin.verticalScrollbar);
             GUILayout.BeginVertical(new GUIStyle { fixedWidth=width-48,stretchWidth=false });

@@ -77,6 +77,14 @@ namespace DndVtt.UnityPrototype
             DrawGrimoireAbilityRule();
         }
 
+        // Brand Home, Settings and Character Studio draw before the normal
+        // DrawFrontEnd skin path. Prepare existing art without changing screen logic.
+        private void PrepareGrimoireSystemStyles()
+        {
+            PrepareSheetSkin();
+            PrepareGrimoireAbilityStyles();
+        }
+
         private void PrepareUnifiedGrimoireSkin()
         {
             // PrepareSheetSkin() already ran in DrawFrontEnd; ability styles cache
