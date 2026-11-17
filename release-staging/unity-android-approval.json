@@ -1,11 +1,11 @@
 {
   "schema": 1,
-  "version": "1.00.61",
-  "candidateRunId": 44069007028,
+  "version": "1.00.62",
+  "candidateRunId": 44131968889,
   "approved": true,
   "releaseType": "public-prerelease",
   "channel": "unity-experiment",
   "scope": "Android-only",
-  "sourceCommit": "7773ed408402068c7c25050b67fa03b1b32c378f",
-  "note": "2026-11-17: владелец явно попросил выпустить Android 1.00.61 для обновления из установленного приложения и физической проверки новой библиотеки. Публиковать только если Android job candidate 44069007028 успешно завершилась; проверить package com.dndvtt.unity, исходную подпись, arm64, версию и SHA256. Не затрагивать main/Windows/сохранения."
+  "sourceCommit": "9d6dc0515c135553bad89836e16ab77057f609f7",
+  "note": "2026-11-17: владелец запросил публикацию тестового редизайна через встроенный Android-updater. Публиковать только после успешной НАТИВНОЙ Android ARM64 сборки кандидата 44131968889, с проверкой оригинального сертификата, package, versionCode=10062, ZIP alignment, SHA256 и загруженного APK. Windows и main не публиковать. Кошелёк и сохранения не трогать."
 }
