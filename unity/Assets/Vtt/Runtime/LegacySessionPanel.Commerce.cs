@@ -120,7 +120,7 @@ namespace DndVtt.UnityPrototype
                 if (GUILayout.Button("−",GrimoireWrappedTab,GUILayout.Width(46))) { if (count <= 1) RequestDelete(item,(string)item["name"]); else { item["count"] = count - 1; changed = persist = true; } }
                 GUILayout.Label("Количество: " + count.ToString("0.##"));
                 if (GUILayout.Button("+",GrimoireWrappedTab,GUILayout.Width(46))) { item["count"] = count + 1; changed = persist = true; } GUILayout.EndHorizontal();
-                if (inventoryCategory < 2 && GUILayout.Button((bool?)item["equipped"] == true ? "✓ Экипировано" : "Экипировать",GrimoireWrappedTab,GUILayout.MinHeight(40))) { try { CommerceRules.Equip(hero,item); changed = persist = true; } catch (Exception e) { status = e.Message; } }
+                if (inventoryCategory < 2 && GUILayout.Button((bool?)item["equipped"] == true ? "Экипировано" : "Экипировать",(bool?)item["equipped"] == true ? GrimoireWrappedGold : GrimoireWrappedTab,GUILayout.MinHeight(40))) { try { CommerceRules.Equip(hero,item); changed = persist = true; } catch (Exception e) { status = e.Message; } }
                 if (item["effects"] is JArray)
                 {
                     GUILayout.Label("Урон, длительность и эффекты на других существ учитываются вручную.",sheetQuiet);

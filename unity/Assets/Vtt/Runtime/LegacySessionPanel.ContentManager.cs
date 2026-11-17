@@ -229,7 +229,7 @@ namespace DndVtt.UnityPrototype
                 string id=(string)item["id"];contentInstalled.TryGetValue(id,out var local);
                 shown++; GUILayout.BeginVertical(uiStyles.AbilityCard); GUILayout.Label(item["name"] + " · " + item["version"], uiStyles.AbilityName);
                 DrawWorkshopPreview(item);
-                GUILayout.Label(local == null ? "Не установлено" : (string)local["sha256"] == (string)item["sha256"] ? "✓ Установлено" : "Доступна другая версия · установлена " + local["version"], muted);
+                GUILayout.Label(local == null ? "Не установлено" : (string)local["sha256"] == (string)item["sha256"] ? "Установлено" : "Доступна другая версия · установлена " + local["version"], muted);
                 if (GUILayout.Button("Подробнее", contentDetails == item ? GrimoireWrappedGold : GrimoireWrappedTab, GUILayout.Height(52))) contentDetails = contentDetails == item ? null : item;
                 if (contentDetails == item)
                 {

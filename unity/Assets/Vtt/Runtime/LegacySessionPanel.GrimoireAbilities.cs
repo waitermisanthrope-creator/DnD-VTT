@@ -394,8 +394,7 @@ namespace DndVtt.UnityPrototype
             slots = slots.OrderBy(s => s.level).ThenBy(s => s.pact).ToList();
             GUILayout.Space(7);
             GUILayout.BeginVertical(uiStyles.AbilityPanel);
-            GUILayout.Label("✦  Ячейки заклинаний", uiStyles.AbilityTitle);
-            DrawGrimoireAbilityRule();
+            DrawGrimoireSectionHeading("Ячейки заклинаний",20);
             if (slots.Count == 0 && unusual.Count == 0)
                 GUILayout.Label("Обычных ячеек пока нет", uiStyles.AbilitySub);
 
@@ -602,8 +601,7 @@ namespace DndVtt.UnityPrototype
             if (hero["resources"] is not JObject resources || !resources.Properties().Any()) return;
             GUILayout.Space(6);
             GUILayout.BeginVertical(uiStyles.AbilityPanel);
-            GUILayout.Label("✦ Ресурсы", uiStyles.AbilityTitle);
-            DrawGrimoireAbilityRule();
+            DrawGrimoireSectionHeading("Ресурсы",16);
             foreach (var property in resources.Properties())
             {
                 if (property.Value is not JObject resource ||
@@ -653,7 +651,7 @@ namespace DndVtt.UnityPrototype
                     ["name"] = "Новый приём", ["description"] = "",
                     ["rechargeOn"] = "none", ["maxUses"] = 0, ["usedCount"] = 0
                 }), ref changed);
-            if (GrimoireAbilityFold("grimoire-ability-stats", "⚙ Параметры приёмов и магии"))
+            if (GrimoireAbilityFold("grimoire-ability-stats", "Параметры приёмов и магии"))
             {
                 GUILayout.Label("Характеристика приёмов", uiStyles.AbilitySub);
                 ClassicAbilityStat(hero, "combatAbilityStat", "str", ref changed);

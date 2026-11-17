@@ -388,14 +388,16 @@ namespace DndVtt.UnityPrototype
             GUILayout.BeginVertical(uiStyles.AbilityPanel);DrawGrimoireSectionHeading("Пассивные чувства",101);
             foreach(var pair in new[]{("Пассивная Внимательность:",11),("Пассивный Анализ:",8),("Пассивная Проницательность:",6)})
             {GUILayout.Space(12);GUILayout.BeginHorizontal();GUILayout.Label(pair.Item1);GUILayout.Label((10+CharacterSheetRules.Skill(hero,pair.Item2)).ToString(),clonePassive,GUILayout.Width(30));GUILayout.FlexibleSpace();GUILayout.EndHorizontal();}GUILayout.EndVertical();
-            GUILayout.BeginVertical(uiStyles.AbilityPanel);DrawGrimoireSectionHeading("Навыки (18)",98);var skills=hero["skillsData"] as JObject??new JObject();
+            GUILayout.BeginVertical(uiStyles.AbilityPanel);DrawGrimoireSectionHeading("Навыки (18)",98);
+            GUILayout.Label("П — владение   ·   Э — экспертиза",uiStyles.AbilityDescription);
+            var skills=hero["skillsData"] as JObject??new JObject();
             for(int i=0;i<CharacterSheetRules.SkillIds.Length;i++)
             {
                 string key=CharacterSheetRules.SkillIds[i];CharacterSheetRules.TrySheetCount(skills[key],out int count);int owned=Mathf.Clamp(count,0,2);GUILayout.Space(6);GUILayout.BeginHorizontal();
-                if(MeasuredMenuButton(new[]{"—","✓","✕2"}[owned]+" ▾",cloneProf,GUILayout.Width(42),GUILayout.Height(25)))cloneSkillDropdown=cloneSkillDropdown==i?null:(int?)i;
+                if(MeasuredMenuButton(new[]{"-","П","Э"}[owned]+" >",cloneProf,GUILayout.Width(42),GUILayout.Height(25)))cloneSkillDropdown=cloneSkillDropdown==i?null:(int?)i;
                 GUILayout.Label(CharacterSheetRules.SkillNames[i]+" ("+CharacterSheetRules.SkillStats[i].ToUpperInvariant()+")",cloneListLabel);GUILayout.FlexibleSpace();
                 GUILayout.Label(Signed(CharacterSheetRules.Skill(hero,i)),cloneSuccess,GUILayout.Width(35));GUILayout.EndHorizontal();
-                if(cloneSkillDropdown==i){int choice=GUILayout.SelectionGrid(owned,new[]{"—","✓","✕2"},3,GUILayout.Height(30));if(choice!=owned){skills[key]=choice;hero["skillsData"]=skills;CharacterSheetRules.Recalculate(hero);changed=true;cloneSkillDropdown=null;}}
+                if(cloneSkillDropdown==i){int choice=GUILayout.SelectionGrid(owned,new[]{"-","П","Э"},3,GUILayout.Height(30));if(choice!=owned){skills[key]=choice;hero["skillsData"]=skills;CharacterSheetRules.Recalculate(hero);changed=true;cloneSkillDropdown=null;}}
                 GUILayout.Space(6);if(i<CharacterSheetRules.SkillIds.Length-1)CloneListRule();
             }
             GUILayout.EndVertical();
