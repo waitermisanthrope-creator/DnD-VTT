@@ -46,3 +46,9 @@
 ### Stage 2 note (2026-11-17)
 
 The implementation is **source-only** until compiled/replayed. Reuse `uiStyles.AbilityPanel` for main sections, `uiStyles.AbilityCard` for nested notes, recipe, lore and inventory rows, and `ApprovedIconRegistry.GetSprite` in headings. Do not substitute a global `GUI.skin` inside Sheet: the wallet and shared cached classic fields depend on the original skin. Follow up with visual Android QA and clip/scroll/keyboard regression testing; no build/update should be claimed yet.
+
+### Stage 2 UX regression follow-up (2026-11-17)
+
+- [x] Change the expandable ability/class-feature names to the cached multiline-safe `GrimoireWrappedTab`, without changing their fold handlers.
+- [x] Arrange six 22px spell-slot orbs per row (132px inner width, 138px group width), retaining horizontal scrolling on narrow screens and original click actions.
+- [ ] Compare screenshot with owner-provided Android screenshots after a real Unity build; visual correctness is not established by source checks.

@@ -257,7 +257,7 @@ namespace DndVtt.UnityPrototype
                 GUILayout.Space(7);
                 GUILayout.BeginVertical(GUILayout.ExpandWidth(true));
                 if (MeasuredMenuButton(name + (open ? "  (свернуть)" : "  (раскрыть)"),
-                    uiStyles.AbilityTab, GUILayout.MinHeight(44)))
+                    GrimoireWrappedTab, GUILayout.MinHeight(44)))
                     ToggleAbilityFold(key);
                 string recharge = (string)ability["rechargeOn"] ?? "none";
                 string rechargeLabel = recharge == "short" || recharge == "short_rest" ? "короткий отдых" :
@@ -317,7 +317,7 @@ namespace DndVtt.UnityPrototype
                 DrawGrimoireQuestionIcon(49);
                 GUILayout.Space(7);
                 GUILayout.BeginVertical(GUILayout.ExpandWidth(true));
-                if (MeasuredMenuButton(feature.name, uiStyles.AbilityTab,
+                if (MeasuredMenuButton(feature.name, GrimoireWrappedTab,
                     GUILayout.MinHeight(44))) ToggleAbilityFold(key);
                 GUILayout.Label("Особенность класса", uiStyles.AbilitySub);
                 GUILayout.EndVertical();
@@ -399,9 +399,13 @@ namespace DndVtt.UnityPrototype
             if (slots.Count == 0 && unusual.Count == 0)
                 GUILayout.Label("Обычных ячеек пока нет", uiStyles.AbilitySub);
 
-            // Group widths are fixed; the full row scrolls horizontally if more
-            // than three circles are unlocked. No squashing of the glowing orbs.
-            int highestRows = slots.Count == 0 ? 1 : slots.Max(s => (Math.Min(s.max, 20) + 4) / 5);
+            // Six 22px orb hitboxes fit per circle; longer sets wrap within the
+            // group while all groups remain horizontally scrollable on phones.
+            const int orbsPerRow = 6;
+            const int orbCellWidth = 22;
+            const int orbRowWidth = orbsPerRow * orbCellWidth;
+            int highestRows = slots.Count == 0 ? 1 : slots.Max(s =>
+                (Math.Min(s.max, 20) + orbsPerRow - 1) / orbsPerRow);
             int maxHeight = Mathf.Clamp(43 + highestRows * 26, 75, 150);
             abilitySlotsScroll = GUILayout.BeginScrollView(
                 SwipePosition("grimoire-ability-slots", abilitySlotsScroll), false, false,
@@ -411,21 +415,20 @@ namespace DndVtt.UnityPrototype
             {
                 int level = slot.level, max = slot.max, used = slot.used;
                 bool isPactSlot = slot.pact;
-                GUILayout.BeginVertical(GUILayout.Width(117));
+                GUILayout.BeginVertical(GUILayout.Width(orbRowWidth + 6));
                 GUILayout.Label(isPactSlot ? "ПАКТ " + AbilityRoman[level] : AbilityRoman[level],
                     uiStyles.AbilityCircleTitle, GUILayout.Height(22));
                 int display = Math.Min(max, 20);
-                for (int start = 0; start < display; start += 5)
+                for (int start = 0; start < display; start += orbsPerRow)
                 {
-                    // Fixed geometry; a GUILayout row of five tiny buttons can
-                    // add implicit spacing and incorrectly wrap to six columns.
-                    Rect row = GUILayoutUtility.GetRect(111, 26,
-                        GUILayout.Width(111), GUILayout.Height(26));
-                    for (int index = start; index < Math.Min(display, start + 5); index++)
+                    // Explicit geometry keeps hitboxes aligned with the PNG orbs.
+                    Rect row = GUILayoutUtility.GetRect(orbRowWidth, 26,
+                        GUILayout.Width(orbRowWidth), GUILayout.Height(26));
+                    for (int index = start; index < Math.Min(display, start + orbsPerRow); index++)
                     {
                         bool filled = index < Math.Max(0, max - used);
-                        Rect hit = new Rect(row.x + (index - start) * 22,
-                            row.y, 22, 26);
+                        Rect hit = new Rect(row.x + (index - start) * orbCellWidth,
+                            row.y, orbCellWidth, 26);
                         Rect orb = new Rect(hit.x + 2, hit.y + 4, 18, 18);
                         if (GUI.Button(hit, GUIContent.none, GUIStyle.none))
                         {
