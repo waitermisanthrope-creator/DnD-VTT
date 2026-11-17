@@ -36,6 +36,8 @@ namespace DndVtt.UnityPrototype
         private void ReleaseBrandStyles()
         {
             ResetGuiStyleCaches();
+            // These are derived from uiStyles and must not outlive a theme change.
+            grimoireWrappedTab = grimoireWrappedGold = grimoireWrappedInput = null;
             uiStyles = null;
             foreach (var texture in brandStyleTextures)
                 if (texture) { if (Application.isPlaying) Destroy(texture); else DestroyImmediate(texture); }

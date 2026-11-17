@@ -35,6 +35,14 @@
 - [ ] Test Android/Windows click geometry and long labels.
 
 ### Task 3 — Progression
-- [ ] Specialized tabs excluding wallet: skills, notes, crafting, inventory cards, lore.
+- [x] Source changes staged: skills, notes, crafting, inventory cards and lore.
+- [x] Shared gold panels, two multiline-safe button styles, icon headings with IDs from the 160 PNG registry; style cache invalidation.
+- [x] Keep Wallet and market handlers unchanged; inventory visuals are modified **only inside DrawCommerceInventory**.
+- [ ] Verify source checks with fresh runner and compile the exact C# in Unity.
+- [ ] Test on-device Android/Windows before calling the UI approved.
 - [ ] Global landing/settings/content manager/dice overlays.
 - [ ] Native validation on both platforms; then separate owner-approved release.
+
+### Stage 2 note (2026-11-17)
+
+The implementation is **source-only** until compiled/replayed. Reuse `uiStyles.AbilityPanel` for main sections, `uiStyles.AbilityCard` for nested notes, recipe, lore and inventory rows, and `ApprovedIconRegistry.GetSprite` in headings. Do not substitute a global `GUI.skin` inside Sheet: the wallet and shared cached classic fields depend on the original skin. Follow up with visual Android QA and clip/scroll/keyboard regression testing; no build/update should be claimed yet.

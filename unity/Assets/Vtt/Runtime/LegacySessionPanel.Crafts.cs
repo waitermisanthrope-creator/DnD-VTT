@@ -8,14 +8,20 @@ namespace DndVtt.UnityPrototype
     {
         private void DrawCrafts(JObject hero,ref bool changed,ref bool persist)
         {
+            PrepareGrimoireAbilityStyles();
+            GUILayout.BeginVertical(uiStyles.AbilityPanel);
+            try
+            {
             BeginCraftView();if(!DrawProductionHeader(hero))return;
             PrepareInventoryCatalog();PrepareProductionCatalog();
             if(CommerceCatalog==null){DrawInventoryCatalogLoading();return;}
             if(productionError!=null)GUILayout.Label(productionError,sheetQuiet);
             if(productionCatalog==null)GUILayout.Label("Подготовка профессий и проектов…",sheetQuiet);
             else {DrawProductionProfessions(hero);DrawProductionBook(hero);DrawProductionProjects(hero);DrawCraftMaterialReference(hero);}
-            if(MeasuredMenuButton(craftShowAlchemy?"Скрыть особую алхимию":"Особая алхимия: смеси и исследования",brandPlain,GUILayout.MinHeight(48)))pendingCraftView=()=>craftShowAlchemy=!craftShowAlchemy;
-            if(craftShowAlchemy){GUILayout.BeginVertical(GUI.skin.box);DrawAlchemy(hero,ref changed,ref persist);GUILayout.EndVertical();}
+            if(MeasuredMenuButton(craftShowAlchemy?"Скрыть особую алхимию":"Особая алхимия: смеси и исследования",GrimoireWrappedTab,GUILayout.MinHeight(48)))pendingCraftView=()=>craftShowAlchemy=!craftShowAlchemy;
+            if(craftShowAlchemy){GUILayout.BeginVertical(uiStyles.AbilityCard);DrawAlchemy(hero,ref changed,ref persist);GUILayout.EndVertical();}
+            }
+            finally { GUILayout.EndVertical(); }
         }
         private void DrawCrafting(JObject hero, ref bool changed, ref bool persist)
         {
@@ -25,7 +31,7 @@ namespace DndVtt.UnityPrototype
             craftQuery = MenuTextField("craftQuery", craftQuery,GUILayout.MinHeight(45));
             foreach (JObject recipe in recipes.OfType<JObject>().Where(r => (r["name"]+" "+r["category"]).IndexOf(craftQuery,StringComparison.OrdinalIgnoreCase) >= 0).Take(20))
             {
-                GUILayout.BeginVertical(GUI.skin.box); GUILayout.Label((string)recipe["name"],sheetHeading); GUILayout.Label("СЛ " + recipe["dc"] + " · " + recipe["time"] + " ч · " + recipe["tools"],sheetQuiet);
+                GUILayout.BeginVertical(uiStyles.AbilityCard); GUILayout.Label((string)recipe["name"],sheetHeading); GUILayout.Label("СЛ " + recipe["dc"] + " · " + recipe["time"] + " ч · " + recipe["tools"],sheetQuiet);
                 foreach (var material in ((JObject)recipe["materials"]).Properties()) GUILayout.Label(((JArray)rules["materials"]).First(x => (string)x["id"] == material.Name)["name"] + " ×" + material.Value,sheetQuiet);
                 if (GUILayout.Button("Изготовить",brandGold,GUILayout.Height(45)))
                 {
@@ -60,7 +66,7 @@ namespace DndVtt.UnityPrototype
             {alchemyRows=ingredients.OfType<JObject>().Where(i=>i["name"].ToString().IndexOf(alchemyQuery,StringComparison.OrdinalIgnoreCase)>=0).ToArray();alchemyLastQuery=alchemyQuery;alchemyRowsSource=rules;alchemyPage=0;}
             foreach(JObject ingredient in alchemyRows.Skip(alchemyPage*20).Take(20))
             {
-                string id = (string)ingredient["id"]; GUILayout.BeginVertical(GUI.skin.box); GUILayout.Label((string)ingredient["name"]);
+                string id = (string)ingredient["id"]; GUILayout.BeginVertical(uiStyles.AbilityCard); GUILayout.Label((string)ingredient["name"]);
                 var known = hero["alchemyState"]?["discovered"]?[id] as JArray ?? new JArray(); GUILayout.Label("Изучено: " + string.Join(", ",known.Values<string>()),sheetQuiet);
                 GUILayout.BeginHorizontal(); if (GUILayout.Button("В смесь") && selectedIngredients.Count < 5)pendingCraftView=()=>selectedIngredients.Add(id);
                 if (GUILayout.Button("Исследовать образец")) { QueueLegacyCraft(hero,new JObject{["kind"]="research",["ingredientId"]=id}); } GUILayout.EndHorizontal(); GUILayout.EndVertical();

@@ -10,6 +10,73 @@ namespace DndVtt.UnityPrototype
         // dedicated styles and must keep their established interactions.
         private GUISkin unifiedGrimoireSkin;
 
+        // Cached, multiline-safe variants for inventory/notes/long crafting actions.
+        // Keep these separate from generic GUI.skin to protect the existing Wallet.
+        private GUIStyle grimoireWrappedTab, grimoireWrappedGold, grimoireWrappedInput;
+
+        private GUIStyle GrimoireWrappedTab
+        {
+            get
+            {
+                PrepareGrimoireAbilityStyles();
+                return grimoireWrappedTab ??= new GUIStyle(uiStyles.AbilityTab)
+                {
+                    wordWrap = true, fontSize = 13, alignment = TextAnchor.MiddleCenter
+                };
+            }
+        }
+
+        private GUIStyle GrimoireWrappedGold
+        {
+            get
+            {
+                PrepareGrimoireAbilityStyles();
+                return grimoireWrappedGold ??= new GUIStyle(uiStyles.AbilityGold)
+                {
+                    wordWrap = true, fontSize = 13, alignment = TextAnchor.MiddleCenter
+                };
+            }
+        }
+
+        private GUIStyle GrimoireWrappedInput
+        {
+            get
+            {
+                PrepareGrimoireAbilityStyles();
+                return grimoireWrappedInput ??= new GUIStyle(uiStyles.AbilityInput)
+                {
+                    wordWrap = true, fontSize = 13
+                };
+            }
+        }
+
+        private void DrawGrimoireSectionHeading(string title, int iconId)
+        {
+            PrepareGrimoireAbilityStyles();
+            GUILayout.BeginHorizontal();
+            if (iconId > 0)
+            {
+                Rect iconRect = GUILayoutUtility.GetRect(26, 26,
+                    GUILayout.Width(26), GUILayout.Height(26));
+                if (Event.current.type == EventType.Repaint)
+                {
+                    Sprite sprite = DndVtt.ApprovedIconRegistry.GetSprite(iconId);
+                    if (sprite != null)
+                    {
+                        Texture2D texture = sprite.texture;
+                        Rect source = sprite.textureRect;
+                        GUI.DrawTextureWithTexCoords(iconRect, texture,
+                            new Rect(source.x / texture.width, source.y / texture.height,
+                                source.width / texture.width, source.height / texture.height),
+                            true);
+                    }
+                }
+            }
+            GUILayout.Label(title, uiStyles.AbilityTitle, GUILayout.ExpandWidth(true));
+            GUILayout.EndHorizontal();
+            DrawGrimoireAbilityRule();
+        }
+
         private void PrepareUnifiedGrimoireSkin()
         {
             // PrepareSheetSkin() already ran in DrawFrontEnd; ability styles cache

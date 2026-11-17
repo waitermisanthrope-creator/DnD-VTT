@@ -382,12 +382,13 @@ namespace DndVtt.UnityPrototype
         }
         private void ClassicSkills(JObject hero,ref bool changed)
         {
-            PrepareCloneLists();GUILayout.BeginVertical(GUI.skin.box);SheetSection("Бонус мастерства");
+            PrepareCloneLists();PrepareGrimoireAbilityStyles();
+            GUILayout.BeginVertical(uiStyles.AbilityPanel);DrawGrimoireSectionHeading("Бонус мастерства",97);
             GUILayout.Label(CharacterSheetRules.Proficiency(hero).ToString(),cloneProfBonus,GUILayout.Height(47));GUILayout.EndVertical();
-            GUILayout.BeginVertical(GUI.skin.box);SheetSection("Пассивные чувства");
+            GUILayout.BeginVertical(uiStyles.AbilityPanel);DrawGrimoireSectionHeading("Пассивные чувства",101);
             foreach(var pair in new[]{("Пассивная Внимательность:",11),("Пассивный Анализ:",8),("Пассивная Проницательность:",6)})
             {GUILayout.Space(12);GUILayout.BeginHorizontal();GUILayout.Label(pair.Item1);GUILayout.Label((10+CharacterSheetRules.Skill(hero,pair.Item2)).ToString(),clonePassive,GUILayout.Width(30));GUILayout.FlexibleSpace();GUILayout.EndHorizontal();}GUILayout.EndVertical();
-            GUILayout.BeginVertical(GUI.skin.box);SheetSection("Навыки (18)");var skills=hero["skillsData"] as JObject??new JObject();
+            GUILayout.BeginVertical(uiStyles.AbilityPanel);DrawGrimoireSectionHeading("Навыки (18)",98);var skills=hero["skillsData"] as JObject??new JObject();
             for(int i=0;i<CharacterSheetRules.SkillIds.Length;i++)
             {
                 string key=CharacterSheetRules.SkillIds[i];CharacterSheetRules.TrySheetCount(skills[key],out int count);int owned=Mathf.Clamp(count,0,2);GUILayout.Space(6);GUILayout.BeginHorizontal();
@@ -401,13 +402,13 @@ namespace DndVtt.UnityPrototype
         }
         private void ClassicNotes(JObject hero,ref bool changed)
         {
-            PrepareCompactControls();
+            PrepareCompactControls();PrepareGrimoireAbilityStyles();
             if(hero["folders"]!=null&&!(hero["folders"] is JArray)){ReadOnly(hero,"folders","Заметки другого формата — данные сохранены");return;}
-            var folders=hero["folders"] as JArray??new JArray();GUILayout.BeginVertical(GUI.skin.box);SheetSection("Папки Заметок");
+            var folders=hero["folders"] as JArray??new JArray();GUILayout.BeginVertical(uiStyles.AbilityPanel);DrawGrimoireSectionHeading("Папки заметок",20);
             float available=ClassicBodyWidth-40;
             foreach(JObject folder in folders.OfType<JObject>())
             {
-                bool active=JToken.DeepEquals(hero["activeFolderId"],folder["id"]);string name=folder["name"]?.ToString()??"Папка";var style=active?cloneFolderActive:cloneFolder;
+                bool active=JToken.DeepEquals(hero["activeFolderId"],folder["id"]);string name=folder["name"]?.ToString()??"Папка";var style=active?GrimoireWrappedGold:GrimoireWrappedTab;
                 float width=available-(folders.Count>1?30:0),height=Mathf.Max(31,style.CalcHeight(new GUIContent(name),width));GUILayout.BeginHorizontal();
                 if(MeasuredMenuButton(name,style,GUILayout.ExpandWidth(true),GUILayout.Height(height))){ResetFormInput();hero["activeFolderId"]=folder["id"]?.DeepClone();changed=true;}
                 if(folders.Count>1&&MeasuredMenuButton("×",cloneFolder,GUILayout.Width(28),GUILayout.Height(height)))RequestDelete(folder,name);
@@ -415,12 +416,12 @@ namespace DndVtt.UnityPrototype
             }
             GUILayout.Space(4);
             GUILayout.BeginHorizontal();GUI.SetNextControlName("new-note-folder");newFolderName=MenuTextField("new-note-folder", newFolderName,cloneInput,GUILayout.Height(39),GUILayout.MinWidth(40));
-            if(MeasuredMenuButton("+ Папка",GUI.skin.button,GUILayout.Width(88),GUILayout.Height(39)))SheetAction(()=>{CharacterSheetRules.CreateFolder(hero,newFolderName);newFolderName="";},ref changed);
+            if(MeasuredMenuButton("+ Папка",GrimoireWrappedGold,GUILayout.Width(88),GUILayout.Height(39)))SheetAction(()=>{CharacterSheetRules.CreateFolder(hero,newFolderName);newFolderName="";},ref changed);
             GUILayout.EndHorizontal();GUILayout.EndVertical();
             var selectedFolder=folders.OfType<JObject>().FirstOrDefault(f=>JToken.DeepEquals(f["id"],hero["activeFolderId"]))??folders.OfType<JObject>().FirstOrDefault();
-            GUILayout.BeginVertical(GUI.skin.box);GUILayout.BeginHorizontal();GUILayout.Label(selectedFolder?["name"]?.ToString()??"Заметки",sheetHeading);GUILayout.FlexibleSpace();
+            GUILayout.BeginVertical(uiStyles.AbilityPanel);GUILayout.BeginHorizontal();GUILayout.Label(selectedFolder?["name"]?.ToString()??"Заметки",uiStyles.AbilityName);GUILayout.FlexibleSpace();
             bool enabled=GUI.enabled;GUI.enabled=enabled&&selectedFolder!=null;
-            if(MeasuredMenuButton("+ Заметка",cloneGreen,GUILayout.Width(111),GUILayout.Height(35)))SheetAction(()=>CharacterSheetRules.CreateNote(hero,selectedFolder["id"].ToString()),ref changed);
+            if(MeasuredMenuButton("+ Заметка",GrimoireWrappedGold,GUILayout.Width(111),GUILayout.Height(35)))SheetAction(()=>CharacterSheetRules.CreateNote(hero,selectedFolder["id"].ToString()),ref changed);
             GUI.enabled=enabled;GUILayout.EndHorizontal();GUILayout.Space(8);CloneListRule();GUILayout.Space(12);
             if(selectedFolder==null){GUILayout.Label("Создайте или выберите папку",sheetQuiet);GUILayout.EndVertical();return;}
             var notes=selectedFolder["notes"] as JArray;
@@ -428,9 +429,9 @@ namespace DndVtt.UnityPrototype
             foreach(JObject note in notes.OfType<JObject>().ToArray())
             {
                 if(new[]{"title","text"}.Any(k=>note[k]!=null&&note[k].Type!=JTokenType.String&&note[k].Type!=JTokenType.Null)){ReadOnlyToken(note,"Нестандартная заметка — данные сохранены",0);continue;}
-                GUILayout.BeginVertical(GUI.skin.box);string title=note["title"]?.ToString()??"",text=note["text"]?.ToString()??"";
-                string nextTitle=MenuTextField("note-title:"+note.Path, title,cloneNoteTitle,GUILayout.Height(35));
-                string nextText=MenuTextArea("note-text:"+note.Path, text,cloneInput,GUILayout.MinHeight(100));
+                GUILayout.BeginVertical(uiStyles.AbilityCard);string title=note["title"]?.ToString()??"",text=note["text"]?.ToString()??"";
+                string nextTitle=MenuTextField("note-title:"+note.Path, title,uiStyles.AbilityInput,GUILayout.Height(35));
+                string nextText=MenuTextArea("note-text:"+note.Path, text,GrimoireWrappedInput,GUILayout.MinHeight(100));
                 if(nextTitle!=title||nextText!=text)SheetAction(()=>CharacterSheetRules.UpdateNote(hero,selectedFolder["id"].ToString(),note["id"],nextTitle,nextText),ref changed);
                 GUILayout.BeginHorizontal();GUILayout.FlexibleSpace();if(MeasuredMenuButton("Удалить",cloneDelete,GUILayout.Width(86),GUILayout.Height(29)))RequestDelete(note,title.Length>0?title:"Заметка");GUILayout.EndHorizontal();GUILayout.EndVertical();
             }

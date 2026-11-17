@@ -63,7 +63,7 @@ namespace DndVtt.UnityPrototype
         private JObject CraftRolls()=>new JObject{["d20"]=UnityEngine.Random.Range(1,21),["d100"]=UnityEngine.Random.Range(1,101)};
         private bool DrawProductionHeader(JObject hero)
         {
-            SheetSection("Ремёсла");JObject state;
+            DrawGrimoireSectionHeading("Ремёсла",33);JObject state;
             try{state=CommerceRules.ReadCraftState(hero);}catch(Exception error){GUILayout.Label(error.Message,sheetQuiet);return false;}
             string mode=(string)state["mode"]??"manual";
             GUILayout.BeginHorizontal();
@@ -120,7 +120,7 @@ namespace DndVtt.UnityPrototype
             }
             if(craftProfession!=""&&productionCatalog.Professions.TryGetValue(craftProfession,out var chosen))
             {
-                GUILayout.BeginVertical(GUI.skin.box);GUILayout.Label((string)chosen["name"],sheetHeading);GUILayout.Label((string)chosen["description"]??"",sheetQuiet);
+                GUILayout.BeginVertical(uiStyles.AbilityCard);GUILayout.Label((string)chosen["name"],sheetHeading);GUILayout.Label((string)chosen["description"]??"",sheetQuiet);
                 if(chosen["tools"] is JArray tools)GUILayout.Label("Инструменты: "+string.Join(", ",tools.Values<string>().Select(id=>productionCatalog.ToolNames.TryGetValue(id,out var name)?name:id)),sheetQuiet);
                 string id=craftProfession;if(owned[id]==null&&MeasuredMenuButton("Добавить в мои профессии",brandGreen,GUILayout.MinHeight(48)))QueueCraft(h=>CommerceRules.EnrollCraftProfession(h,productionCatalog,id),"Профессия добавлена");
                 if(chosen["progression"] is JObject)
@@ -155,7 +155,7 @@ namespace DndVtt.UnityPrototype
             {string id=(string)recipe["id"];if(MeasuredMenuButton((string)recipe["name"],id==craftRecipe?brandBlue:brandPlain,GUILayout.MinHeight(48)))pendingCraftView=()=>{craftRecipe=id;craftUnits="1";};}
             GUILayout.BeginHorizontal();if(craftPage>0&&MeasuredMenuButton("← Рецепты",brandPlain,GUILayout.MinHeight(44)))pendingCraftView=()=>craftPage--;if((craftPage+1)*20<craftMatches.Length&&MeasuredMenuButton("Рецепты →",brandPlain,GUILayout.MinHeight(44)))pendingCraftView=()=>craftPage++;GUILayout.EndHorizontal();
             if(!productionCatalog.Recipes.TryGetValue(craftRecipe,out var selectedRecipe))return;
-            GUILayout.BeginVertical(GUI.skin.box);GUILayout.Label((string)selectedRecipe["name"],sheetHeading);GUILayout.Label((string)selectedRecipe["description"]??"",sheetQuiet);
+            GUILayout.BeginVertical(uiStyles.AbilityCard);GUILayout.Label((string)selectedRecipe["name"],sheetHeading);GUILayout.Label((string)selectedRecipe["description"]??"",sheetQuiet);
             string recipeId=craftRecipe;
             if(MeasuredMenuButton(CommerceRules.ProductionRecipeKnown(hero,selectedRecipe)?"Рецепт известен":"Изучить рецепт",brandPlain,GUILayout.MinHeight(44))&&!CommerceRules.ProductionRecipeKnown(hero,selectedRecipe))QueueCraft(h=>CommerceRules.LearnProductionRecipe(h,productionCatalog,recipeId),"Рецепт изучен");
             if(MeasuredMenuButton("Добавить / убрать из избранного",brandPlain,GUILayout.MinHeight(44)))QueueCraft(h=>CommerceRules.FavoriteProductionRecipe(h,recipeId),"Избранное обновлено");
@@ -183,7 +183,7 @@ namespace DndVtt.UnityPrototype
             {
                 string id=(string)project["id"],recipeId=(string)project["recipeId"],mode=(string)project["mode"],status=(string)project["status"];
                 bool closed=new[]{"completed","failed","cancelled","manual-completed"}.Contains(status);
-                GUILayout.BeginVertical(GUI.skin.box);GUILayout.Label((string)project["name"]??(productionCatalog.Recipes.TryGetValue(recipeId,out var recipe)?(string)recipe["name"]:recipeId),sheetHeading);
+                GUILayout.BeginVertical(uiStyles.AbilityCard);GUILayout.Label((string)project["name"]??(productionCatalog.Recipes.TryGetValue(recipeId,out var recipe)?(string)recipe["name"]:recipeId),sheetHeading);
                 GUILayout.Label(CraftProjectStatus(status)+" · "+(project["progressHours"]??0)+" / "+(project["requiredHours"]??0)+" ч",sheetQuiet);
                 foreach(JObject receipt in project["received"] as JArray??new JArray())GUILayout.Label("Получено: "+(productionCatalog.Items.TryGetValue((string)receipt["itemId"],out var received)?(string)received["name"]:(string)receipt["itemId"])+" ×"+receipt["count"],sheetQuiet);
                 if(project["outcome"] is JObject legacyOutcome&&(legacyOutcome["item"]??legacyOutcome["product"]) is JObject legacyItem)GUILayout.Label("Результат: "+legacyItem["name"],sheetQuiet);
