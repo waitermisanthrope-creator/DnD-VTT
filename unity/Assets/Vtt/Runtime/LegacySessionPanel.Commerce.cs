@@ -61,10 +61,27 @@ namespace DndVtt.UnityPrototype
             if(inventoryPicker)PrepareInventoryCatalog();
             inventoryAcLabel??=new GUIStyle(cloneMetricLabel){normal={textColor=new Color(.67f,.67f,.67f)}};inventoryAcValue??=new GUIStyle(cloneSuccess){fontSize=22,alignment=TextAnchor.MiddleCenter};
             GUILayout.BeginVertical(uiStyles.AbilityPanel);DrawGrimoireSectionHeading("Текущий КД",14);GUILayout.Label((hero["ac"]??hero["baseAC"]??10).ToString(),inventoryAcValue);GUILayout.EndVertical();DrawContainerTransfer(hero);
-            inventoryTabsScroll=GUILayout.BeginScrollView(SwipePosition("inventory-tabs",inventoryTabsScroll),false,false,GUIStyle.none,GUIStyle.none,GUILayout.Height(42));GUILayout.BeginHorizontal();
-            for(int i=0;i<inventoryNames.Length;i++)
-            {float width=Mathf.Max(70,GrimoireWrappedTab.CalcSize(new GUIContent(inventoryNames[i])).x+16);if(MeasuredMenuButton(inventoryNames[i],i==inventoryCategory?GrimoireWrappedGold:GrimoireWrappedTab,GUILayout.Width(width),GUILayout.Height(35)))requestedInventoryCategory=i;GUILayout.Space(4);}
-            GUILayout.EndHorizontal();GUILayout.EndScrollView();RegisterSwipe("inventory-tabs",GUILayoutUtility.GetLastRect(),true);
+            // Two genuinely visible, tappable rows on portrait Android.
+            // Don't use the nested horizontal ScrollView: it competes with
+            // the sheet's gesture handling and hides the "Хлам" category.
+            GUILayout.BeginVertical(GUILayout.ExpandWidth(true));
+            GUILayout.BeginHorizontal();
+            for (int i = 0; i < inventoryNames.Length; i++)
+            {
+                // 3 + 2 keeps both "Материалы" and "Хлам" on a second row.
+                if (i == 3)
+                {
+                    GUILayout.EndHorizontal();
+                    GUILayout.Space(6);
+                    GUILayout.BeginHorizontal();
+                }
+                if (MeasuredMenuButton(inventoryNames[i],
+                    i == inventoryCategory ? GrimoireWrappedGold : GrimoireWrappedTab,
+                    GUILayout.ExpandWidth(true), GUILayout.MinHeight(46)))
+                    requestedInventoryCategory = i;
+            }
+            GUILayout.EndHorizontal();
+            GUILayout.EndVertical();
             GUILayout.Space(8);if(MeasuredMenuButton("Выбрать из справочника / Создать",inventoryPicker?GrimoireWrappedGold:GrimoireWrappedTab,GUILayout.Height(39),GUILayout.ExpandWidth(true)))requestedInventoryPicker=!inventoryPicker;
             GUILayout.Space(12);
             if (inventoryPicker)
@@ -73,13 +90,13 @@ namespace DndVtt.UnityPrototype
                 inventoryQuery = MenuTextField("inventoryQuery", inventoryQuery,uiStyles.AbilityInput,GUILayout.MinHeight(45));
                 var entries = inventoryEntries;
                 if(commerceCatalog==null)DrawInventoryCatalogLoading();
-                else if (entries.Length == 0) { GUILayout.Label("Скачайте сборник этой категории из менеджера модов. Свой предмет можно создать без интернета.",sheetQuiet); if (GUILayout.Button("Открыть менеджер модов",brandBlue)) Navigate(FrontScreen.ContentManager); }
-                foreach (var entry in entries) if (GUILayout.Button("+ " + entry["name"],GUILayout.MinHeight(44))) { CommerceRules.AddItem(hero,entry); changed = persist = true; status = "Предмет добавлен"; }
+                else if (entries.Length == 0) { GUILayout.Label("Скачайте сборник этой категории из менеджера модов. Свой предмет можно создать без интернета.",sheetQuiet); if (GUILayout.Button("Открыть менеджер модов",GrimoireWrappedTab)) Navigate(FrontScreen.ContentManager); }
+                foreach (var entry in entries) if (GUILayout.Button("+ " + entry["name"],GrimoireWrappedTab,GUILayout.MinHeight(44))) { CommerceRules.AddItem(hero,entry); changed = persist = true; status = "Предмет добавлен"; }
                 customItemOpen = GUILayout.Toggle(customItemOpen,"Создать свой предмет");
                 if (customItemOpen)
                 {
                     GUILayout.Label("Название"); customItemName = MenuTextField("customItemName", customItemName); GUILayout.Label("Вес (кг)"); customItemWeight = MenuTextField("customItemWeight", customItemWeight);
-                    if (GUILayout.Button("Добавить свой предмет",brandGreen))
+                    if (GUILayout.Button("Добавить свой предмет",GrimoireWrappedGold))
                     {
                         if (string.IsNullOrWhiteSpace(customItemName)) status = "Введите название";
                         else { CommerceRules.AddItem(hero,new JObject { ["name"] = customItemName.Trim(),["inventoryCategory"] = CharacterSheetRules.InventoryCategories[inventoryCategory],["weight"] = customItemWeight + " кг" }); customItemName = ""; changed = persist = true; status = "Свой предмет добавлен"; }
@@ -107,7 +124,7 @@ namespace DndVtt.UnityPrototype
                 if (item["effects"] is JArray)
                 {
                     GUILayout.Label("Урон, длительность и эффекты на других существ учитываются вручную.",sheetQuiet);
-                    if (GUILayout.Button("Применить алхимический продукт",brandGreen)) { try { CommerceRules.UseProduct(hero,item); changed = persist = true; status = "Продукт применён"; } catch (Exception e) { status = e.Message; } }
+                    if (GUILayout.Button("Применить алхимический продукт",GrimoireWrappedGold)) { try { CommerceRules.UseProduct(hero,item); changed = persist = true; status = "Продукт применён"; } catch (Exception e) { status = e.Message; } }
                 }
                 GUILayout.EndVertical();
             }

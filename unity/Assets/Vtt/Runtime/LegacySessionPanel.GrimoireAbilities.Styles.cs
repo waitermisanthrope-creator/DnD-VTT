@@ -25,8 +25,10 @@ namespace DndVtt.UnityPrototype
 
             uiStyles.AbilityPanel = new GUIStyle(uiStyles.HeroPanel)
             {
-                padding = new RectOffset(9, 9, 7, 7),
-                margin = new RectOffset(1, 1, 2, 7)
+                // The 28px corner 9-slice previously surrounded only 7px of
+                // padding, causing body text to sit on the filigree.
+                padding = new RectOffset(21, 21, 20, 20),
+                margin = new RectOffset(1, 1, 3, 9)
             };
             if (panel)
             {
@@ -36,8 +38,8 @@ namespace DndVtt.UnityPrototype
 
             uiStyles.AbilityCard = new GUIStyle(uiStyles.AbilityPanel)
             {
-                padding = new RectOffset(7, 7, 4, 5),
-                margin = new RectOffset(1, 1, 2, 5)
+                padding = new RectOffset(20, 20, 18, 21),
+                margin = new RectOffset(1, 1, 3, 7)
             };
             if (inset)
             {
@@ -123,7 +125,7 @@ namespace DndVtt.UnityPrototype
             uiStyles.AbilityGold.font = sheetSerif;
             uiStyles.AbilityGold.fontSize = 13;
             uiStyles.AbilityGold.wordWrap = false;
-            uiStyles.AbilityGold.padding = new RectOffset(4, 4, 5, 5);
+            uiStyles.AbilityGold.padding = new RectOffset(18, 18, 9, 9);
             uiStyles.AbilityGold.margin = new RectOffset(1, 1, 1, 1);
 
             uiStyles.AbilityTab = new GUIStyle(uiStyles.AbilityGold);
@@ -174,7 +176,7 @@ namespace DndVtt.UnityPrototype
             {
                 font = sheetSerif, fontSize = 13,
                 border = new RectOffset(19, 19, 12, 12),
-                padding = new RectOffset(8, 8, 7, 7),
+                padding = new RectOffset(19, 19, 8, 8),
                 margin = new RectOffset(0, 0, 0, 0)
             };
             if (idleTexture)

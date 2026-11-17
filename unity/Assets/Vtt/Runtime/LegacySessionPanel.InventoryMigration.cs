@@ -14,13 +14,15 @@ namespace DndVtt.UnityPrototype
             if(!ReferenceEquals(containerTransferCheckedArchive,archive)||containerTransferCheckedHero!=selected)
             {containerTransferCheckedArchive=archive;containerTransferCheckedHero=selected;containerTransferNeeded=CommerceRules.NeedsContainerTransfer(hero);}
             if(!containerTransferNeeded)return;
-            GUILayout.BeginVertical(GUI.skin.box);GUILayout.Label("Сохранённые контейнеры",sheetHeading);
+            PrepareGrimoireAbilityStyles();
+            GUILayout.BeginVertical(uiStyles.AbilityPanel);
+            DrawGrimoireSectionHeading("Сохранённые контейнеры",30);
             GUILayout.Label("Содержимое можно перенести в основной инвентарь. Исходные записи останутся в архиве; перед записью будет создана резервная копия всех персонажей.",sheetQuiet);
-            if(!containerTransferConfirm){if(MeasuredMenuButton("Перенести содержимое",brandBlue,GUILayout.MinHeight(48)))requestedContainerTransferConfirm=true;}
+            if(!containerTransferConfirm){if(MeasuredMenuButton("Перенести содержимое",GrimoireWrappedGold,GUILayout.MinHeight(48)))requestedContainerTransferConfirm=true;}
             else
             {
-                if(MeasuredMenuButton("Подтвердить перенос с резервной копией",brandGreen,GUILayout.MinHeight(48)))pendingContainerTransfer=true;
-                if(MeasuredMenuButton("Отмена",brandPlain,GUILayout.MinHeight(44)))requestedContainerTransferConfirm=false;
+                if(MeasuredMenuButton("Подтвердить перенос с резервной копией",GrimoireWrappedGold,GUILayout.MinHeight(48)))pendingContainerTransfer=true;
+                if(MeasuredMenuButton("Отмена",GrimoireWrappedTab,GUILayout.MinHeight(44)))requestedContainerTransferConfirm=false;
             }
             GUILayout.EndVertical();
         }

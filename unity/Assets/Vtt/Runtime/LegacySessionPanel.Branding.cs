@@ -287,11 +287,11 @@ namespace DndVtt.UnityPrototype
                 var hero = archive.Snapshot(i);
                 string details = ((string)hero["class"] ?? (string)hero["className"] ?? "Без класса")
                     + " • " + ((string)hero["raceName"] ?? (string)hero["race"] ?? "Раса не выбрана");
-                GUILayout.BeginHorizontal(uiStyles.AbilityCard, GUILayout.MinHeight(76));
+                GUILayout.BeginHorizontal(uiStyles.AbilityCard, GUILayout.MinHeight(102));
                 GUILayout.BeginVertical(GUILayout.ExpandWidth(true));
                 GUILayout.Label(archive.Name(i), uiStyles.AbilityName);
                 if (i == selected) GUILayout.Label("Текущий герой", brandSub);
-                GUILayout.Label(details, brandSub);
+                GUILayout.Label(details, uiStyles.AbilityDescription);
                 GUILayout.EndVertical();
                 if (MeasuredMenuButton("Лист", GrimoireWrappedGold, GUILayout.Width(Mathf.Min(105, width*.24f)), GUILayout.Height(51)))
                 { selected = i; Navigate(FrontScreen.Sheet); }

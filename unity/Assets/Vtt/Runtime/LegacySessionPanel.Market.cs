@@ -31,8 +31,10 @@ namespace DndVtt.UnityPrototype
         }
         private void DrawMarketEntry(JObject hero,ref bool changed,ref bool persist)
         {
-            PrepareCompactControls();
-            if(MeasuredMenuButton("Рынок",cloneBlue,GUILayout.Height(39),GUILayout.ExpandWidth(true)))RequestMarketOpen(hero,ref changed,ref persist);
+            PrepareCompactControls();PrepareGrimoireAbilityStyles();
+            if(MeasuredMenuButton("Рынок",GrimoireWrappedGold,
+                GUILayout.MinHeight(46),GUILayout.ExpandWidth(true)))
+                RequestMarketOpen(hero,ref changed,ref persist);
         }
         private void RequestMarketOpen(JObject hero,ref bool changed,ref bool persist)
         {

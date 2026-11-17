@@ -71,8 +71,11 @@ namespace DndVtt.UnityPrototype
         {
             if (cardWidth > 0) GUILayout.BeginVertical(uiStyles.AbilityCard, GUILayout.Width(cardWidth));
             else GUILayout.BeginVertical(uiStyles.AbilityCard);
-            if(GUILayout.Button(title+"  →",GrimoireWrappedTab,GUILayout.MinHeight(60)))OpenSettingsCategory(category);
-            GUILayout.Label(description,settingsDescription);GUILayout.EndVertical();
+            if(GUILayout.Button(title,GrimoireWrappedTab,GUILayout.MinHeight(60)))OpenSettingsCategory(category);
+            GUILayout.Space(8); // Keep caption clear of the 9-slice corner.
+            GUILayout.Label(description,settingsDescription,GUILayout.MinHeight(34));
+            GUILayout.Space(8);
+            GUILayout.EndVertical();
         }
         private bool showModeratorPanel;
         private GUIStyle settingsHeader, settingsDescription, settingsInset;

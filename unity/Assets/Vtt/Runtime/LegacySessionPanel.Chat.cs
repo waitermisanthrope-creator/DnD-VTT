@@ -37,8 +37,11 @@ namespace DndVtt.UnityPrototype
             if(chatClearComposer) { GUI.FocusControl(null);chatClearComposer=false; }
             bool enabled=GUI.enabled;GUI.enabled=enabled&&!ChatComposerLocked;
 #if UNITY_ANDROID && !UNITY_EDITOR
-            GUILayout.Label(string.IsNullOrEmpty(chatDraft)?"Напишите сообщение…":chatDraft,GUI.skin.box);
-            if(GUILayout.Button(string.IsNullOrEmpty(chatDraft)?"Написать сообщение":"Изменить текст · курсор и выделение",GUILayout.MinHeight(58))) {
+            GUILayout.BeginVertical(uiStyles.AbilityPanel);
+            GUILayout.Label(string.IsNullOrEmpty(chatDraft)?"Напишите сообщение…":chatDraft,
+                uiStyles.AbilityDescription);
+            GUILayout.EndVertical();
+            if(GUILayout.Button(string.IsNullOrEmpty(chatDraft)?"Написать сообщение":"Изменить текст · курсор и выделение",GrimoireWrappedGold,GUILayout.MinHeight(58))) {
                 chatEditId=Guid.NewGuid().ToString();chatEditActor=(string)cloudSession?["user"];
                 try { using var player=new AndroidJavaClass("com.unity3d.player.UnityPlayer");using var activity=player.GetStatic<AndroidJavaObject>("currentActivity");using var bridge=new AndroidJavaClass("com.dndvtt.unityupdater.UpdateProvider");bridge.CallStatic("editChat",activity,chatEditId,chatDraft); }
                 catch(Exception) { chatEditId=chatEditActor=null;chatStatus="Не удалось открыть редактор. Черновик сохранён."; }
@@ -115,18 +118,19 @@ namespace DndVtt.UnityPrototype
         private static string ChatMessageTime(string value)=>DateTimeOffset.TryParse(value,out var created)?created.ToLocalTime().ToString("HH:mm"):"";
         private void DrawChat()
         {
+            PrepareGrimoireAbilityStyles();
             LoadCloudSession();
             if(cloudSession==null) {
                 chatMessages.Clear();GUILayout.Label("Чат доступен только авторизованным пользователям.");
-                if(GUILayout.Button("Войти в аккаунт",GUILayout.MinHeight(56)))Navigate(FrontScreen.Account);return;
+                if(GUILayout.Button("Войти в аккаунт",GrimoireWrappedGold,GUILayout.MinHeight(56)))Navigate(FrontScreen.Account);return;
             }
-            GUILayout.Label("Глобальный чат",heading);
-            if(GUILayout.Button("Настроить ник",GUILayout.MinHeight(52)))OpenSettings();
+            DrawGrimoireSectionHeading("Глобальный чат",159);
+            if(GUILayout.Button("Настроить ник",GrimoireWrappedTab,GUILayout.MinHeight(52)))OpenSettings();
             var plain=new GUIStyle(GUI.skin.label) { richText=false,wordWrap=true };
             var now=DateTimeOffset.UtcNow.AddSeconds(chatServerOffset);
             foreach(JObject message in chatMessages) {
                 if(!DateTimeOffset.TryParse((string)message["expires_at"],out var expires)||expires<=now)continue;
-                GUILayout.BeginVertical(GUI.skin.box);
+                GUILayout.BeginVertical(uiStyles.AbilityCard);
                 string author=(string)message["author"];
                 string nick=CloudCharacterProtocol.ChatNicknameValue(message["author_name"]);
                 if(nick==""&&author==(string)cloudSession?["user"])nick=CloudCharacterProtocol.ChatNickname((string)cloudSession?["chat_nickname"]);
@@ -136,9 +140,9 @@ namespace DndVtt.UnityPrototype
             }
             DrawChatComposer();
             bool enabled=GUI.enabled;GUI.enabled=enabled&&!chatBusy&&!cloudBusy&&chatEditId==null&&!string.IsNullOrWhiteSpace(chatDraft);
-            if(GUILayout.Button("Отправить",GUILayout.MinHeight(56)))StartCoroutine(ChatRequest(true));
+            if(GUILayout.Button("Отправить",GrimoireWrappedGold,GUILayout.MinHeight(56)))StartCoroutine(ChatRequest(true));
             GUI.enabled=enabled&&!chatBusy&&!cloudBusy;
-            if(GUILayout.Button("Обновить чат",GUILayout.MinHeight(52)))StartCoroutine(ChatRequest(false));
+            if(GUILayout.Button("Обновить чат",GrimoireWrappedTab,GUILayout.MinHeight(52)))StartCoroutine(ChatRequest(false));
             GUI.enabled=enabled;GUILayout.Label(chatStatus,plain);
             if(Event.current.type==EventType.Repaint&&!chatBusy&&!cloudBusy&&Time.unscaledTime>=chatNextRefresh)StartCoroutine(ChatRequest(false));
         }
