@@ -56,6 +56,9 @@ namespace DndVtt.UnityPrototype
             grimoireHpButton=null;
             grimoirePortraitFrameStyle=null;
             grimoirePrimaryButton=null;
+            grimoireWrappedGold=null;
+            grimoireWrappedInput=null;
+            grimoireWrappedTab=null;
             grimoireXpFillStyle=null;
             grimoireXpTrackStyle=null;
             heading=null;
